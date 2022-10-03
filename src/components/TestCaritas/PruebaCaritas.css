@@ -1,0 +1,18 @@
+.pCaritas {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: yellow; */
+    width: 808px;
+    border: 1px solid   rgb(201, 123, 142);
+    justify-content: center;
+    user-select:none
+}
+
+/* Añadir queries para pantallas menores de 1008px y mayores de 1669px  */
+/* @media all and (max-width: 827px){
+    .pCaritas{ width: 608px;}
+} */
+
+/* @media all and (min-width: 1608px){
+    .pCaritas{width: 1608px;}
+} */

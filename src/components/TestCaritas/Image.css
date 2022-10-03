@@ -1,0 +1,31 @@
+.modulo {
+    border: 1px solid rgb(201, 123, 142);   /* rgb(201, 123, 142) */
+    width: 200px;
+    height: 64px;
+    position: relative;
+}
+.myCanvas {position: absolute; /* left:0.4px */ /*top:-1px */}
+.image {
+    width: 200px;
+    height: 64px;
+    position: absolute;
+    user-select:none
+}
+
+
+/* Añadir queries para pantallas menores de 1008px y mayores de 1669px  */
+
+/*  @media all and (max-width: 827px){
+    .modulo{ width: 150px;height:48px;}
+        .image {width:150px; height:48px;}
+} */
+/*
+@media all and (max-width: 1008px){
+    .modulo{ width: 125px;height:40px;}
+        .image {width:125px; height:40px;}
+} */
+
+/* @media all and (min-width: 1608px){
+    .modulo{ width: 400px;height:128px;}
+        .image {width:400px; height:128px;}
+} */

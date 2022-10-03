@@ -1,25 +1,34 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Login from './components/Login';
+import PruebaCaritas from './components/TestCaritas/PruebaCaritas';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import MainLayout from 'components/Layouts/MainLayout';
+import RequireAuth from 'routes/requiredAuth';
+import RouteWithLayout from 'commons';
+import { Provider } from 'react-redux';
+import store from 'stores';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    
+    <Provider store={store}>
+      <BrowserRouter>
+      <Routes>
+        <Route
+          path="/pruebacaritas"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route path="/login" element={<Login />} />
+        <Route element={<Navigate to={"/login"} />} path="*" />
+      </Routes>
+      </BrowserRouter>
+      </Provider>
+    
   );
 }
 
