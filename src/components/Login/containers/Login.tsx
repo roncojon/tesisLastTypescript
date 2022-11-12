@@ -8,10 +8,12 @@ import { bigText, lessBigTextCss } from './loginStyles';
 import './loginStyles.css';
 import { logoItau, logoMicrosoft } from './logoItauSvg';
 import { useLogin } from '../../../hooks/useLogin';
-import { endpoint } from '../../../httpRequests';
+import { endpoint, urlBase } from '../../../httpRequests';
 import { useAppDispatch } from 'stores';
-import { setIsAuthenticated } from 'stores/isAuthenticated.store';
+import { setIsAuthenticated } from 'stores/authenticationState.store';
 // import { loginRequest } from '../../../authConfigItau';
+import logoUne from '../../../imgs/une.svg'
+import fotoUne from '../../../imgs/guiteras.jpeg'
 
 const style = {
   position: 'absolute',
@@ -38,7 +40,7 @@ const cont = {
 const contRight = {
   position: 'relative',
   /* borderLeft: '16px solid transparent', */ float: 'right',
-  width: '460px',
+  width: '375px',
   height: '768px',
   display: 'flex',
   justifyContent: 'center',
@@ -65,20 +67,23 @@ const Login = () => {
   const [userPass, setUserPass] = useState('')
 
   // Respuesta del hook, es la respuesta del backend
-  const { loginResponse } = useLogin(endpoint.userLogin, userCredentials)
-  console.log(loginResponse)
+  const { loginResponse } = useLogin(endpoint.usuarios.userLogin, userCredentials)
+  // console.log(urlBase + endpoint.usuarios.userLogin)
+  // console.log(/* 'aaaaaaaaaaa '+ */loginResponse)
 
   // Al recibir una respuesta del servidor, si la respuesta no es vacia y esta Ok pasa la pagina inicial,
   // si la respuesta no es Ok sale Modal de error,
   useEffect(() => {
     if (loginResponse && loginResponse.status === 200) {
-      console.log('asdaaaaaa');
+     // console.log('asdaaaaaa');
       dispatch(
         setIsAuthenticated({
-          value: true,
+          isAuthenticated: true,
+           accessToken: loginResponse.access_token,
         }),
       );
-      navigate('/PruebaCaritas')
+      // (loginResponse.access_token) 
+      navigate('/userslist')
     }
     else if (loginResponse) { setOpenModal2(true) }
   }, [loginResponse])
@@ -104,7 +109,7 @@ const Login = () => {
     /* // valido q el input no sea vacio
         let nickName= userName || '';
         let password= userPass || ''
-        console.log(userName,nickName,password) */
+        // console.log(userName,nickName,password) */
     setUserCredentials({ nickName: userName, password: userPass })
     setOpen(false)
   };
@@ -125,7 +130,7 @@ const Login = () => {
             id="loginImg"
           // style={{ left: 0, position: 'absolute', width: '980px', float: 'left' }}
           >
-            <img alt='Éxito' src={loginSliderImg1} />
+            <img style={{height: '768px'}} alt='Éxito' src={fotoUne} />
           </div>
 
           {/*  <img src={loginImg1} className='loginImgStyles'></img> */}
@@ -135,8 +140,8 @@ const Login = () => {
         <Box
           sx={contRight}
         >
-          <Box sx={{ marginLeft: '-120px', marginTop: '-110px' }}>
-            {logoItau}
+          <Box sx={{/* position:'relative', left: -10, */marginLeft:-2 ,marginTop: '-110px'/* , backgroundColor:'red' */ }}>
+            {<img style={{width:'90px', height:'90px', borderRadius: '6px'}} src={logoUne} alt="logo une"/>}
 
             <br />
             <br />

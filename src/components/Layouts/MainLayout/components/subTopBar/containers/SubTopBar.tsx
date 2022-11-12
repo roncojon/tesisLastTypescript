@@ -27,7 +27,7 @@ const SubTopBar = () => {
   const wayToStyle = '2px solid transparent';
 
   const { value } = useAppState((state) => state.selectedComponent);
-  console.log(`selectedComponent: ${value}`)
+  
 
   const dispatch = useAppDispatch();
 
@@ -43,25 +43,25 @@ const SubTopBar = () => {
   return (
     <div className="fullWidth">
     <Container className="try">
-      <Container className="title">Dashboard ejecutivos</Container>
+      <Container className="title"></Container>
       <Container className="menu" >
-        <NavigationLink
-          isDisabled={false}
-          key="stbINFO"
+      <NavigationLink
+          isDisabled={process.env.STAGE==='prod'}
+          key="stbIndFinan"
           index={1}
-          linkUrl="/dashboard"
+          linkUrl="/userslist"
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Información de la empresa"
-          /*     className={`tab ${checkActive(1, 'active')}`} */
+          linkName="Lista de usuarios"
           borderStyle={checkActive(1)}
+        /*  disabled */
         />
         <NavigationLink
-          isDisabled={process.env.STAGE==='prod'}
+          isDisabled/* ={process.env.STAGE==='prod'} */
           key="stbCTE"
           index={2}
           linkUrl="/carpetatributaria"
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Carpeta tributaria electrónica"
+          linkName="NAV LINK HERE"
           borderStyle={checkActive(2)}
         /* disabled */
         />
@@ -69,41 +69,32 @@ const SubTopBar = () => {
           isDisabled={false}
           key="stbVenta"
           index={3}
-          linkUrl="/ventas"
+          linkUrl="/pruebacaritas"
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Ventas"
+          linkName="Prueba de Caritas"
           borderStyle={checkActive(3)}
         /*  disabled */
         />
         <NavigationLink
-          isDisabled={false}
+          isDisabled/* ={false} */
           key="stbVentaAcumulada"
           index={4}
           linkUrl="/ventasacumuladas"
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Ventas acumuladas"
+          linkName="NAV LINK HERE"
           borderStyle={checkActive(4)}
         /* disabled */
         />
         <NavigationLink
-          isDisabled={process.env.STAGE==='prod'}
+          isDisabled/* ={process.env.STAGE==='prod'} */
           key="stbBAL"
           index={5}
           linkUrl="/balance"
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Balance"
+          linkName="NAV LINK HERE"
           borderStyle={checkActive(5)}
         />
-        <NavigationLink
-          isDisabled={process.env.STAGE==='prod'}
-          key="stbIndFinan"
-          index={6}
-          linkUrl="/indicadores"
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Indicadores financieros"
-          borderStyle={checkActive(6)}
-        /*  disabled */
-        />
+        
       </Container>
     </Container>
     </div>

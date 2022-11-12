@@ -1,12 +1,15 @@
 import { red } from "@mui/material/colors";
 import CSS from "csstype";
 
+export const sideBarSuperContainer:CSS.Properties = { position:'relative',backgroundColor:'#F5F5F5',  height: '100%', width:'120px',float:'left', margin:0, left:'0', top:'0',/* zIndex:1 */ }
+export const sideBarTop:CSS.Properties ={position:'absolute',backgroundColor:'#FFFFFF',height:'72px', width:'120px',float:'left', margin:0, left:'0', top:'0',}
+// export const sideBarContainer:CSS.Properties = { position:'fixed', backgroundColor: '#FFFFFF', height: '100%', width:'120px's,float:'left', margin:0, left:'0', top:'0',zIndex:1 }
 const sideBarStyles:CSS.Properties = { position:'fixed', backgroundColor: '#EC7000', height: '100%', width:'88px',float:'left', margin:0, left:'0', top:'0',zIndex:1 }
 /* export const sideBarStyles2:CSS.Properties = {height: '99vh', width:'88px',float:'left', position:'static',zIndex:-1 } */
 
 
 export const logoStyles:CSS.Properties = {
-    position: 'fixed',
+    position: 'relative',
     left: '22px',
     top: '24px',
     zIndex:1

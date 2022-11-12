@@ -60,6 +60,8 @@ export const ListadoEmpresas = () => (
   </svg>
 );
 
+
+
 export const CTEstyles: CSS.Properties = {
   position: 'absolute',
   width: '192px',

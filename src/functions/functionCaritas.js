@@ -33,7 +33,7 @@ const functionCaritas = (filas) => {
         else {
             fila.forEach(img => {
                 if (intentosTotales === img.imagenIndex) {
-                    console.log('When intentosTotales < fila[3]')
+                    // console.log('When intentosTotales < fila[3]')
                     filaTemp.omitions = (intentosTotales % 4) - (filaTemp.anotations + filaTemp.errors);
                 }
             })

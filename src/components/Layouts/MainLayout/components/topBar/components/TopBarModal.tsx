@@ -85,7 +85,7 @@ export default function TopBarModal() {
           fontSize: '14px',
           lineHeight: '16px',
         }}/* sx={{ mt: 2 }} */>
-          Para iniciar, ingresa el RUT de la empresa
+          Puede ingresar un texto para buscar
         </Typography>
         <br />
         <Button onClick={handleClose} sx={{ float: 'right' }}>

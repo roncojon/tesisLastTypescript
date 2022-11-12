@@ -4,12 +4,19 @@ import LoginContext from "../context/LoginContext";
 
 export const urlBase = 'https://localhost:44381/api/';
 export const endpoint = {
-    caritas: 'pruebadecaritas',
-    login: 'usuario/login',
-    usuariosAll: 'usuario/getall/usuarios',
-    usuarioRegister: 'Usuario/Register',
-    userLogin: 'Usuario/Login',
-    userDelete: 'Usuario/Delete'
+    pruebas: {
+        caritas: 'pruebadecaritas',
+    },
+    usuarios: {
+        login: 'usuario/login',
+        usuariosAll: 'Usuario/GetAll',
+        usuarioRegister: 'Usuario/Register',
+        userLogin: 'Usuario/Login',
+        userDelete: 'Usuario/Delete',
+        usuariosDeleteSeveral:'Usuario/DeleteSeveral',
+        usuarioRol: 'UsuarioRol',
+        usuariosByName:'Usuario/GetAll/usuariosConNombre'
+    }
 };
 
 export const Get = async (endP) => {
@@ -31,14 +38,32 @@ export const Get = async (endP) => {
     //console.log(pruebas);
     return await pruebas
 };
-
-export const GetProtected = async (id, endP, accTok) => {
+export const GetByName = async (key,name,endP) => {
     //const {accessToken} = useContext(LoginContext);
     /*  fetch(urlBase+endP
      ).then(response => { return response.json() })
        .then(resp => {return resp}) */
-    console.log(accTok)
-    const pruebasResponse = await fetch(urlBase + endP + '/' + accTok,
+    const pruebasResponse = await fetch(urlBase + endP + "?" + key+"="+name/* ,
+        {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${accessToken}`
+            }
+
+        } */);
+    const pruebas = await pruebasResponse.json();
+
+    //console.log(pruebas);
+    return await pruebas
+};
+export const GetProtected = async (endP, accTok) => {
+    //const {accessToken} = useContext(LoginContext);
+    /*  fetch(urlBase+endP
+     ).then(response => { return response.json() })
+       .then(resp => {return resp}) */
+    // console.log(accTok)
+    const pruebasResponse = await fetch(urlBase + endP ,
         {
             method: "GET",
             headers: {
@@ -48,12 +73,17 @@ export const GetProtected = async (id, endP, accTok) => {
 
         });
     const pruebas = await pruebasResponse.json();
-    console.log(pruebasResponse);
-    return await pruebasResponse
+    // console.log(pruebasResponse);
+    return await pruebas
 };
 
 export const GetSingle = (id, endP) => {
-    fetch(urlBase + endP
+    fetch(urlBase + endP + id
+    ).then(response => { return response.json() })
+        .then(resp => { return resp })
+};
+export const GetSingleWithComposedKey = (key1,id1,key2,id2, endP) => {
+    fetch(urlBase + endP + "?" + key1+"="+id1+ "&"+key2+"="+id2 
     ).then(response => { return response.json() })
         .then(resp => { return resp })
 };
@@ -71,8 +101,9 @@ export const Post = async (endP, data) => {
             }
         });
 
+
     const result = await response.json();
-    console.log(result)
+
 
     //return await this.result;
 
@@ -115,6 +146,10 @@ export const LoginPost = async (endP, data) => {
                 //'Authorization': `Bearer ${accessToken}`
             }
         });
+        if (!response.ok) {
+            const message = 'Error: '+ Math.random() + response.status;
+            throw new Error(message);
+        }
     const result = await response.json();
     //console.log(f)
 
@@ -126,14 +161,13 @@ export const LoginPost = async (endP, data) => {
 };
 
 export const Put = async (id, endP, data, accessToken) => {
-    const response = await fetch(urlBase + endP + id,
+    const response = await fetch(urlBase + endP + '/' + id,
         {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + accessToken
-
             }
         });
     const result = await response.json();
@@ -149,7 +183,7 @@ export const Delete = async (id, endP) => {
 
 
 export const DeleteProtected = async (id, endP, accessToken) => {
-    const response = await fetch(urlBase + endP + '/' + id,
+    /* const response = */ await fetch(urlBase + endP + '/' + id,
         {
             method: 'DELETE',
             headers: {
@@ -157,6 +191,20 @@ export const DeleteProtected = async (id, endP, accessToken) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         })
-        const result = await response.json();
-        return result
+    /* const result = await response.json();
+    return result */
+};
+
+export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
+    /* const response =  */await fetch(urlBase + endP,
+        {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer ' + accessToken
+            },
+            body: JSON.stringify(idsList)
+        })
+    /* const result = await response.json();
+    return result */
 };

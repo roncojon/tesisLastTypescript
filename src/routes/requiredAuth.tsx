@@ -9,7 +9,7 @@ import { useAppState } from "stores";
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
     const location = useLocation();
     // const isAuthenticated = useIsAuthenticated();
-    const { value } = useAppState((state) => state.isAuthenticated);
+    const { isAuthenticated: value } = useAppState((state) => state.isAuthenticated);
 
     if (!value) {
         // Redirect them to the /login page, but save the current location they were

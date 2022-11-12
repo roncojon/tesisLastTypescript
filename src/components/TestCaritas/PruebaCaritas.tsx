@@ -1,7 +1,10 @@
 /* // @ts-nocheck */
 import React, { useCallback, useEffect, useState, useContext } from 'react'
-import imgs from '../../imgs';
-import './PruebaCaritas.css'
+
+// import {imgs} from '../../imgs';
+import { patternAsObjArray as imgs} from 'functions/decodePatternFromBackend';
+
+// import './PruebaCaritas.css'
 import FilaDe4Imagenes from './FilaDe4Imagenes'
 import { functionCaritas } from '../../functions/functionCaritas'
 import {Get,Post,PostProtected,endpoint, GetProtected} from '../../httpRequests';
@@ -60,7 +63,7 @@ let sendTestDataCounter = 0;
 
 function PruebaCaritas() {
   let filaTemp = [];
-  let filaTemp2 = [];
+  let matriz = [];
   let counter = 1;
   let counter2 = 0;
    const contextValue = useContext(LoginContext);
@@ -71,7 +74,7 @@ function PruebaCaritas() {
         filaTemp.push({ img, counter });
       } else {
         filaTemp.push({ img, counter });
-        filaTemp2.push(filaTemp);
+        matriz.push(filaTemp);
         filaTemp = [];
       }
       counter++;
@@ -80,17 +83,17 @@ function PruebaCaritas() {
   createFilas();
 
   const [tiempoAgotado, setTiempoAgotado] = useState(false);
-  console.log(tiempoAgotado)
+  // console.log(tiempoAgotado)
   const [resultadoDePrueba, setResultadoDePrueba] = useState([]);
   const [done,setDone] = useState(false)
-  console.log(resultadoDePrueba)
+  // console.log(resultadoDePrueba)
   const resultadosHandler = (fila, index) => { const resultTemp = resultadoDePrueba; resultTemp[index] = fila; setResultadoDePrueba(resultTemp);if(index===14)setDone(true)  };
   
   useEffect(()=>{setTimeout(() => setTiempoAgotado(true), 10000);},[])
 
   useEffect(() => {
     if(done===true){
-    console.log('DONEEEEEEEEEE');
+    // console.log('DONEEEEEEEEEE');
 
   }
   }, [done])
@@ -99,7 +102,7 @@ function PruebaCaritas() {
   return (
     <Container sx={{width:'100%'}}>
     <Box sx ={pCaritasContainer}/* className='pCaritas' */>
-      {filaTemp2.map((fila) => {
+      {matriz.map((fila) => {
         counter2++;
         return <FilaDe4Imagenes key={`${fila[0].counter}`} imagenes={fila} numeroDeFila={counter2} onTiempoAgotado={resultadosHandler} timeAgotado={tiempoAgotado} />
       })}

@@ -9,6 +9,7 @@ import RequireAuth from 'routes/requiredAuth';
 import RouteWithLayout from 'commons';
 import { Provider } from 'react-redux';
 import store from 'stores';
+import EnhancedTable from 'components/UserManagement/container/UsersList';
 
 function App() {
   return (
@@ -21,6 +22,13 @@ function App() {
           element={
             <RequireAuth>
               <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/userslist"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={EnhancedTable} layout={MainLayout} />
             </RequireAuth>}
         />
         <Route path="/login" element={<Login />} />

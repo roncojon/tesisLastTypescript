@@ -1,31 +1,59 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState, useEffect, useRef } from 'react';
 import { Box, Container } from '@mui/material';
 import SideBar from '../components/sideBar';
 import TopBar from '../components/topBar';
 import SubTopBar from '../components/subTopBar';
-import { appContainer, subTopBarAndChildrenBox } from './MainLayoutStyles';
+import { appContainer, appContainerButSideBar, appSubTBarAndContent } from './MainLayoutStyles';
 
 interface ILayoutProps {
   children: ReactNode;
 }
 
-const MainLayout: FC<ILayoutProps> = ({ children }) => (
-  <Box
-    className="app-container"
-    sx={appContainer}
-  >
-    <SideBar />
+ let counter = 0
 
-    <TopBar />
+const MainLayout: FC<ILayoutProps> = ({ children }) => {
+  const [hideSB, setHideSB] = useState(false)
+  const ref = useRef(null);
+   
+  useEffect(() => {
+    const showSideBarByVpWidth = ()=>{if (window.visualViewport.width < 1200) setHideSB(true); else { setHideSB(false) }}
+    window.visualViewport.addEventListener("resize", () => { showSideBarByVpWidth() })
+
+    // console.log(ref.current.clientHeight)
+    return () => {
+      window.visualViewport.removeEventListener("resize", () => { showSideBarByVpWidth() })
+    }
+  })
+
+useEffect(() => {
+  if (window.visualViewport.width < 1200)
+  setHideSB(true)
+}, [])
+
+
+   console.log('app rendered ' + counter++)
+  return (
     <Box
-      sx={subTopBarAndChildrenBox}
+    ref = {ref}
+      className="app-container"
+      sx={{...appContainer,overflowX:hideSB ? 'visible' : 'hidden'}}
     >
-      <SubTopBar />
-      <Container sx={{marginTop: 5,marginBottom:10}}>
-      {children}
-      </Container>
+      {!hideSB ? <SideBar /* hght={ref.current.clientHeight} *//> : null}
+      <Box
+        sx={appContainerButSideBar}
+      >
+        <TopBar />
+        <Box
+          sx={appSubTBarAndContent}
+        >
+          <SubTopBar />
+          <Box sx={{width:'100%', marginTop: 5, marginBottom: 10,display:'flex', justifyContent:'center' /*, backgroundColor:'red', marginLeft: '5px', */}}>
+            {children}
+          </Box>
+        </Box>
+      </Box>
     </Box>
-  </Box>
-);
+  )
+};
 
 export default MainLayout;

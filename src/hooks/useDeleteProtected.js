@@ -5,7 +5,7 @@ export const useDeleteProtected = (id,endP,accessToken)=>{
 const [deleteResponse,setDeleteResponse] = useState(null)
 const [loading,setLoading]= useState(true)
 
-console.log(accessToken)
+// console.log(accessToken)
 
 async function httpResp(){
     const temp = await DeleteProtected(id,endP,accessToken)

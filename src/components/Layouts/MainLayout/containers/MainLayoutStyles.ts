@@ -1,12 +1,32 @@
 export const appContainer = {
-    position: 'fixed',
-    height: '100vh',
-    overflowX: 'hidden',
-    backgroundColor: '#FFFFFF'/* '#F5F5F5' */,
-    width: '100%',
+     position: 'absolute',
+     height:'100%',
+    // minHeight: '100vh',
+    // overflowX: 'hidden',
+    backgroundColor: '#F5F5F5'/* '#F5F5F5' */,
+    width: '100vw',
     minWidth: '1024px',
     margin: 0,
     padding: 0,
+    display:'flex'
   }
 
-  export const subTopBarAndChildrenBox = { position: 'relative',minWidth: '1024px', marginLeft: '110px', width: '100vw',display:'flex', flexDirection:'column'/* ,backgroundColor:'yellow' */ }
+  export const appContainerButSideBar = { 
+    position: 'relative',
+    minWidth: '1024px', 
+    /* marginLeft: '110px', *//* height:'100%' , */ 
+    width: '100%',
+    display:'flex', 
+    flexDirection:'column',
+    backgroundColor:'#F5F5F5'
+    /* ,backgroundColor:'yellow' */ }
+
+    export const appSubTBarAndContent = { 
+      position: 'relative',
+      minWidth: '900px', 
+      /* marginLeft: '110px', *//* height:'100%' , */ 
+      width: '100%',
+      display:'flex', 
+      flexDirection:'column',
+      backgroundColor:'#F5F5F5'
+      /* ,backgroundColor:'yellow' */ }

@@ -13,18 +13,24 @@ import {
   Toolbar
 } from '@mui/material';
 // import { useMsal } from '@azure/msal-react';
-import { Link } from 'react-router-dom';
-// import SearchBar from '../components/SearchBar';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
 import TopBarModal from '../components/TopBarModal';
 import { AdjuntarCTElogo, ListadoEmpresas } from '../components/TopBarStyles';
 // import { AdjuntarCTElogo, ListadoEmpresas } from './TopBarStyles';
 import accountUserCircle from '../components/accountUserCircle.png';
 import { appbarStyles, searchBarAndButtonsBoxStyle, buttonsBoxStyle, buttonStyle } from './TobBarStyles';
+import { useAppDispatch } from 'stores';
+import { setIsAuthenticated } from 'stores/authenticationState.store';
+// import { setIsAuthenticated } from 'stores/authenticationSlice.store';
 
 const settings = ['Logout'];
 
 
 const TopBar = () => {
+  const dispatch = useAppDispatch();
+const navigate = useNavigate();
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   // const { instance } = useMsal();
 
@@ -33,13 +39,15 @@ const TopBar = () => {
   };
 
   const handleCloseUserMenu = (action: string) => {
-    /* if (action === 'Logout') {
-      instance.logoutRedirect().catch(e => {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      });
+    if (action === 'Logout') {
+      dispatch(
+        setIsAuthenticated({
+          isAuthenticated: false
+        }),
+      );
+      navigate('/login')
     }
-    setAnchorElUser(null); */
+    setAnchorElUser(null);
   };
 
   return (
@@ -53,30 +61,30 @@ const TopBar = () => {
           <Box
             sx={buttonsBoxStyle}>
             <Button
-            disabled
-            variant='contained' // quitar cuando se habilite 
+              disabled
+              variant='contained' // quitar cuando se habilite 
               startIcon={<AdjuntarCTElogo />}
               sx={buttonStyle}
             >
-              Adjuntar CTE de empresa
+              Administrar Usuarios
             </Button>
 
             <Button
-            component={Link}
-            to='/listado'
+              component={Link}
+              to='/listado'
               startIcon={<ListadoEmpresas />}
               sx={buttonStyle}
               disableElevation={false}
               disableRipple={false}
               disableFocusRipple={false}
             >
-              Listado de empresas
+              Administrar Centros
             </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Abrir configuración">
-              <IconButton onClick={handleOpenUserMenu} >
+          <Box sx={{ flexGrow: 0, /* mr:10 */ }}>
+            <Tooltip title="Abrir configuración" >
+              <IconButton onClick={handleOpenUserMenu}>
                 <Avatar alt="Miracle" src={accountUserCircle} />
               </IconButton>
             </Tooltip>

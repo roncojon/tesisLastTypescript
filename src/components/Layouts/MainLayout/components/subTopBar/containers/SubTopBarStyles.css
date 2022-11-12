@@ -1,57 +1,65 @@
-.fullWidth {width:100%; /* background-color: blue; */}
+.fullWidth {
+  width: 100%;
+  min-width: 1024px;
+  /* float:left */
+  margin-left: 10px;
+  /* background-color: blue; */
+}
 
 .try {
-    /* float: left; */
-    /* clear: both; */
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background-color: #FFFFFF; /* #F5F5F5 */
-    max-width: none;
-    width: 100%;
-margin-top:32px;
-margin-bottom:12px;
-float: left;
-/* margin-left: 100px; */
-    /* height: 100px; */
-    /* top:32px */
-    /* margin-top:10px */
+  /* float: left; */
+  /* clear: both; */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #F5F5F5; */
+  /* #F5F5F5 */
+  max-width: none;
+  width: 100%;
+  /* margin-top: 22px; */
+  margin-bottom: 12px;
+  float: left;
+  /* margin-left: 100px; */
+  /* height: 100px; */
+  /* top:32px */
+  /* margin-top:10px */
 }
 
 .title {
-    /* Simulación de crédit */
-position: relative;
-/* top:100px; */
-width: 100%;
-/* margin-left: 100px; */
-left:-20px;
-/* top:0; */
-height: 26px;
-font-family: 'Arial';
-font-style: normal;
-font-weight: 400;
-font-size: 26px;
-line-height: 26px;
-/* identical to box height, or 100% */
+  /* Simulación de crédit */
+  position: relative;
+  /* top:100px; */
+  width: 100%;
+  /* margin-left: 100px; */
+  left: -20px;
+  /* top:0; */
+  height: 26px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 26px;
+  /* identical to box height, or 100% */
 
-color: #43484C;
+  color: #43484C;
 }
 
 .menu {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
   /*   left:-12px; */
-    /* left:-79px; */
-    /* top:20px; */
-    /* float: left; */
-      /* 43484C */
-    margin-top: 32px;
-    margin-bottom: 5px;
-    left:-21px
-      /* Itau Display App */
+  /* left:-79px; */
+  /* top:20px; */
+  /* float: left; */
+  /* 43484C */
+  margin-top: 32px;
+  margin-bottom: 5px;
+  left: -21px
+    /* Itau Display App */
 
-/* text-decoration-line: underline; */
+    /* text-decoration-line: underline; */
 }
+
 /* .menuLinks{color: #43484C ;
     font-style: normal;
     font-weight: 400;
@@ -62,17 +70,19 @@ color: #43484C;
 background-color: blue;
     } */
 
-    .subMenuLinkStyles .MuiTouchRipple-root {
-        /* left: -16px; */
-        /* padding: 0; */
-      /*   right: 8px; */
+.subMenuLinkStyles .MuiTouchRipple-root {
+  /* left: -16px; */
+  /* padding: 0; */
+  /*   right: 8px; */
 
-      }
+}
 
-     /*  .subMenuLinkStyles.MuiButton-root{padding: 0;} */
-      
-      .subMenuLinkStyles.MuiButton-root{width:max-content;}
+/*  .subMenuLinkStyles.MuiButton-root{padding: 0;} */
 
-     /*  .subMenuLinkStyles * {padding: 0;}
+.subMenuLinkStyles.MuiButton-root {
+  width: max-content;
+}
+
+/*  .subMenuLinkStyles * {padding: 0;}
     
       .subMenuLinkStyles {padding: 0;} */
