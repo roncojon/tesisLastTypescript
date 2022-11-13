@@ -66,7 +66,7 @@ const navigate = useNavigate();
               startIcon={<AdjuntarCTElogo />}
               sx={buttonStyle}
             >
-              Administrar Usuarios
+              Realizar Prueba
             </Button>
 
             <Button
@@ -78,7 +78,19 @@ const navigate = useNavigate();
               disableRipple={false}
               disableFocusRipple={false}
             >
-              Administrar Centros
+              Administrar Sitio
+            </Button>
+
+            <Button
+              component={Link}
+              to='/listado'
+              startIcon={<ListadoEmpresas />}
+              sx={buttonStyle}
+              disableElevation={false}
+              disableRipple={false}
+              disableFocusRipple={false}
+            >
+              Resultados de pruebas
             </Button>
           </Box>
 
