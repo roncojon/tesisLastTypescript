@@ -1,5 +1,8 @@
 import React from 'react';
-
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import BusinessIcon from '@mui/icons-material/Business';
 import {
   Box,
   Avatar,
@@ -22,6 +25,9 @@ import accountUserCircle from '../components/accountUserCircle.png';
 import { appbarStyles, searchBarAndButtonsBoxStyle, buttonsBoxStyle, buttonStyle } from './TobBarStyles';
 import { useAppDispatch } from 'stores';
 import { setIsAuthenticated } from 'stores/authenticationState.store';
+import { setSubTopMenuElements } from 'stores/subTopMenuElements.store';
+import { MenuElement } from 'interfaces/subTopMenuElements';
+import { setSelectedComponent } from 'stores/selectedComponent.store';
 // import { setIsAuthenticated } from 'stores/authenticationSlice.store';
 
 const settings = ['Logout'];
@@ -50,6 +56,20 @@ const navigate = useNavigate();
     setAnchorElUser(null);
   };
 
+///////////////////////////////
+const subElementsHandler =(elements:MenuElement[])=>{
+  dispatch(
+    setSelectedComponent({
+      value: 1,
+    }),
+  )
+  dispatch(
+    setSubTopMenuElements({
+      elements: elements
+    }),
+  );
+};
+
   return (
     <AppBar
       /* position="static" */
@@ -61,18 +81,31 @@ const navigate = useNavigate();
           <Box
             sx={buttonsBoxStyle}>
             <Button
-              disabled
-              variant='contained' // quitar cuando se habilite 
-              startIcon={<AdjuntarCTElogo />}
+              disabled={false}
+              // variant='contained' // quitar cuando se habilite 
+              startIcon={<BorderColorIcon />}
               sx={buttonStyle}
             >
               Realizar Prueba
             </Button>
 
             <Button
+            onClick={()=>subElementsHandler(null)}
+              disabled={false}
+              // variant='contained' // quitar cuando se habilite 
               component={Link}
-              to='/listado'
-              startIcon={<ListadoEmpresas />}
+              to='/crearexamen'
+              startIcon={<PlaylistAddIcon />}
+              sx={buttonStyle}
+            >
+              Comenzar Examen
+            </Button>
+
+            <Button
+            onClick={()=>subElementsHandler([{elementString:"Lista de usuarios",elementUrl:"/userslist"},{elementString:"Prueba Caritas",elementUrl:"/pruebacaritas"}])}
+              component={Link}
+              to="/userslist"
+              startIcon={<BusinessIcon />}
               sx={buttonStyle}
               disableElevation={false}
               disableRipple={false}
@@ -84,7 +117,7 @@ const navigate = useNavigate();
             <Button
               component={Link}
               to='/listado'
-              startIcon={<ListadoEmpresas />}
+              startIcon={<ReceiptLongIcon />}
               sx={buttonStyle}
               disableElevation={false}
               disableRipple={false}

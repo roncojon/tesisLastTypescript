@@ -44,7 +44,7 @@ function Modulo({ imagen, respuestaCorrecta, index, onRespuesta }) {
         setSingleResponse(false);
 
         const c = coordsToCanvas(event.target.coords);
-        console.log('aaaaaaaaaaaa '+c)
+        // console.log('aaaaaaaaaaaa '+c)
         var canvas = document.getElementById(index);
         var ctx = canvas.getContext("2d");
         ctx.fillStyle =  "rgb(226, 196, 196)";     /* "rgb(68, 175, 218)" ; */

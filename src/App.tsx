@@ -10,6 +10,9 @@ import RouteWithLayout from 'commons';
 import { Provider } from 'react-redux';
 import store from 'stores';
 import EnhancedTable from 'components/UserManagement/container/UsersList';
+import CreateExam from 'components/CreateExam';
+import AdminSite from 'components/AdminSite';
+
 
 function App() {
   return (
@@ -24,11 +27,25 @@ function App() {
               <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
             </RequireAuth>}
         />
+         <Route
+          path="/crearexamen"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={CreateExam} layout={MainLayout} />
+            </RequireAuth>}
+        />
         <Route
           path="/userslist"
           element={
             <RequireAuth>
               <RouteWithLayout component={EnhancedTable} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/administrarsitio"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={AdminSite} layout={MainLayout} />
             </RequireAuth>}
         />
         <Route path="/login" element={<Login />} />

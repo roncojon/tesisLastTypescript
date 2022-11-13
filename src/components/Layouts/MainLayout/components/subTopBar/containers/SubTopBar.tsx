@@ -27,7 +27,7 @@ const SubTopBar = () => {
   const wayToStyle = '2px solid transparent';
 
   const { value } = useAppState((state) => state.selectedComponent);
-  
+  const { elements } = useAppState((state) => state.subTopMenuElements);
 
   const dispatch = useAppDispatch();
 
@@ -42,61 +42,26 @@ const SubTopBar = () => {
 
   return (
     <div className="fullWidth">
+{elements !==null && 
     <Container className="try">
       <Container className="title"></Container>
       <Container className="menu" >
-      <NavigationLink
+
+{elements.map((el,index)=>
+  <NavigationLink
           isDisabled={process.env.STAGE==='prod'}
-          key="stbIndFinan"
-          index={1}
-          linkUrl="/userslist"
+          key={el.elementUrl}
+          index={index+1}
+          linkUrl={el.elementUrl}
           onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Lista de usuarios"
-          borderStyle={checkActive(1)}
-        /*  disabled */
+          linkName={el.elementString}
+          borderStyle={checkActive(index+1)}
         />
-        <NavigationLink
-          isDisabled/* ={process.env.STAGE==='prod'} */
-          key="stbCTE"
-          index={2}
-          linkUrl="/carpetatributaria"
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="NAV LINK HERE"
-          borderStyle={checkActive(2)}
-        /* disabled */
-        />
-        <NavigationLink
-          isDisabled={false}
-          key="stbVenta"
-          index={3}
-          linkUrl="/pruebacaritas"
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="Prueba de Caritas"
-          borderStyle={checkActive(3)}
-        /*  disabled */
-        />
-        <NavigationLink
-          isDisabled/* ={false} */
-          key="stbVentaAcumulada"
-          index={4}
-          linkUrl="/ventasacumuladas"
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="NAV LINK HERE"
-          borderStyle={checkActive(4)}
-        /* disabled */
-        />
-        <NavigationLink
-          isDisabled/* ={process.env.STAGE==='prod'} */
-          key="stbBAL"
-          index={5}
-          linkUrl="/balance"
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName="NAV LINK HERE"
-          borderStyle={checkActive(5)}
-        />
+)}  
         
       </Container>
     </Container>
+    }
     </div>
   );
 };
