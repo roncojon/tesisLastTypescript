@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
-import { GetProtected } from "../httpRequests";
+import { Get, GetProtected } from "../httpRequests";
 import { useAppState } from "stores";
 
-export const useGetAllProtected = (endP,boolGetAllAgain)=>{
-const [usuarios,setUsuarios] = useState(null)
+export const useGetAllGeneric = (endP,boolGetAllAgain:boolean | null)=>{
+const [data,setData] = useState(null)
 const [loading,setLoading]= useState(true)
 const { accessToken } = useAppState((state) => state.isAuthenticated);
 // console.log('aaaaaaaaaabbbb '+accessToken)
 
 async function httpResp(){
-    const temp = await GetProtected(endP,accessToken)
+    const temp = await Get(endP/*, accessToken */)
     if(temp!==null)
-    await setUsuarios(temp)
+    await setData(temp)
     await setLoading(false)
   }
 
@@ -22,6 +22,6 @@ useEffect(() => {
     second
   } */
 },[endP,boolGetAllAgain])
-return {usuarios,loading}
+return {data,loading}
 
 }

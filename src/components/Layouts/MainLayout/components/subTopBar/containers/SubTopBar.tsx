@@ -27,7 +27,7 @@ const SubTopBar = () => {
   const wayToStyle = '2px solid transparent';
 
   const { value } = useAppState((state) => state.selectedComponent);
-  const { elements } = useAppState((state) => state.subTopMenuElements);
+  const { title, elements } = useAppState((state) => state.subTopMenuElements);
 
   const dispatch = useAppDispatch();
 
@@ -42,26 +42,30 @@ const SubTopBar = () => {
 
   return (
     <div className="fullWidth">
-{elements !==null && 
-    <Container className="try">
-      <Container className="title"></Container>
-      <Container className="menu" >
 
-{elements.map((el,index)=>
-  <NavigationLink
-          isDisabled={process.env.STAGE==='prod'}
-          key={el.elementUrl}
-          index={index+1}
-          linkUrl={el.elementUrl}
-          onTabClick={async (ind: number) => handleClick(ind)}
-          linkName={el.elementString}
-          borderStyle={checkActive(index+1)}
-        />
-)}  
-        
+
+      <Container className="try">
+        <Container className="title">{title}</Container>
+
+        {elements !== null &&
+          <Container className="menu" >
+
+            {elements.map((el, index) =>
+              <NavigationLink
+                isDisabled={process.env.STAGE === 'prod'}
+                key={el.elementUrl}
+                index={index + 1}
+                linkUrl={el.elementUrl}
+                onTabClick={async (ind: number) => handleClick(ind)}
+                linkName={el.elementString}
+                borderStyle={checkActive(index + 1)}
+              />
+            )}
+
+          </Container>
+        }
       </Container>
-    </Container>
-    }
+
     </div>
   );
 };

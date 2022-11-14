@@ -31,7 +31,8 @@ import { setSelectedComponent } from 'stores/selectedComponent.store';
 // import { setIsAuthenticated } from 'stores/authenticationSlice.store';
 
 const settings = ['Logout'];
-
+const adminSiteMenuElements:{title:string,elements:MenuElement[]} = {title:"Administrar sitio",elements:[{elementString:"Lista de usuarios",elementUrl:"/userslist"},{elementString:"Prueba Caritas",elementUrl:"/pruebacaritas"}]}; 
+const createExamMenuElements:{title:string,elements:MenuElement[]} = {title:"Creación de examen",elements:null}; 
 
 const TopBar = () => {
   const dispatch = useAppDispatch();
@@ -57,7 +58,7 @@ const navigate = useNavigate();
   };
 
 ///////////////////////////////
-const subElementsHandler =(elements:MenuElement[])=>{
+const subElementsHandler =(menuInfo:{title:string,elements:MenuElement[]})=>{
   dispatch(
     setSelectedComponent({
       value: 1,
@@ -65,7 +66,8 @@ const subElementsHandler =(elements:MenuElement[])=>{
   )
   dispatch(
     setSubTopMenuElements({
-      elements: elements
+      title:menuInfo.title,
+      elements: menuInfo.elements
     }),
   );
 };
@@ -86,11 +88,11 @@ const subElementsHandler =(elements:MenuElement[])=>{
               startIcon={<BorderColorIcon />}
               sx={buttonStyle}
             >
-              Realizar Prueba
+              Realizar prueba
             </Button>
 
             <Button
-            onClick={()=>subElementsHandler(null)}
+            onClick={()=>subElementsHandler(createExamMenuElements)}
               disabled={false}
               // variant='contained' // quitar cuando se habilite 
               component={Link}
@@ -98,11 +100,11 @@ const subElementsHandler =(elements:MenuElement[])=>{
               startIcon={<PlaylistAddIcon />}
               sx={buttonStyle}
             >
-              Comenzar Examen
+              Aplicar examen
             </Button>
 
             <Button
-            onClick={()=>subElementsHandler([{elementString:"Lista de usuarios",elementUrl:"/userslist"},{elementString:"Prueba Caritas",elementUrl:"/pruebacaritas"}])}
+            onClick={()=>subElementsHandler(adminSiteMenuElements)}
               component={Link}
               to="/userslist"
               startIcon={<BusinessIcon />}
@@ -111,7 +113,7 @@ const subElementsHandler =(elements:MenuElement[])=>{
               disableRipple={false}
               disableFocusRipple={false}
             >
-              Administrar Sitio
+              Administrar sitio
             </Button>
 
             <Button

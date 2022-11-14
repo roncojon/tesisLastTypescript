@@ -6,7 +6,7 @@
   /* background-color: blue; */
 }
 
-.try {
+.try.MuiContainer-root {
   /* float: left; */
   /* clear: both; */
   position: relative;
@@ -14,10 +14,10 @@
   flex-direction: column;
   /* background-color: #F5F5F5; */
   /* #F5F5F5 */
-  max-width: none;
+  max-width:none;
   width: 100%;
   /* margin-top: 22px; */
-  margin-bottom: 12px;
+  margin-bottom: 5px;
   float: left;
   /* margin-left: 100px; */
   /* height: 100px; */
@@ -25,7 +25,7 @@
   /* margin-top:10px */
 }
 
-.title {
+.title.MuiContainer-root {
   /* Simulación de crédit */
   position: relative;
   /* top:100px; */
@@ -40,7 +40,10 @@
   font-size: 26px;
   line-height: 26px;
   /* identical to box height, or 100% */
-
+/* background-color: red; */
+margin-top: 20px;
+display: flex;
+justify-content: center;
   color: #43484C;
 }
 
@@ -52,7 +55,7 @@
   /* top:20px; */
   /* float: left; */
   /* 43484C */
-  margin-top: 32px;
+  margin-top: 15px;
   margin-bottom: 5px;
   left: -21px
     /* Itau Display App */

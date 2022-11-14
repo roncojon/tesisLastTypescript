@@ -47,7 +47,7 @@ useEffect(() => {
           sx={appSubTBarAndContent}
         >
           <SubTopBar />
-          <Box sx={{width:'100%', marginTop: 5, marginBottom: 10,display:'flex', justifyContent:'center' /*, backgroundColor:'red', marginLeft: '5px', */}}>
+          <Box sx={{width:'100%', marginTop: '10px', marginBottom: 10,display:'flex', justifyContent:'center' /*, backgroundColor:'red', marginLeft: '5px', */}}>
             {children}
           </Box>
         </Box>

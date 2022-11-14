@@ -18,7 +18,7 @@ export const appbarStyles= {
   // marginLeft: '90px',
   // borderBottom:'2px solid #F5F5F5'
 }
-export const searchBarAndButtonsBoxStyle = { maxWidth: 'none', paddingLeft: '24px', paddingRight: '24px' }
+export const searchBarAndButtonsBoxStyle = { maxWidth: 'none', /* paddingLeft: '24px', */ paddingRight: '24px' }
 export const buttonsBoxStyle ={
   flexGrow: 1,
   display: {

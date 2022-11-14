@@ -9,7 +9,7 @@ import RequireAuth from 'routes/requiredAuth';
 import RouteWithLayout from 'commons';
 import { Provider } from 'react-redux';
 import store from 'stores';
-import EnhancedTable from 'components/UserManagement/container/UsersList';
+import EnhancedTable from 'components/UserManagement';
 import CreateExam from 'components/CreateExam';
 import AdminSite from 'components/AdminSite';
 

@@ -5,7 +5,7 @@ import { SubTopMenuElements } from '../interfaces/subTopMenuElements';
   currentCompany: null,
 }; */
 
-const initialState:SubTopMenuElements = {elements: null};
+const initialState:SubTopMenuElements = {title:"",elements: null};
 
 const subTopMenuElementsSlice = createSlice({
   name: 'subTopMenuElements',

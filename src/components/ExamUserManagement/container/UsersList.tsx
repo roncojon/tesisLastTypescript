@@ -24,14 +24,13 @@ import { useDeleteProtected } from 'hooks/useDeleteProtected';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import { createData, Data, getComparator, Order, stableSort } from './Commons';
 import { EnhancedTableHead } from './EnhancedTableHead';
-// import { useGetAllGeneric } from 'hooks/useUserGetAllProtected';
+import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import { DeleteSeveral, endpoint } from 'httpRequests';
 import { useAppState } from "stores";
 import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchUsersByName } from 'hooks/useSearchUsersByName';
 // import { testooo } from 'functions/decodePatternFromBackend';
-import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 
 
 
@@ -188,7 +187,7 @@ export default function EnhancedTable() {
     else
       setGetByNameAgain(!getByNameAgain);
   }
-  //testooo();
+  // testooo();
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
       <SearchBar onResponseUsersByName={handleShowUsersByName} onRefresh={handleShowAllUsers} />

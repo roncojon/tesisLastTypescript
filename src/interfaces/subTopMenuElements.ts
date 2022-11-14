@@ -1,4 +1,5 @@
 export interface SubTopMenuElements {
+    title:string,
     elements: MenuElement[] | null,
 }
 

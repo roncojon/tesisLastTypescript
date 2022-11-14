@@ -39,9 +39,9 @@ temp.imagen=img.src;
 
 setImgsSourcesInPatternAsObjArray();
 
-export const testooo=()=>{
+/* export const testooo=()=>{
     patternAsObjArray.forEach(element => {
     console.log(element)
  });
-}
+} */
 
