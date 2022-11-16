@@ -2,7 +2,7 @@ import React from 'react'
 
 const AdminSite = () => {
   return (
-    <div>AdminSite</div>
+    <div>Grupo etario </div>
   )
 }
 

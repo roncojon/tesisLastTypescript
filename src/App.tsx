@@ -10,8 +10,12 @@ import RouteWithLayout from 'commons';
 import { Provider } from 'react-redux';
 import store from 'stores';
 import EnhancedTable from 'components/UserManagement';
-import CreateExam from 'components/CreateExam';
+import CreateExam from 'components/ExamManagement/components/CreateExam';
+import AnswerTest from 'components/AnswerTest';
+import ActiveExams from 'components/ExamManagement/components/ActiveExams';
+import OldExams from 'components/ExamManagement/components/OldExams';
 import AdminSite from 'components/AdminSite';
+import NivelEscolar from 'components/NivelEscolar';
 
 
 function App() {
@@ -25,6 +29,34 @@ function App() {
           element={
             <RequireAuth>
               <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/grupoetario"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={AdminSite} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/nivelescolar"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={NivelEscolar} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/oldexams"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={OldExams} layout={MainLayout} />
+            </RequireAuth>}
+        />
+        <Route
+          path="/activeexams"
+          element={
+            <RequireAuth>
+              <RouteWithLayout component={ActiveExams} layout={MainLayout} />
             </RequireAuth>}
         />
          <Route
@@ -45,7 +77,7 @@ function App() {
           path="/administrarsitio"
           element={
             <RequireAuth>
-              <RouteWithLayout component={AdminSite} layout={MainLayout} />
+              <RouteWithLayout component={AnswerTest} layout={MainLayout} />
             </RequireAuth>}
         />
         <Route path="/login" element={<Login />} />

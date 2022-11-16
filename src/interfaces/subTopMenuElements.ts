@@ -1,6 +1,6 @@
-export interface SubTopMenuElements {
+export type SubTopMenuElements = {
     title:string,
     elements: MenuElement[] | null,
 }
 
-export interface MenuElement {elementString:string,elementUrl:string}
+export type MenuElement = {elementString:string,elementUrl:string}

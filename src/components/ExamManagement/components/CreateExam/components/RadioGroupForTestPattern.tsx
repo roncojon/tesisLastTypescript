@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 export default function RadioGroupForTestPattern({ onPatternSelected }) {
   return (
     <FormControl>
-      <h3 id="demo-radio-buttons-group-label">Elegir tipo de patrón para el examen</h3>
+      <h3 id="demo-radio-buttons-group-label">Patrón a usar en el examen</h3>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={true}

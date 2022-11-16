@@ -6,18 +6,18 @@ import { AuthenticationStateObject } from 'interfaces/authenticationStateObject'
   currentCompany: null,
 }; */
 
-const initialState:AuthenticationStateObject = {isAuthenticated: false, accessToken: null};
+const initialState:AuthenticationStateObject = {isAuthenticated: false, accessToken: null , userId:null};
 
 const authenticationSlice = createSlice({
   name: 'selectedComponent',
   initialState,
   reducers: {
-    setIsAuthenticated(state, action: PayloadAction<Partial<AuthenticationStateObject>>) {
+    setAuthenticationInfo(state, action: PayloadAction<Partial<AuthenticationStateObject>>) {
       Object.assign(state, action.payload);
     },
   },
 });
 
-export const { setIsAuthenticated } = authenticationSlice.actions;
+export const { setAuthenticationInfo } = authenticationSlice.actions;
 
 export default authenticationSlice.reducer;

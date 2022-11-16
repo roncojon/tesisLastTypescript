@@ -24,19 +24,43 @@ import { AdjuntarCTElogo, ListadoEmpresas } from '../components/TopBarStyles';
 import accountUserCircle from '../components/accountUserCircle.png';
 import { appbarStyles, searchBarAndButtonsBoxStyle, buttonsBoxStyle, buttonStyle } from './TobBarStyles';
 import { useAppDispatch } from 'stores';
-import { setIsAuthenticated } from 'stores/authenticationState.store';
+ import { setAuthenticationInfo } from 'stores/authenticationState.store';
 import { setSubTopMenuElements } from 'stores/subTopMenuElements.store';
 import { MenuElement } from 'interfaces/subTopMenuElements';
 import { setSelectedComponent } from 'stores/selectedComponent.store';
 // import { setIsAuthenticated } from 'stores/authenticationSlice.store';
 
 const settings = ['Logout'];
-const adminSiteMenuElements:{title:string,elements:MenuElement[]} = {title:"Administrar sitio",elements:[{elementString:"Lista de usuarios",elementUrl:"/userslist"},{elementString:"Prueba Caritas",elementUrl:"/pruebacaritas"}]}; 
-const createExamMenuElements:{title:string,elements:MenuElement[]} = {title:"Creación de examen",elements:null}; 
+
+// Nunca poner 2 url iguales
+const resetState: { title: string, elements: MenuElement[] } = { title: "", elements: null };
+const adminSiteMenuElements: { title: string, elements: MenuElement[] } = { 
+  title: "Administrar sitio", 
+  elements: [
+    { elementString: "Lista de usuarios", elementUrl: "/userslist" },
+     { elementString: "Grupo etario", elementUrl: "/grupoetario" },
+     { elementString: "Nivel escolar", elementUrl: "/nivelescolar" }
+    ] 
+  };
+const createExamMenuElements: { title: string, elements: MenuElement[] } = {
+   title: "Gestionar exámenes",
+    elements: [
+     { elementString: "Crear examen", elementUrl: "/crearexamen" },
+     { elementString: "Finalizar examen", elementUrl: "/activeexams" },
+     { elementString: "Historial de exámenes", elementUrl: "/oldexams" },
+    ]
+  };
+const doTestMenuElements: { title: string, elements: MenuElement[] } = {
+   title: "Realizar prueba",
+    elements: null/* [
+      { elementString: "D2", elementUrl: "/administrarsitio" }, 
+      { elementString: "Prueba Caritas", elementUrl: "/pruebacaritas" },
+    ]  */
+  };
 
 const TopBar = () => {
   const dispatch = useAppDispatch();
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   // const { instance } = useMsal();
@@ -48,7 +72,7 @@ const navigate = useNavigate();
   const handleCloseUserMenu = (action: string) => {
     if (action === 'Logout') {
       dispatch(
-        setIsAuthenticated({
+        setAuthenticationInfo({
           isAuthenticated: false
         }),
       );
@@ -57,20 +81,20 @@ const navigate = useNavigate();
     setAnchorElUser(null);
   };
 
-///////////////////////////////
-const subElementsHandler =(menuInfo:{title:string,elements:MenuElement[]})=>{
-  dispatch(
-    setSelectedComponent({
-      value: 1,
-    }),
-  )
-  dispatch(
-    setSubTopMenuElements({
-      title:menuInfo.title,
-      elements: menuInfo.elements
-    }),
-  );
-};
+  ///////////////////////////////
+  const subElementsHandler = (menuInfo: { title: string, elements: MenuElement[] },subMenuIndex:number) => {
+    dispatch(
+      setSelectedComponent({
+        value: subMenuIndex,
+      }),
+    )
+    dispatch(
+      setSubTopMenuElements({
+        title: menuInfo.title,
+        elements: menuInfo.elements
+      }),
+    );
+  };
 
   return (
     <AppBar
@@ -83,16 +107,18 @@ const subElementsHandler =(menuInfo:{title:string,elements:MenuElement[]})=>{
           <Box
             sx={buttonsBoxStyle}>
             <Button
+              onClick={() =>subElementsHandler(doTestMenuElements,0)}
               disabled={false}
               // variant='contained' // quitar cuando se habilite 
-              startIcon={<BorderColorIcon />}
+              component={Link}
+              to="/administrarsitio" startIcon={<BorderColorIcon />}
               sx={buttonStyle}
             >
               Realizar prueba
             </Button>
 
             <Button
-            onClick={()=>subElementsHandler(createExamMenuElements)}
+              onClick={() => subElementsHandler(createExamMenuElements,1)}
               disabled={false}
               // variant='contained' // quitar cuando se habilite 
               component={Link}
@@ -100,11 +126,11 @@ const subElementsHandler =(menuInfo:{title:string,elements:MenuElement[]})=>{
               startIcon={<PlaylistAddIcon />}
               sx={buttonStyle}
             >
-              Aplicar examen
+              Gestionar exámenes
             </Button>
 
             <Button
-            onClick={()=>subElementsHandler(adminSiteMenuElements)}
+              onClick={() => subElementsHandler(adminSiteMenuElements,1)}
               component={Link}
               to="/userslist"
               startIcon={<BusinessIcon />}

@@ -100,7 +100,7 @@ function PruebaCaritas() {
   
 
   return (
-    <Container sx={{width:'100%'}}>
+    <Container sx={{width:'100%', display:'flex',justifyContent:'center',}}>
     <Box sx ={pCaritasContainer}/* className='pCaritas' */>
       {matriz.map((fila) => {
         counter2++;

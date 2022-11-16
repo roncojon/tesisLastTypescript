@@ -25,7 +25,7 @@ import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import { createData, Data, getComparator, Order, stableSort } from './Commons';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
-import { DeleteSeveral, endpoint } from 'httpRequests';
+import { DeleteSeveral, endpoint, Get } from 'httpRequests';
 import { useAppState } from "stores";
 import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
@@ -52,32 +52,73 @@ createData('Oreo', 437, 18.0, 63, 4.0), */
 const requestParamKey = "userName";
 
 // let counter = 0;
-
-export default function EnhancedTable() {
+type Propss = {startWithUsers:boolean,onUsuariosAsignados:any,asignedUsers:any[]}
+export default function UsersList({ startWithUsers,onUsuariosAsignados,asignedUsers }:Propss) {
   // const rowsAll = [];
   // const rowsByName = [];
+  const [usuariosAsignados, setUsuariosAsignados] = useState([]);
 
   const [rows, setRows] = useState([]);
-  const [getAllAgain, setGetAllAgain] = useState(true);
+  // const [getAllAgain, setGetAllAgain] = useState(true);
   const [getByNameAgain, setGetByNameAgain] = useState(false);
   const [debouncedValue, setDebouncedValue] = useState("");
-  const [sourceUsed, setSourceUsed] = useState("");
-  const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
-  const { usuariosByName, loadingUsuariosByName } = useSearchUsersByName(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
-  // console.log('ssssssss '+counter++);
+  const [sourceUsed, setSourceUsed] = useState("All");
+  // const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
+  // const { usuariosByName, loadingUsuariosByName } = useSearchUsersByName(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
+  const [usuariosByName, setUsuariosByName] = useState([]);
+
+  // Getting all users
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const { accessToken } = useAppState((state) => state.authenticationInfo);
+  // console.log('aaaaaaaaaabbbb '+accessToken)
+
+  async function httpResp() {
+    const temp = await Get(endpoint.usuarios.usuariosAll/*, accessToken */)
+    if (temp !== null)
+      await setData(temp)
+    await setLoading(false)
+  }
+
+  useEffect(() => {
+    if (startWithUsers) {
+      setLoading(true)
+      httpResp()
+    }
+  }, [])
+  // Till here
+
+
+  /* useEffect(() => {
+   
+    console.log('UP UP UP :')
+    console.log(usuariosAsignados)
+    
+    onUsuariosAsignados(usuariosAsignados)
+    }, [usuariosAsignados]) */
+
+    /* console.log('UP UP UP aaaaaaaaaaaa:')
+    console.log(usuariosAsignados) */
+    useEffect(() => {
+      if (!startWithUsers)
+      {
+      setData(asignedUsers)
+      setDataState(asignedUsers)
+    }
+      }, [asignedUsers, startWithUsers])
 
   const setDataState = (users) => {
     const rowsTemp = [];
     if (users !== null) {
-      users.forEach(data => {
+      users.forEach(user => {
         // console.log(data)
         rowsTemp.push({
-          id: data.id,
-          nombre: data.nombre,
-          apellidos: data.apellidos,
-          grupoEtario: data.grupoEtarioNombre,
-          escolaridad: data.escolaridadNombre,
-          ci: data.ci
+          id: user.id,
+          nombre: user.nombre,
+          apellidos: user.apellidos,
+          grupoEtario: user.grupoEtarioNombre,
+          escolaridad: user.escolaridadNombre,
+          ci: user.ci
         })
       });
     }
@@ -93,17 +134,29 @@ export default function EnhancedTable() {
   useEffect(() => {
     setSourceUsed("By Name");
     setDataState(usuariosByName)
-  }, [usuariosByName, loadingUsuariosByName])
+  }, [usuariosByName])
+
 
   const handleShowUsersByName = (debVal) => {
-    setSelected([]);
-    if (debVal !== debouncedValue)
-      setDebouncedValue(debVal);
-    else
-      setGetByNameAgain(!getByNameAgain);
+    console.log(debVal)
+    console.log(data)
+    if (data) {
+      setSelected([]);
+      // setSourceUsed("By Name");
+      const usuariosByNameTemp = []
+
+      data.forEach(user => {
+        if ((user.nickName as string).toLocaleLowerCase().includes(debVal.toLowerCase())) {
+          usuariosByNameTemp.push(user);
+        }
+      });
+
+      setDataState(usuariosByNameTemp)
+      setUsuariosByName(usuariosByNameTemp)
+    }
   }
 
-  const handleShowAllUsers = () => { setSelected([]); setGetAllAgain(!getAllAgain) }
+  const handleShowAllUsers = () => { setSelected([]); setDataState(data) ; setSourceUsed('All')}
 
   const [idsList, setIdsList] = useState([]);
 
@@ -177,26 +230,72 @@ export default function EnhancedTable() {
       setIdsList((prevState) => { let temp = prevState; return temp.filter(x => x !== id) }) :
       setIdsList((prevState) => [...prevState, id])
   }
-  const deleteHandler = async () => {
-    await DeleteSeveral(idsList, endpoint.usuarios.usuariosDeleteSeveral)
+  const swapUserHandler = async () => {
+    let allUsers = data;
+    let byNameUsers = usuariosByName
+    let usuariosAsignadosTemp = usuariosAsignados
+
+   /*  console.log("USUARIOS:")
+    console.log(data);
+    console.log("USUARIOS BY NAME:")
+    console.log(usuariosByName)
+    console.log("SELECTED IDS:")
+    console.log(idsList)
+    console.log("SOURCE USED:")
+    console.log(sourceUsed) */
+
+    // ALL
+      idsList.forEach(userId => {
+        allUsers = allUsers.filter((u) => { 
+          if (u.id !== userId) 
+          return u
+          else if(!(JSON.stringify(usuariosAsignadosTemp).includes(JSON.stringify(u))))
+          {usuariosAsignadosTemp.push(u)
+            /* setUsuariosAsignados((prevState)=>[...prevState,u]) */} 
+        })
+      });
+      // Esto es pa no reiniciar los estados por gusto 
+      if (allUsers.length!== data.length)
+      setData(allUsers)
+
+      // BY NAME
+      idsList.forEach(userId => {
+    
+        byNameUsers = byNameUsers.filter((u) => { 
+          if (u.id !== userId) 
+          return u
+          else if(!(JSON.stringify(usuariosAsignadosTemp).includes(JSON.stringify(u))))
+          {usuariosAsignadosTemp.push(u)
+            /* setUsuariosAsignados((prevState)=>[...prevState,u]) */} 
+        })
+      });
+      /* console.log("USUARIOS BY NAME FOR REAL:")
+      console.log(byNameUsers) */
+
+      // Esto es pa no reiniciar los estados por gusto 
+      if (byNameUsers.length!== usuariosByName.length)
+      setUsuariosByName(byNameUsers)
+      // setSourceUsed("By Name")
+    //}
+    onUsuariosAsignados(usuariosAsignadosTemp)
+    setUsuariosAsignados(usuariosAsignadosTemp)
     setSelected([]);
     setIdsList([]);
-    // console.log('ZZZZZZZZZZZZZZZZZZZZZZ ' + sourceUsed)
-    if (sourceUsed === "All")
-      setGetAllAgain(!getAllAgain);
-    else
-      setGetByNameAgain(!getByNameAgain);
+    // setGetByNameAgain(!getByNameAgain);
   }
+
+  /* console.log('USUARIOS ASIGNADOOOOS: ')
+  console.log(usuariosAsignados) */
   // testooo();
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
       <SearchBar onResponseUsersByName={handleShowUsersByName} onRefresh={handleShowAllUsers} />
-      {loading || loadingUsuariosByName ?
+      {loading && startWithUsers/* || loadingUsuariosByName */ ?
         <h3>Cargando...</h3> :
         rows.length > 0 ?
           <>
             <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler}/* idsList={} */ />
+              <EnhancedTableToolbar numSelected={selected.length} onSwapUser={swapUserHandler}/* idsList={} */ />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 950 }}

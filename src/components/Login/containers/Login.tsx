@@ -10,7 +10,7 @@ import { logoItau, logoMicrosoft } from './logoItauSvg';
 import { useLogin } from '../../../hooks/useLogin';
 import { endpoint, urlBase } from '../../../httpRequests';
 import { useAppDispatch } from 'stores';
-import { setIsAuthenticated } from 'stores/authenticationState.store';
+import { setAuthenticationInfo } from 'stores/authenticationState.store';
 // import { loginRequest } from '../../../authConfigItau';
 import logoUne from '../../../imgs/une.svg'
 import fotoUne from '../../../imgs/guiteras.jpeg'
@@ -77,9 +77,10 @@ const Login = () => {
     if (loginResponse && loginResponse.status === 200) {
      // console.log('asdaaaaaa');
       dispatch(
-        setIsAuthenticated({
+        setAuthenticationInfo({
           isAuthenticated: true,
            accessToken: loginResponse.access_token,
+           userId: loginResponse.usuario_id
         }),
       );
       // (loginResponse.access_token) 

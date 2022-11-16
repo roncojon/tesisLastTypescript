@@ -8,10 +8,14 @@ export const endpoint = {
         caritas: 'pruebadecaritas',
         matriz:'pruebamatriz'
     },
-    examen: 'Examen',
+    examenes: {
+        general:'Examen',
+        examenesActivos:'Examen/examenesActivos'
+    },
     usuarios: {
         login: 'usuario/login',
         usuariosAll: 'Usuario/GetAll',
+        usuariosAllPruebasActivas: 'Usuario/GetAll/pruebasActivas',
         usuarioRegister: 'Usuario/Register',
         userLogin: 'Usuario/Login',
         userDelete: 'Usuario/Delete',
@@ -40,12 +44,12 @@ export const Get = async (endP) => {
     //console.log(pruebas);
     return await pruebas
 };
-export const GetByName = async (key, name, endP) => {
+export const GetWithParams = async (key, value, endP) => {
     //const {accessToken} = useContext(LoginContext);
     /*  fetch(urlBase+endP
      ).then(response => { return response.json() })
        .then(resp => {return resp}) */
-    const pruebasResponse = await fetch(urlBase + endP + "?" + key + "=" + name/* ,
+    const pruebasResponse = await fetch(urlBase + endP+ "?" + key + "=" + value/* ,
         {
             method: "GET",
             headers: {
@@ -112,11 +116,26 @@ export const Post = async (key1, value1, key2, value2, endP, data) => {
       console.log(dat); */
     //return await f2
 };
+export const PostDisableExam = async (key1, value1, endP) => {
+    //const {accessToken} = useContext(LoginContext);
+    //let f2 = {};
+    const response = await fetch(urlBase + endP + "?" + key1 + "=" + value1 ,
+        {
+            method: "POST",
+            // body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${accessToken}`
+            }
+        });
+    const result = await response.json();
+};
+
 export const PostGeneric = async (key1, value1, key2, value2, endP, data) => {
     //const {accessToken} = useContext(LoginContext);
     //let f2 = {};
-    const symbol1 = (key1 && value1)  ? "?" : "";
-    const symbol2 = (key1 && value1) && (key2 && value2) ? "&" : "";
+    const symbol1 = key1 && value1  ? "?" : "";
+    const symbol2 = key1 && value1 && key2 && value2 ? "&" : "";
     const key1Value1 = key1 && value1 ? key1 + "=" + value1 : "";
     const key2Value1 = key2 && value2 ? key2 + "=" + value2 : "";
 
@@ -131,7 +150,7 @@ export const PostGeneric = async (key1, value1, key2, value2, endP, data) => {
         });
 
     const result = await response.json();
-
+return result
 };
 
 export const PostProtected = async (id, endP, data, accessToken) => {

@@ -8,11 +8,11 @@ import { DeleteSeveral, endpoint } from "httpRequests";
 
 interface EnhancedTableToolbarProps {
     numSelected: number;
-    onDelete:()=>void
+    onSwapUser:()=>void
   }
   
  export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const { numSelected,/* idsList, */onDelete  } = props;
+    const { numSelected,/* idsList, */onSwapUser  } = props;
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -59,7 +59,7 @@ interface EnhancedTableToolbarProps {
         </Tooltip>}
           <Tooltip title="Elminar usuario">
             <IconButton onClick={()=>{
-              onDelete();
+              onSwapUser();
             }}>
               <DeleteIcon />
             </IconButton>

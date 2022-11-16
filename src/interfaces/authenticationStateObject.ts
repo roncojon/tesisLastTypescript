@@ -1,4 +1,5 @@
 export interface AuthenticationStateObject {
     isAuthenticated: boolean | null,
-    accessToken: string | null
+    accessToken: string | null,
+    userId: string | null
 }

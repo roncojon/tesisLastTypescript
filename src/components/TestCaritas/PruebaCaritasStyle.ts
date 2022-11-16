@@ -10,5 +10,7 @@ export const pCaritasContainer:CSSProperties = {
      border: '1px solid rgb(201, 123, 142)',
     justifyContent: 'center',
     userSelect: 'none',
-    backgroundColor:'white'
+    backgroundColor:'white',
+    position:'relative',
+    left:'-60px'
 }
