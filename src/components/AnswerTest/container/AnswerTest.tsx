@@ -9,13 +9,58 @@ const AnswerTest = () => {
   const { accessToken, userId } = useAppState((state) => state.authenticationInfo);
 
 const navigate = useNavigate();
-  const [data, setData] = useState(null)
+   const [data, setData] = useState([
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "testNombre": "string",
+      "testUId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "patronClave": "string",
+      "descripcion": "string",
+      "cantColumnas": 0,
+      "cantidadFilas": 0,
+      "tiempoLimiteMs": 0
+    },
+  {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "testNombre": "string",
+      "testUId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "patronClave": "string",
+      "descripcion": "string",
+      "cantColumnas": 0,
+      "cantidadFilas": 0,
+      "tiempoLimiteMs": 0
+    }
+  ])
   const [loading, setLoading] = useState(true)
 
+  // Simulando el objeto Examenes
+  const examenes = [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "testNombre": "string",
+      "testUId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "patronClave": "string",
+      "descripcion": "string",
+      "cantColumnas": 0,
+      "cantidadFilas": 0,
+      "tiempoLimiteMs": 0
+    },
+  {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "testNombre": "string",
+      "testUId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "patronClave": "string",
+      "descripcion": "string",
+      "cantColumnas": 0,
+      "cantidadFilas": 0,
+      "tiempoLimiteMs": 0
+    }
+  ];
   async function httpResp() {
     const temp = await GetWithParams('userId', userId, endpoint.usuarios.usuariosAllPruebasActivas)  // , accessToken 
-    if (temp !== null)
-      await setData(temp)
+    // if (temp !== null)
+      // await setData(temp)
+      await setData(examenes)
     await setLoading(false)
   }
 
@@ -29,15 +74,15 @@ const navigate = useNavigate();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      {!loading && data ?
+      {/* !loading &&  */data ?
         data.map((e) =>
           <Button
             onClick={() => {
-              if (e.pruebaMatrizNombre === 'Caritas')
+              if (e.testNombre === 'Caritas')
               navigate('/pruebacaritas')
         }}
           >
-            Tipo:{e.pruebaMatrizNombre}. Fecha:{e.fecha}. Activo:{e.activo.toString().replace('true', 'Si').replace('false', 'No')}.
+            Tipo: {e.testNombre}. {/* Fecha:{e.fecha}. Activo:{e.activo.toString().replace('true', 'Si').replace('false', 'No')} */}
           </Button>
         )
         : '...'}

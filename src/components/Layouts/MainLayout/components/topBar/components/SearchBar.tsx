@@ -30,6 +30,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <FormControl sx={{ mb: 1, width: '300px', backgroundColor:'white' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Buscar por nombre y/o apellidos</InputLabel>
+          <div ></div>
           <OutlinedInput
             id="outlined-adornment-password"
             type='text'

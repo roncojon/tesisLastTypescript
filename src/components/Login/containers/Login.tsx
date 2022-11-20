@@ -60,33 +60,35 @@ const Login = () => {
     )
   }; */
   // Credenciales de usuario
-  const [userCredentials, setUserCredentials] = useState({ nickName: '', password: '' });
-
+  const [userCredentials, setUserCredentials] = useState({ userName: '', password: '' });
+  
   //
-  const [userName, setUserName] = useState('')
-  const [userPass, setUserPass] = useState('')
+  const [userNameToSend, setUserName] = useState('')
+  const [userPassToSend, setUserPass] = useState('')
 
   // Respuesta del hook, es la respuesta del backend
   const { loginResponse } = useLogin(endpoint.usuarios.userLogin, userCredentials)
-  // console.log(urlBase + endpoint.usuarios.userLogin)
+  console.log(urlBase + endpoint.usuarios.userLogin)
   // console.log(/* 'aaaaaaaaaaa '+ */loginResponse)
 
   // Al recibir una respuesta del servidor, si la respuesta no es vacia y esta Ok pasa la pagina inicial,
   // si la respuesta no es Ok sale Modal de error,
   useEffect(() => {
-    if (loginResponse && loginResponse.status === 200) {
+    /* if (loginResponse && loginResponse.status === 200) { */
      // console.log('asdaaaaaa');
       dispatch(
-        setAuthenticationInfo({
+        setAuthenticationInfo((prevState)=>{return {
+          ...prevState,
           isAuthenticated: true,
-           accessToken: loginResponse.access_token,
-           userId: loginResponse.usuario_id
+        }
+           /* accessToken: loginResponse.access_token,
+           userId: loginResponse.usuario_id */
         }),
       );
       // (loginResponse.access_token) 
       navigate('/userslist')
-    }
-    else if (loginResponse) { setOpenModal2(true) }
+    /* }
+    else if (loginResponse) { setOpenModal2(true) } */
   }, [loginResponse])
 
   // Modal 1, para autenticacion
@@ -111,7 +113,7 @@ const Login = () => {
         let nickName= userName || '';
         let password= userPass || ''
         // console.log(userName,nickName,password) */
-    setUserCredentials({ nickName: userName, password: userPass })
+    setUserCredentials({ userName: userNameToSend, password: userPassToSend })
     setOpen(false)
   };
 
