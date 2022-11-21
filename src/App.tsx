@@ -74,7 +74,7 @@ function App() {
             </RequireAuth>}
         />
         <Route
-          path="/administrarsitio"
+          path="/responderpruebas"
           element={
             <RequireAuth>
               <RouteWithLayout component={AnswerTest} layout={MainLayout} />
