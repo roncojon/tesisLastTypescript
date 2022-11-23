@@ -15,10 +15,7 @@ async function httpResp(){
   }
 
 useEffect(() => {
-<<<<<<< HEAD
-=======
    setLoading(true)
->>>>>>> origin/develop
   if (credentials.userName && credentials.userName.length>2 && credentials.password && credentials.password.length>2)
     httpResp()
     /* else{
