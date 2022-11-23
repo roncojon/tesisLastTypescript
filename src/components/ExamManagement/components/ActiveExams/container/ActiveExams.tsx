@@ -40,7 +40,7 @@ setGetActivosAgain(!getActivosAgain)
         {/* <Button onClick={()=>setGetActivosAgain(!getActivosAgain)}>GET ACTIVOS AGAIN</Button> */}
             {!loading && examenesActivos ?
             examenesActivos.map((e)=>
-<Button onClick={()=>setExamId(e.id)}>Tipo:{e.pruebaMatrizNombre}. Fecha:{e.fecha}. Activo:{e.activo.toString().replace('true','Si').replace('false','No')}.</Button>
+   <Button onClick={()=>setExamId(e.id)}>Tipo:{e.pruebaMatrizNombre}. Fecha:{e.fecha}. Activo:{e.activo.toString().replace('true','Si').replace('false','No')}.</Button>
             )
         :
         <h3>Cargando...</h3>}

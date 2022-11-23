@@ -60,11 +60,19 @@ const Login = () => {
     )
   }; */
   // Credenciales de usuario
+<<<<<<< HEAD
   const [userCredentials, setUserCredentials] = useState({ userName: '', password: '' });
 
   //
   const [userNameToSend, setUserName] = useState('')
   const [userPassToSend, setUserPass] = useState('')
+=======
+  const [userCredentials, setUserCredentials] = useState({ userName: "", password: "" });
+
+  //
+  const [userNameToSend, setUserNameToSend] = useState('')
+  const [userPassToSend, setUserPassToSend] = useState('')
+>>>>>>> origin/develop
 
   // Respuesta del hook, es la respuesta del backend
   const { loginResponse } = useLogin(endpoint.usuarios.userLogin, userCredentials)
@@ -75,7 +83,7 @@ const Login = () => {
   // si la respuesta no es Ok sale Modal de error,
   useEffect(() => {
     if (loginResponse && loginResponse.status === 200) {
-     // console.log('asdaaaaaa');
+     console.log('asdaaaaaa');
       dispatch(
         setAuthenticationInfo({
           isAuthenticated: true,
@@ -179,13 +187,13 @@ const Login = () => {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <form>
-                  <TextField onChange={(e) => { setUserName(e.target.value) }}/* id="loginuser" */ label="Ususario" variant="standard" sx={{ width: '80%' }} />
+                {/* <form> */}
+                  <TextField onChange={(e) => { setUserNameToSend(e.target.value) }}/* id="loginuser" */ label="Ususario" variant="standard" sx={{ width: '80%' }} />
                   <hr style={{ border: '1px solid transparent' }} />
-                  <TextField onChange={(e) => { setUserPass(e.target.value) }}/* value={} *//* id="loginuser" */  type="password" label="Contraseña" variant="standard" sx={{ width: '80%' }} />
+                  <TextField onChange={(e) => { setUserPassToSend(e.target.value) }}/* value={} *//* id="loginuser" */  type="password" label="Contraseña" variant="standard" sx={{ width: '80%' }} />
                   <hr style={{ border: '1px solid transparent' }} />
                   <Button onClick={loginHandler} /* onClick={()=>{} */ style={{ border: 'none', backgroundColor: 'transparent' }}>Acceder</Button>
-                </form>
+                {/* </form> */}
               </Box>
             </Modal>
 

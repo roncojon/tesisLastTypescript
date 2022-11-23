@@ -111,7 +111,7 @@ const TopBar = () => {
               disabled={false}
               // variant='contained' // quitar cuando se habilite 
               component={Link}
-              to="/administrarsitio" startIcon={<BorderColorIcon />}
+              to="/responderpruebas" startIcon={<BorderColorIcon />}
               sx={buttonStyle}
             >
               Realizar prueba

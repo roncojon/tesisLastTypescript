@@ -14,7 +14,7 @@ export const endpoint = {
     },
     usuarios: {
         login: 'usuario/login',
-        usuariosAll: 'Usuario/GetAll',
+        usuariosAll: 'Usuario/GetAllPlus/usuariosPlus',
         usuariosAllPruebasActivas: 'Usuario/GetAll/pruebasActivas',
         usuarioRegister: 'Usuario/Register',
         userLogin: 'Usuario/Login',
@@ -133,13 +133,14 @@ export const PostDisableExam = async (key1, value1, endP) => {
 
 export const PostGeneric = async (key1, value1, key2, value2, endP, data) => {
     //const {accessToken} = useContext(LoginContext);
+    console.log(data)
     //let f2 = {};
     const symbol1 = key1 && value1  ? "?" : "";
     const symbol2 = key1 && value1 && key2 && value2 ? "&" : "";
     const key1Value1 = key1 && value1 ? key1 + "=" + value1 : "";
-    const key2Value1 = key2 && value2 ? key2 + "=" + value2 : "";
+    const key2Value2 = key2 && value2 ? key2 + "=" + value2 : "";
 
-    const response = await fetch(urlBase + endP + symbol1 + key1Value1 + symbol2 + key2Value1,
+    const response = await fetch(urlBase + endP + symbol1 + key1Value1 + symbol2 + key2Value2,
         {
             method: "POST",
             body: JSON.stringify(data),

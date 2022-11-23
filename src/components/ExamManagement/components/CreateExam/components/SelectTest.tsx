@@ -26,7 +26,7 @@ export default function SelectTest({data,onTestSelected}) {
           data.map((prueba)=>
             <MenuItem 
             value={prueba.nombre}
-            onClick={()=>onTestSelected(prueba.nombre)}
+            onClick={()=>onTestSelected(prueba)}
             >{prueba.nombre}</MenuItem>
           )}
           
