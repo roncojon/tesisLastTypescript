@@ -13,7 +13,7 @@ async function httpResp(){
   }
 
 useEffect(() => {
-  if (credentials.nickName && credentials.nickName.length>2 && credentials.password && credentials.password.length>2)
+  if (credentials.userName && credentials.userName.length>2 && credentials.password && credentials.password.length>2)
     httpResp()
     /* else{
        setLoginResponse(Math.random())
