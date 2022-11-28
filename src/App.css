@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.divCardMedia{
+  display: flex;
+  align-items: center;
+  height: 100px;
+ 
+}
+
+
+
+::-webkit-scrollbar {
+  width: 8px;     /* Tamaño del scroll en vertical */
+  height: 8px;    /* Tamaño del scroll en horizontal */
+  display: auto;
+}
+::-webkit-scrollbar-thumb {
+  background: #3c4972;
+  border-radius: 2px;
+}
+
+/* Cambiamos el fondo cuando esté en active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #EC7000;
+}
+::-webkit-scrollbar-track {
+  background: #F8F8F8;
+  border-radius: 4px;
+}
