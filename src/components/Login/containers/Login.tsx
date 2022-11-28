@@ -60,19 +60,11 @@ const Login = () => {
     )
   }; */
   // Credenciales de usuario
-<<<<<<< HEAD
-  const [userCredentials, setUserCredentials] = useState({ userName: '', password: '' });
-
-  //
-  const [userNameToSend, setUserName] = useState('')
-  const [userPassToSend, setUserPass] = useState('')
-=======
   const [userCredentials, setUserCredentials] = useState({ userName: "", password: "" });
 
   //
   const [userNameToSend, setUserNameToSend] = useState('')
   const [userPassToSend, setUserPassToSend] = useState('')
->>>>>>> origin/develop
 
   // Respuesta del hook, es la respuesta del backend
   const { loginResponse } = useLogin(endpoint.usuarios.userLogin, userCredentials)

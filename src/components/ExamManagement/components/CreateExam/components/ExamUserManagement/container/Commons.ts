@@ -5,7 +5,15 @@ export interface Data {
     escolaridad: number;
     ci: number;
   }
-  
+
+  export interface Examen{
+    testUId: string | null,
+    isPatronOriginal: boolean | null,
+    usuariosCiList: any,
+    fechaInicio: number | null,
+    fechaFin: number | null
+  }
+
   export function createData(
     nombre: string,
     apellidos: string,

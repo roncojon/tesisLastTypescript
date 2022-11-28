@@ -94,10 +94,10 @@ export const GetSingleWithComposedKey = (key1, id1, key2, id2, endP) => {
         .then(resp => { return resp })
 };
 
-export const Post = async (key1, value1, key2, value2, endP, data) => {
+export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
     //const {accessToken} = useContext(LoginContext);
     //let f2 = {};
-    const response = await fetch(urlBase + endP + "?" + key1 + "=" + value1 + "&" + key2 + "=" + value2,
+    const response = await fetch(urlBase + endP /* + "?" + key1 + "=" + value1 + "&" + key2 + "=" + value2 */,
         {
             method: "POST",
             body: JSON.stringify(data),

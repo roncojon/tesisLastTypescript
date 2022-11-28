@@ -3,13 +3,14 @@ import UsersList from 'components/ExamManagement/components/CreateExam/component
 import SelectTest from 'components/ExamManagement/components/CreateExam/components/SelectTest'
 import { usePost } from 'hooks/usePost'
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric'
-import { endpoint, PostGeneric } from 'httpRequests'
+import { endpoint, Post, PostGeneric } from 'httpRequests'
 import React, { useEffect, useState } from 'react'
 import RadioGroupForTestPattern from '../components/RadioGroupForTestPattern'
 import Separator from '../components/Separator'
 import EUsersTransferList from '../components/EUsersTransferList'
 import UsersTransferList from '../components/UsersTransferList'
 import NewExamModal from '../components/NewExamModal'
+import { Examen } from '../components/ExamUserManagement/container/Commons'
 
 /* export type User = {
   "ci": string | null,
@@ -30,39 +31,43 @@ import NewExamModal from '../components/NewExamModal'
 } | null; */
 
 const CreateExam = () => {
-  //{ key1: 'pruebaMatrizNombre', value1: 'Caritas', key2: 'isPatronOriginal', value2: 'true' }
-  type PostNeeds = { key1: 'testUId' | null, value1: string | null, key2: 'isPatronOriginal' | null, value2: string | null } | null
-  const postNeedsTemp: PostNeeds = { key1: 'testUId', value1: null, key2: 'isPatronOriginal', value2: null }
-  // usersIds ["6f162118-3a8d-4354-a62c-6aaa31d04186", "47acd0b1-44cf-4d16-8bb8-7021f5dbaa22"]
-  type PostData = string[] | null
 
   const [send, setSend] = useState<boolean>(false);
-  const [postNeeds, setPostNeeds] = useState<PostNeeds>(null);
-  // const [postData, setPostData] = useState<PostData>(["44cc508a-f359-4cdd-b349-05838d5eccf1"]);
-  // const { response, loading } = usePost(postNeeds.key1, postNeeds.value1, postNeeds.key2, postNeeds.value2, endpoint.examen, postData);
+  
   const { data:tests, loading } = useGetAllGeneric(endpoint.pruebas.matriz, null);
   const { data:users, loading:loadingUsers } = useGetAllGeneric(endpoint.usuarios.usuariosAll, null);
   // console.log(data)
 
 // USUARIOS ASIGNADOS
 const [usuariosAsignados,setUsuariosAsignados] = useState([])
-const usuariosAsignadosHandler = (asignedUsers)=>{/* console.log('PINGGGGGGAAAAAAAAAAAA');console.log(asignedUsers); */setUsuariosAsignados(asignedUsers)}
+const usuariosAsignadosHandler = (asignedUsers)=>{
+setExamObject(prevState => { 
+
+  return { ...prevState, usuariosCiList: asignedUsers } })
+}
 
   // POSTING THE NEW EXAM
+  const [examObject,setExamObject] = useState<Examen>(
+    {
+      testUId: null,
+      isPatronOriginal: true,
+      usuariosCiList: null,
+      fechaInicio: 0,
+      fechaFin: 0
+    }
+  )
   const [postResponse, setPostResponse] = useState(null)
-  const [loadingPostResponse, setLoadingPostResponse] = useState(false)
+  const [loadingPostResponse, setLoadingPostResponse] = useState(false);
+
   async function httpResp() {
-    if (postNeeds) {
-      const usuariosAsignadosIds = usuariosAsignados.map(u=> u/* .ci */);
-      console.log('usuariosAsignadosIds')
-      console.log(usuariosAsignadosIds)
-      const temp = await PostGeneric(postNeeds.key1, postNeeds.value1, postNeeds.key2, postNeeds.value2, endpoint.examenes.general, usuariosAsignadosIds)
+      const temp = await Post(endpoint.examenes.general, examObject)
       if (temp !== null)
         await setPostResponse(temp)
       await setLoadingPostResponse(false)
-    }
+    /* } */
   }
 
+  
   const postExam = () => {
     setLoadingPostResponse(true)
     httpResp();
@@ -70,22 +75,20 @@ const usuariosAsignadosHandler = (asignedUsers)=>{/* console.log('PINGGGGGGAAAAA
   }
 
   useEffect(() => {
+    console.log('examObject');
+    console.log(examObject);
     postExam()
+
   }, [send])
   // TILL HERE
 
   const testSelectedHandler = (test) => {
-    postNeeds ?
-      setPostNeeds(prevState => { return { ...prevState, value1: test.uId } })
-      :
-      setPostNeeds({ ...postNeedsTemp, value1: test.uId })
+      setExamObject(prevState => { return { ...prevState, testUId: test.uId } })
   }
 
   const patternSelectedHandler = (isPatronOriginal) => {
-    postNeeds ?
-      setPostNeeds(prevState => { return { ...prevState, value2: isPatronOriginal.toString() } })
-      :
-      setPostNeeds({ ...postNeedsTemp, value2: isPatronOriginal.toString() })
+      setExamObject(prevState => { return { ...prevState, isPatronOriginal: isPatronOriginal } })
+
   }
    console.log(usuariosAsignados)
 
@@ -133,7 +136,7 @@ const [open, setOpen] = React.useState(false);
       <br />
       <Button
         variant='contained'
-        onClick={() => handleClickOpen /* setSend(!send) */}
+        onClick={ handleClickOpen /* setSend(!send) */}
       >
         Completar creación de examen
         </Button>

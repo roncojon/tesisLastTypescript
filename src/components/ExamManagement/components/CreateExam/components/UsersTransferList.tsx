@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { Box, Tooltip } from '@mui/material';
+import { Data, Order, stableSort, getComparator } from './ExamUserManagement/container/Commons';
 
 function not(a: readonly number[], b: readonly number[]) {
   return a.filter((value) => b.indexOf(value) === -1);
@@ -79,17 +80,43 @@ export default function UsersTransferList({users,loadingUsers,onUsuariosAsignado
   console.log("right")
   console.log(right.length)
 
+  // ORDER
+  interface Rol {
+    uId:string,
+    nombre:string
+  }
+
+  interface User {
+    ci:string,
+    nombre:string,
+    apellidos:string,
+    userName:string,
+    password:string,
+    sexoNombre:string,
+    edad:number,
+    roles:Rol[],
+    grupoEtarioNombre:string,
+    escolaridadNombre:string
+  }
+
+  const [orderBy, setOrderBy] = React.useState<keyof User>('nombre');
+  const [order, setOrder] = React.useState<Order>('asc');
+
+ /*  stableSort(items, getComparator(order, orderBy))
+  .map((row, index) => {}) */
+
   const customList = (items, title/* : readonly number[] */) => (
-    <Paper sx={{width: {xs:'220px',sm:'350px',xl:'600px' },minHeight: '230px',maxHeight:'70vh', overflow: 'auto'}}>
+    <Paper sx={{width: {xs:'220px',sm:'350px',xl:'600px' },height:'400px'/* minHeight: '430px',maxHeight:'430px' */, overflow: 'auto'}}>
        {users &&
        <>
        <Box sx={{display:'flex', justifyContent:'center', paddingTop:'15px'}}>{title}</Box>
       <List dense component="div" role="list">
-        {items.map((item,index/* value: number */) => {
+        {stableSort(items, getComparator(order, orderBy))
+        .map((item,index/* value: number */) => {
           const labelId = `transfer-list-item-${index}-label`;
 
           return (
-              <Tooltip title={`CI: ${item.ci} | Edad: ${item.edad} | Escolaridad: ${item.escolaridadNombre} `}>
+              <Tooltip disableInteractive title={`CI: ${item.ci} | Edad: ${item.edad} | Escolaridad: ${item.escolaridadNombre} `}>
             <ListItem
               key={index}
               role="listitem"
