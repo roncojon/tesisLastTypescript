@@ -1,30 +1,34 @@
-/* import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import * as React from 'react';
+// import dayjs, { Dayjs } from 'dayjs';
 import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import {es} from 'date-fns/locale'
 
-export default function BasicDateTimePicker() {
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-07'));
+export default function ExamDateTimePicker() {
+  const [value, setValue] = React.useState(new Date()/* dayjs('2022-04-07') */);
+console.log('FECHAAAAAAAAAAA');
+console.log(value.getTime());
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider locale={es} dateAdapter={AdapterDateFns}>
       <DateTimePicker
         renderInput={(props) => <TextField {...props} />}
-        label="DateTimePicker"
+        label="Fecha"
         value={value}
+        ampm={true}
         onChange={(newValue) => {
           setValue(newValue);
         }}
       />
     </LocalizationProvider>
   );
-} */
-import React from 'react'
+}
+/* import React from 'react'
 
 export const ExamDatePicker = () => {
   return (
     <div>ExamDatePicker</div>
   )
-}
+} */

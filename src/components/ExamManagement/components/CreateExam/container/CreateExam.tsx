@@ -11,6 +11,7 @@ import EUsersTransferList from '../components/EUsersTransferList'
 import UsersTransferList from '../components/UsersTransferList'
 import NewExamModal from '../components/NewExamModal'
 import { Examen } from '../components/ExamUserManagement/container/Commons'
+import ExamDateTimePicker from '../components/ExamDateTimePicker'
 
 /* export type User = {
   "ci": string | null,
@@ -88,8 +89,13 @@ setExamObject(prevState => {
 
   const patternSelectedHandler = (isPatronOriginal) => {
       setExamObject(prevState => { return { ...prevState, isPatronOriginal: isPatronOriginal } })
-
   }
+  const startDateSelectedHandler = (fechaInicio) => {
+    setExamObject(prevState => { return { ...prevState, fechaInicio: fechaInicio } })
+}
+const endDateSelectedHandler = (fechaFin) => {
+  setExamObject(prevState => { return { ...prevState, fechaFin: fechaFin } })
+}
    console.log(usuariosAsignados)
 
 
@@ -133,6 +139,14 @@ const [open, setOpen] = React.useState(false);
       <Separator />
 
       <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} />
+      
+      <Separator />
+      <h3 style={{ marginBottom: '10px', position:'relative' }}>Fecha de inicio: </h3>
+      <ExamDateTimePicker/>
+
+      <Separator />
+      <h3 style={{ marginBottom: '10px', position:'relative' }}>Fecha de fin: </h3>
+      <ExamDateTimePicker/>
       <br />
       <Button
         variant='contained'
