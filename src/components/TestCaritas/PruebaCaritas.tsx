@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react'
 
 // import {imgs} from '../../imgs';
-import { patternAsObjArray as imgs} from 'functions/decodePatternFromBackend';
+// import { patternAsObjArray as imgs} from 'functions/decodePatternFromBackend';
 
 // import './PruebaCaritas.css'
 import FilaDe4Imagenes from './FilaDe4Imagenes'
@@ -61,7 +61,10 @@ let sendTestDataCounter = 0;
   ]
 } */
 
-function PruebaCaritas() {
+function PruebaCaritas({pattern : imgs}) {
+  console.log('imgs')
+  console.log(imgs)
+
   let filaTemp = [];
   let matriz = [];
   let counter = 1;
@@ -101,6 +104,13 @@ function PruebaCaritas() {
 
   return (
     <Container sx={{width:'100%', display:'flex',justifyContent:'center',}}>
+      {/* CREAR UN CONTEXT Q ENVUELVA EL BOX DE ABAJO. Con un arreglo de {imgIndex:number,disabled:boolean}.
+      Cada vez q el tipo marque una imagen, se dispara una funcion en el Context desde el componente Image q recorre el arreglo, y si */}
+      {/* MEJOR AUN, si marco la anterior no problem, si no la marco: se dispara una funcion en el Context desde el componente Image q recorre el arreglo,
+       esta funcion recorre desde el inicio del arreglo hasta la posicion de la imagen q se guardo y deshabilita todas las imagenes q recorrio para q ya no puedan ser marcadas.
+       y si la imagen esta deshabilitada se cambia el estilo a mas gris o a backdropFilter: "blur(10px)" */}
+       {/* OTRA OPCION, en el Context solo guardar un numero, el index de la ultima imagen marcada, CUANDO MARCA MANDA AL CONTEXT y
+       compara, si es menor pues no deja marcar. O sea cada Imagen.js comprobar si su index es menor q el index del Context, y si es asi cambia estilo y no deja marcarse  */}
     <Box sx ={pCaritasContainer}/* className='pCaritas' */>
       {matriz.map((fila) => {
         counter2++;

@@ -1,4 +1,5 @@
 import { Box, Button } from '@mui/material';
+import { useSearchOne } from 'hooks/useSearchOne';
 import { endpoint, GetWithParams } from 'httpRequests'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,9 @@ const AnswerTest = () => {
   // Obteniendo las pruebas a las q el  usuario tiene acceso
   const { accessToken, userId } = useAppState((state) => state.authenticationInfo);
 
+  const {usuariosByName:data,loadingUsuariosByName} = useSearchOne('userCi', userId, endpoint.examenes.examenesActivos, true);;
+/* console.log(usuariosByName)
+// Simulando el objeto Examenes
 const navigate = useNavigate();
    const [data, setData] = useState([
     {
@@ -62,9 +66,9 @@ const navigate = useNavigate();
             "tiempoLimiteMs": 0
           }
   ])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) */
 
-  // Simulando el objeto Examenes
+  
 
 
   console.log('REALIZAAAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRR: ')

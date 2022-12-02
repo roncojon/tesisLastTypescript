@@ -29,7 +29,7 @@ import { DeleteSeveral, endpoint } from 'httpRequests';
 import { useAppState } from "stores";
 import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
-import { useSearchUsersByName } from 'hooks/useSearchUsersByName';
+import { useSearchOne } from 'hooks/useSearchOne';
 // import { testooo } from 'functions/decodePatternFromBackend';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 
@@ -64,7 +64,7 @@ export default function EnhancedTable() {
   const [debouncedValue, setDebouncedValue] = useState("");
   const [sourceUsed, setSourceUsed] = useState("");
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
-  const { usuariosByName, loadingUsuariosByName } = useSearchUsersByName(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
+  const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
   // console.log('ssssssss '+counter++);
 
   const setDataState = (users) => {

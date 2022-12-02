@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Get, GetWithParams, GetProtected } from "../httpRequests";
 import { useAppState } from "stores";
 
-export const useSearchUsersByName = (key,name,endP,boolGetByNameAgain)=>{
+export const useSearchOne = (key,name,endP,boolGetByNameAgain)=>{
 const [usuariosByName,setUsuarios] = useState(null)
 const [loadingUsuariosByName,setLoading]= useState(true)
 // const [getByNameAgain,setGetByNameAgain] = useState(true);

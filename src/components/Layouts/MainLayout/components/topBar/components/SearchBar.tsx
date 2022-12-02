@@ -7,7 +7,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import SearchIcon from '@mui/icons-material/Search';
 import useDebounce from 'hooks/useDebounce';
-import { useSearchUsersByName } from 'hooks/useSearchUsersByName';
+import { useSearchOne } from 'hooks/useSearchOne';
 import CachedIcon from '@mui/icons-material/Cached';
 import { useEffect,useState } from 'react';
 import { endpoint } from 'httpRequests';

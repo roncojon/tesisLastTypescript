@@ -6,7 +6,7 @@ import React, { useState ,useEffect} from 'react'
 const OldExams = () => {
     // Mostrar solo examenes activos y dar la opcion de finalizarlos
 
-   const {data:examenes,loading}= useGetAllGeneric(endpoint.examenes.general,true)
+   const {data:examenes,loading}= useGetAllGeneric(endpoint.examenes.getAllPlus,true)
 
    // Disable request
   /* const[disableExamRequest,setDisableExamRequest] = useState<boolean>(false)
@@ -33,7 +33,7 @@ const [loadingDisableRequest,setLoadingDisableRequest]= useState(true)
         <Box sx={{display:'flex', flexDirection:'column'}}>
             {!loading ?
             examenes.map((e)=>
-<Button /* onClick={()=>{setExamId(e.id)}} */>Tipo:{e.pruebaMatrizNombre}. Fecha:{e.fecha}. Activo:{e.activo.toString().replace('true','Si').replace('false','No')}.</Button>
+<Button /* onClick={()=>{setExamId(e.id)}} */>Tipo:{e.testNombre}.</Button>
             )
         :
         <h3>Cargando...</h3>}

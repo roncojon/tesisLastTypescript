@@ -22,25 +22,31 @@ const decodeCellString = (cell:string)=>{
 return {imagen:cellAsStringArray[0],respuestaCorrecta:Number(cellAsStringArray[1])}
 }
 
-const decodePatternAsString = (pattern:string)=>{
-    const patternAsStringArray = pattern.split(",");
-const patternAsObjArray = [];
+const setImgsSourcesInPatternAsObjArray =(patternTemp)=> imagenes.forEach(img => {
+    const temp = patternTemp.find(p=>p.imagen===img.key);
+    temp.imagen=img.src;
+    });
+    
+export const decodePatternAsString = (pattern:string)=>{
+
+    const patternTemp = pattern.slice(0, -1);
+    const patternAsStringArray = patternTemp.split(",");
+const patternAsObjArray:cell[] = [];
 
     patternAsStringArray.forEach(imgRespObj => {
         patternAsObjArray.push(decodeCellString(imgRespObj));
     })
+
+setImgsSourcesInPatternAsObjArray(patternAsObjArray);
 
     return patternAsObjArray;
 }
 type cell = {imagen:string,respuestaCorrecta:number}
 export const patternAsObjArray:cell[]=decodePatternAsString(examenRaw.patronClave);
 
-const setImgsSourcesInPatternAsObjArray =()=> imagenes.forEach(img => {
-const temp = patternAsObjArray.find(p=>p.imagen===img.key);
-temp.imagen=img.src;
-});
 
-setImgsSourcesInPatternAsObjArray();
+
+// setImgsSourcesInPatternAsObjArray();
 
 /* export const testooo=()=>{
     patternAsObjArray.forEach(element => {

@@ -29,7 +29,7 @@ import { DeleteSeveral, endpoint, Get } from 'httpRequests';
 import { useAppState } from "stores";
 import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
-import { useSearchUsersByName } from 'hooks/useSearchUsersByName';
+import { useSearchOne } from 'hooks/useSearchOne';
 // import { testooo } from 'functions/decodePatternFromBackend';
 
 

@@ -4,13 +4,19 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import { Typography } from '@mui/material';
+import { Modal, Typography } from '@mui/material';
 import imge from './PruebaCarita.png'
 // import Typography from '@mui/material/Typography';
 //Probando Scroll
 import { TabScrollButton } from '@mui/material';
+import { useState } from 'react';
+import PruebaCaritas from 'components/TestCaritas/PruebaCaritas';
+import { decodePatternAsString, patternAsObjArray, patternToTest } from 'functions/decodePatternFromBackend';
 //.....
 export default function AnswerTestCard({examen}) {
+const [openTest,setOpenTest] = useState(false);
+const [pattern,setPattern] = useState(decodePatternAsString(examen.patronClave))
+console.log('decodePatternAsString(examen.patronClave)')
   return (
     <Card sx={{ margin:'10px', width: 300  }}>
       <CardContent sx={{height:'46px',}}>
@@ -32,7 +38,13 @@ export default function AnswerTestCard({examen}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant='contained' size="small">Comenzar examen</Button>
+        <Button 
+        variant='contained' 
+        size="small"
+        onClick={()=>setOpenTest(true)}
+        >Comenzar examen</Button>
+        <Modal open={openTest} sx={{overflow:'auto', padding:'40px',
+      '& .MuiBackdrop-root':{backdropFilter: "blur(15px)"}}}><><PruebaCaritas pattern={pattern}/></></Modal>
       </CardActions>
     </Card>
   );

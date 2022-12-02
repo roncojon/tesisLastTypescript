@@ -10,7 +10,8 @@ export const endpoint = {
     },
     examenes: {
         general:'Examen',
-        examenesActivos:'Examen/examenesActivos'
+        getAllPlus:'Examen/allPlus',
+        examenesActivos:'Examen/activeS'
     },
     usuarios: {
         login: 'usuario/login',
