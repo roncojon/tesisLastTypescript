@@ -25,7 +25,7 @@ const FilaDe4Imagenes = ({ imagenes: imagenesPlusIndex ,numeroDeFila, timeAgotad
   };
   llenarNumerosDeImagenes();
 
-  const llenarIndexes = () => { numerosDeImagenes.map((imgNumber) => resultadoTemp.push({ imagenIndex: imgNumber, anotacion: false, error: false })) };
+  const llenarIndexes = () => { numerosDeImagenes.map((imgNumber) => resultadoTemp.push({ imagenIndex: imgNumber, anotacion: false, error: false, respuestaMarcada:'0' })) };
   llenarIndexes();
 
   const [resultado, setResultado] = useState(resultadoTemp);

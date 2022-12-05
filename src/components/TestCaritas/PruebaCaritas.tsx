@@ -7,10 +7,12 @@ import React, { useCallback, useEffect, useState, useContext } from 'react'
 // import './PruebaCaritas.css'
 import FilaDe4Imagenes from './FilaDe4Imagenes'
 import { functionCaritas } from '../../functions/functionCaritas'
-import {Get,Post,PostProtected,endpoint, GetProtected} from '../../httpRequests';
+import { Get, Post, PostProtected, endpoint, GetProtected } from '../../httpRequests';
 import LoginContext from '../../context/LoginContext'
-import { Box, Container } from '@mui/material';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import { pCaritasContainer } from './PruebaCaritasStyle';
+import { PruebaCaritasProvider } from 'context/PruebaCaritasContext';
+import CaritasEndExamInfoModal from './CaritasEndExamInfoModal';
 
 let sendTestDataCounter = 0;
 /* const pcObj = {
@@ -61,15 +63,17 @@ let sendTestDataCounter = 0;
   ]
 } */
 
-function PruebaCaritas({pattern : imgs}) {
-  console.log('imgs')
-  console.log(imgs)
+function PruebaCaritas({ pattern: imgs, examId }) {
+  /* console.log('imgs')
+  console.log(imgs) */
+  console.log('examId')
+  console.log(examId)
 
   let filaTemp = [];
   let matriz = [];
   let counter = 1;
   let counter2 = 0;
-   const contextValue = useContext(LoginContext);
+  const contextValue = useContext(LoginContext);
 
   const createFilas = () => {
     imgs.forEach(img => {
@@ -88,37 +92,69 @@ function PruebaCaritas({pattern : imgs}) {
   const [tiempoAgotado, setTiempoAgotado] = useState(false);
   // console.log(tiempoAgotado)
   const [resultadoDePrueba, setResultadoDePrueba] = useState([]);
-  const [done,setDone] = useState(false)
-  // console.log(resultadoDePrueba)
-  const resultadosHandler = (fila, index) => { const resultTemp = resultadoDePrueba; resultTemp[index] = fila; setResultadoDePrueba(resultTemp);if(index===14)setDone(true)  };
-  
-  useEffect(()=>{setTimeout(() => setTiempoAgotado(true), 10000);},[])
+  const [done, setDone] = useState(false)
+  console.log('resultadoDePrueba')
+  console.log(resultadoDePrueba)
 
+  const resultadosHandler = (fila, index) => {
+    console.log('fila')
+    console.log(fila)
+    const resultTemp = resultadoDePrueba;
+
+    fila.forEach((img)=>{
+      console.log('img')
+      console.log(img)
+      const imgIndexString = 'i'+img.imagenIndex+' ';
+      const imgAnswer = img.respuestaMarcada;
+
+      // const imgAnswer = img.anotacion ? '1' : img.error ? '2' : '0';
+    resultTemp[img.imagenIndex] = imgIndexString + imgAnswer /* + ',' */;
+    // resultTemp =resultTemp + imgIndexString + imgAnswer + ',';
+
+    })
+    setResultadoDePrueba(resultTemp);
+    if (index === 14)
+      setDone(true)
+  };
+// CUANDO EL TIEMPO SE AGOTA, LAS FILAS SUBEN SUS RESULTADOS PARA ACA Y SE ORGANIZAN CON LA FUNCION resultadosHandler()
+// Cuando termina la funcion resultadosHandler() se activa el done, y al hacerlo se convierten los resultadosDePrueba q
+// actualmente estan en forma de array, en string listos para el backend y se pasan al componente endExamModal
+// el cual indica q se termino la prueba e indica q se subieron correctamente los resultados
+  useEffect(() => { setTimeout(() => setTiempoAgotado(true), 4000); }, [])
+
+  const [finalString, setFinalString] = useState('');
+
+  console.log()
   useEffect(() => {
-    if(done===true){
-    // console.log('DONEEEEEEEEEE');
-
-  }
+    if (done === true) {
+      console.log('DONEEEEEEEEEE');
+      const resultadoFinal = resultadoDePrueba;
+      resultadoFinal.shift();
+      console.log(resultadoFinal.join() + ',')
+      setFinalString(resultadoFinal.join() + ',')
+      // console.log(functionCaritas(resultadoDePrueba))
+    }
   }, [done])
-  
-
+  const isSmallerThan850px = useMediaQuery('(max-width:850px)');
   return (
-    <Container sx={{width:'100%', display:'flex',justifyContent:'center',}}>
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       {/* CREAR UN CONTEXT Q ENVUELVA EL BOX DE ABAJO. Con un arreglo de {imgIndex:number,disabled:boolean}.
       Cada vez q el tipo marque una imagen, se dispara una funcion en el Context desde el componente Image q recorre el arreglo, y si */}
       {/* MEJOR AUN, si marco la anterior no problem, si no la marco: se dispara una funcion en el Context desde el componente Image q recorre el arreglo,
        esta funcion recorre desde el inicio del arreglo hasta la posicion de la imagen q se guardo y deshabilita todas las imagenes q recorrio para q ya no puedan ser marcadas.
        y si la imagen esta deshabilitada se cambia el estilo a mas gris o a backdropFilter: "blur(10px)" */}
-       {/* OTRA OPCION, en el Context solo guardar un numero, el index de la ultima imagen marcada, CUANDO MARCA MANDA AL CONTEXT y
+      {/* OTRA OPCION, en el Context solo guardar un numero, el index de la ultima imagen marcada, CUANDO MARCA MANDA AL CONTEXT y
        compara, si es menor pues no deja marcar. O sea cada Imagen.js comprobar si su index es menor q el index del Context, y si es asi cambia estilo y no deja marcarse  */}
-    <Box sx ={pCaritasContainer}/* className='pCaritas' */>
-      {matriz.map((fila) => {
-        counter2++;
-        return <FilaDe4Imagenes key={`${fila[0].counter}`} imagenes={fila} numeroDeFila={counter2} onTiempoAgotado={resultadosHandler} timeAgotado={tiempoAgotado} />
-      })}
-
+      <PruebaCaritasProvider>
+        <Box sx={{ ...pCaritasContainer, overflow: `${isSmallerThan850px && 'auto'}`, }}/* className='pCaritas' */>
+          {matriz.map((fila) => {
+            counter2++;
+            return <FilaDe4Imagenes key={`${fila[0].counter}`} imagenes={fila} numeroDeFila={counter2} onTiempoAgotado={resultadosHandler} timeAgotado={tiempoAgotado} />
+          })}
+        </Box>
+      </PruebaCaritasProvider>
+      <CaritasEndExamInfoModal open={finalString && true} examId ={examId} finalString={finalString}/>
     </Box>
-    </Container>
   )
 }
 

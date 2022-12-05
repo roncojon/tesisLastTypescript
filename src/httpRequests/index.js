@@ -11,7 +11,10 @@ export const endpoint = {
     examenes: {
         general:'Examen',
         getAllPlus:'Examen/allPlus',
-        examenesActivos:'Examen/activeS'
+        examenesActivos:'Examen/activeS',
+    },
+    uExamen: {
+        uExamenPost: 'UsuarioExamen/uexamen2'
     },
     usuarios: {
         login: 'usuario/login',
@@ -107,16 +110,19 @@ export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
                 //'Authorization': `Bearer ${accessToken}`
             }
         });
+console.log('response')
+console.log(response)
+const result = [await response.json(),response.status];
+console.log('result')
+console.log(result)
 
-    const result = await response.json();
-
-
-    //return await this.result;
+    return  await result;
 
     /* const dat = await f.json();
       console.log(dat); */
     //return await f2
 };
+
 export const PostDisableExam = async (key1, value1, endP) => {
     //const {accessToken} = useContext(LoginContext);
     //let f2 = {};
