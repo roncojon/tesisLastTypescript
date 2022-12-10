@@ -1,22 +1,22 @@
 export interface Data {
     nombre: string;
     apellidos: string;
-    grupoEtario: number;
-    escolaridad: number;
-    ci: number;
+    roles: string;
+    escolaridad: string;
+    ci: string;
   }
   
   export function createData(
     nombre: string,
     apellidos: string,
-    grupoEtario: number,
-    escolaridad: number,
-    ci: number,
+    roles: string,
+    escolaridad: string,
+    ci: string,
   ): Data {
     return {
       nombre,      
       apellidos,
-      grupoEtario,
+      roles,
       escolaridad,
       ci
   }}

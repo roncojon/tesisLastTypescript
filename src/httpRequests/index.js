@@ -245,7 +245,9 @@ export const DeleteProtected = async (id, endP, accessToken) => {
 };
 
 export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
-    /* const response =  */await fetch(urlBase + endP,
+    console.log('idsList')
+    console.log(idsList)
+    const response = await fetch(urlBase + endP,
     {
         method: 'DELETE',
         headers: {
@@ -254,6 +256,6 @@ export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
         },
         body: JSON.stringify(idsList)
     })
-    /* const result = await response.json();
-    return result */
+    // const result = await response.json();
+    return response
 };

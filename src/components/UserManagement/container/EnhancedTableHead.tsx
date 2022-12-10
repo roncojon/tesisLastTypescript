@@ -24,10 +24,10 @@ interface HeadCell {
       label: 'Apellidos',
     },
     {
-      id: 'grupoEtario',
+      id: 'ci',
       numeric: true,
       disablePadding: false,
-      label: 'Grupo etario',
+      label: 'Carnet de Identidad',
     },
     {
       id: 'escolaridad',
@@ -36,11 +36,13 @@ interface HeadCell {
       label: 'Escolaridad',
     },
     {
-      id: 'ci',
+      id: 'roles',
       numeric: true,
       disablePadding: false,
-      label: 'Carnet de Identidad',
+      label: 'Roles',
     },
+    
+    
   ];
 
 interface EnhancedTableProps {

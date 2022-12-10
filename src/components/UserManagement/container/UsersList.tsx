@@ -72,13 +72,20 @@ export default function EnhancedTable() {
     if (users !== null) {
       users.forEach(data => {
         // console.log(data)
+        const rolesNames = data.roles.map((rol,index)=>{ 
+          if(index!==data.roles.length-1)
+           return (rol.nombre + ', ')
+          else
+        return rol.nombre
+      })
         rowsTemp.push({
           id: data.id,
           nombre: data.nombre,
           apellidos: data.apellidos,
-          grupoEtario: data.grupoEtarioNombre,
+          // grupoEtario: data.grupoEtarioNombre,
+          ci: data.ci,
           escolaridad: data.escolaridadNombre,
-          ci: data.ci
+          roles: rolesNames ? rolesNames : '-',
         })
       });
     }
@@ -88,8 +95,9 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     setSourceUsed("All");
+    if(data)
     setDataState(data)
-  }, [data, loading])
+  }, [data/* , loading */])
 
   useEffect(() => {
     setSourceUsed("By Name");
@@ -112,7 +120,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState<keyof Data>('nombre');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
@@ -133,7 +141,7 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string | number, id: string) => {
+  const handleClick = (event: React.MouseEvent<unknown>, name: string | number, ci: string) => {
     const selectedIndex = selected.indexOf(name.toString());
     let newSelected: readonly string[] = [];
 
@@ -151,7 +159,7 @@ export default function EnhancedTable() {
     }
 
     setSelected(newSelected);
-    modifyIdsList(id);
+    modifyIdsList(ci);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -173,12 +181,14 @@ export default function EnhancedTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const modifyIdsList = (id) => {
-    idsList.includes(id) ?
-      setIdsList((prevState) => { let temp = prevState; return temp.filter(x => x !== id) }) :
-      setIdsList((prevState) => [...prevState, id])
+  const modifyIdsList = (ci) => {
+    idsList.includes(ci) ?
+      setIdsList((prevState) => { let temp = prevState; return temp.filter(x => x !== ci) }) :
+      setIdsList((prevState) => [...prevState, ci])
   }
   const deleteHandler = async () => {
+    console.log('idsList')
+    console.log(idsList)
     await DeleteSeveral(idsList, endpoint.usuarios.usuariosDeleteSeveral)
     setSelected([]);
     setIdsList([]);
@@ -188,6 +198,12 @@ export default function EnhancedTable() {
     else
       setGetByNameAgain(!getByNameAgain);
   }
+
+  /* useEffect(() => {
+    if (selected.length ===0)
+
+  }, [selected]) */
+  
   //testooo();
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
@@ -223,7 +239,7 @@ export default function EnhancedTable() {
                         return (
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.nombre, row.id)}
+                            onClick={(event) => handleClick(event, row.nombre, row.ci)}
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
@@ -248,9 +264,9 @@ export default function EnhancedTable() {
                               {row.nombre}
                             </TableCell>
                             <TableCell align="right">{row.apellidos}</TableCell>
-                            <TableCell align="right">{row.grupoEtario}</TableCell>
-                            <TableCell align="right">{row.escolaridad}</TableCell>
                             <TableCell align="right">{row.ci}</TableCell>
+                            <TableCell align="right">{row.escolaridad}</TableCell>
+                            <TableCell align="right">{row.roles}</TableCell>
                           </TableRow>
                         );
                       })}
@@ -267,7 +283,11 @@ export default function EnhancedTable() {
                 </Table>
               </TableContainer>
               <TablePagination
+              labelRowsPerPage="Filas por página: "
                 rowsPerPageOptions={[5, 10, 25]}
+                labelDisplayedRows={({ from, to, count }) =>{
+                  return `${from}–${to} de ${count !== -1 ? count : `more than ${to}`}`;
+                  }}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
@@ -279,7 +299,7 @@ export default function EnhancedTable() {
 
             <FormControlLabel
               control={<Switch checked={dense} onChange={handleChangeDense} />}
-              label="Dense padding"
+              label="Filas estrechas"
             />
           </> :
           <h3>No se encontraron usuarios</h3>}
