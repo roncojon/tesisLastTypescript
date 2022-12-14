@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -37,7 +37,7 @@ const resetState: { title: string, elements: MenuElement[] } = { title: "", elem
 const adminSiteMenuElements: { title: string, elements: MenuElement[] } = { 
   title: "Administrar sitio", 
   elements: [
-    { elementString: "Lista de usuarios", elementUrl: "/userslist" },
+    { elementString: "Usuarios", elementUrl: "/userslist" },
      { elementString: "Grupo etario", elementUrl: "/grupoetario" },
      { elementString: "Nivel escolar", elementUrl: "/nivelescolar" }
     ] 
@@ -96,6 +96,20 @@ const TopBar = () => {
     );
   };
 
+  useEffect(() => {
+    dispatch(
+      setSelectedComponent({
+        value: 1,
+      }),
+    )
+    dispatch(
+      setSubTopMenuElements({
+        title: adminSiteMenuElements.title,
+        elements: adminSiteMenuElements.elements
+      }),
+    )
+  }, [])
+  
   return (
     <AppBar
       /* position="static" */

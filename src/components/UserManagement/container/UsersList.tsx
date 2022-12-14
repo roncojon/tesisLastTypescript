@@ -32,7 +32,7 @@ import { useEffect, useState } from 'react';
 import { useSearchOne } from 'hooks/useSearchOne';
 // import { testooo } from 'functions/decodePatternFromBackend';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
-
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 
 // const rows = [
@@ -302,7 +302,15 @@ export default function EnhancedTable() {
               label="Filas estrechas"
             />
           </> :
-          <h3>No se encontraron usuarios</h3>}
+          <>
+          <h3>No se encontraron usuarios</h3>
+          <Tooltip title="Ingresar un nuevo usuario">
+          <IconButton onClick={()=>{}}>
+            <PersonAddAlt1Icon />
+          </IconButton>
+        </Tooltip>
+          </>
+          }
     </Box>
   );
 }

@@ -3,15 +3,14 @@ import {
     useLocation,
     Navigate,
 } from "react-router-dom";
-// import { useIsAuthenticated } from "@azure/msal-react";
 import { useAppState } from "stores";
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
     const location = useLocation();
-    // const isAuthenticated = useIsAuthenticated();
-    const { isAuthenticated: value } = useAppState((state) => state.authenticationInfo);
+     const { isAuthenticated } = useAppState((state) => state.authenticationInfo);
+// const authInfo = JSON.parse(sessionStorage.authInfo)
 
-    if (!value) {
+    if (!isAuthenticated) {
         // Redirect them to the /login page, but save the current location they were
         // trying to go to when they were redirected. This allows us to send them
         // along to that page after they login, which is a nicer user experience

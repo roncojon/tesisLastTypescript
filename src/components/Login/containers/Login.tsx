@@ -75,14 +75,30 @@ const Login = () => {
   // si la respuesta no es Ok sale Modal de error,
   useEffect(() => {
     if (loginResponse && loginResponse.status === 200) {
-     console.log('asdaaaaaa');
-      dispatch(
+     console.log('loginResponse');
+     console.log(loginResponse);
+     dispatch(
         setAuthenticationInfo({
           isAuthenticated: true,
            accessToken: loginResponse.access_token,
-           userId: loginResponse.usuario_id
+           userId: loginResponse.usuario_id,
         }),
       );
+sessionStorage.setItem('modalIsOpen', 'true');
+/* // SETTING ITEM
+sessionStorage.setItem('authInfo', JSON.stringify({
+  isAuthenticated: true,
+   accessToken: loginResponse.access_token,
+   userId: loginResponse.usuario_id,
+   // userRoles:loginResponse.usuario_roles
+}));
+// // // //
+
+// GETTING ITEM
+console.log('JSON.parse(sessionStorage.authInfo)')
+    console.log(JSON.parse(sessionStorage.authInfo))
+    // // // // // */
+    
       // (loginResponse.access_token) 
       navigate('/userslist')
     }

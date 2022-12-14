@@ -9,6 +9,9 @@ import AnswerTestCard from '../components/AnswerTestCard';
 const AnswerTest = () => {
   // Obteniendo las pruebas a las q el  usuario tiene acceso
   const { accessToken, userId } = useAppState((state) => state.authenticationInfo);
+  /* const authInfo = JSON.parse(sessionStorage.authInfo)
+  const accessToken = authInfo.accessToken;
+  const userId = authInfo.userId; */
 
   const {usuariosByName:data,loadingUsuariosByName} = useSearchOne('userCi', userId, endpoint.examenes.examenesActivos, true);;
 /* console.log(usuariosByName)

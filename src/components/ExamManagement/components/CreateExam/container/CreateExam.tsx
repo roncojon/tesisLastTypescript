@@ -82,7 +82,7 @@ const CreateExam = () => {
   useEffect(() => {
     const fechaActual = (new Date()).getTime();
 
-    console.log('examObject');
+    /* console.log('examObject');
     console.log(examObject);
     console.log('fechainicio')
     console.log(examObject.fechaInicio)
@@ -99,7 +99,7 @@ const CreateExam = () => {
     console.log('fechaActual')
     console.log(fechaActual)
     console.log('fechaActual - 4000')
-    console.log(fechaActual - 4000)
+    console.log(fechaActual - 4000) */
 
     if (counter) {
       if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)

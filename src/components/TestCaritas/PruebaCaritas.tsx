@@ -153,7 +153,7 @@ function PruebaCaritas({ pattern: imgs, examId }) {
           })}
         </Box>
       </PruebaCaritasProvider>
-      <CaritasEndExamInfoModal open={finalString && true} examId ={examId} finalString={finalString}/>
+      <CaritasEndExamInfoModal open={finalString ? true : false} examId ={examId} finalString={finalString}/>
     </Box>
   )
 }

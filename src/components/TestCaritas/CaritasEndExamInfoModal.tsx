@@ -49,7 +49,7 @@ useEffect(() => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-{response ? <Button onClick={()=>navigate('/responderpruebas')}>Aceptar</Button> : <>{console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa')} asd</>}
+{response ? <Button onClick={()=>navigate('/')}>Aceptar</Button> : <>{console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa')}</>}
                 {/* <Button onClick={onClosing} autoFocus>
           Cancelar
         </Button> */}

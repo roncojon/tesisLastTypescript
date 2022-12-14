@@ -19,73 +19,79 @@ import NivelEscolar from 'components/NivelEscolar';
 
 
 function App() {
+  /* const authInfo = JSON.parse(sessionStorage.authInfo)
+  console.log('authInfo')
+  console.log(authInfo) */
   return (
-    
     <Provider store={store}>
       <BrowserRouter>
-      <Routes>
-        <Route
-          path="/pruebacaritas"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/grupoetario"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={AdminSite} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/nivelescolar"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={NivelEscolar} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/oldexams"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={OldExams} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/activeexams"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={ActiveExams} layout={MainLayout} />
-            </RequireAuth>}
-        />
-         <Route
-          path="/crearexamen"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={CreateExam} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/userslist"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={EnhancedTable} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route
-          path="/responderpruebas"
-          element={
-            <RequireAuth>
-              <RouteWithLayout component={AnswerTest} layout={MainLayout} />
-            </RequireAuth>}
-        />
-        <Route path="/login" element={<Login />} />
-        <Route element={<Navigate to={"/login"} />} path="*" />
-      </Routes>
+        <Routes>
+          <Route
+            path="/pruebacaritas"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={PruebaCaritas} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/grupoetario"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={AdminSite} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/nivelescolar"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={NivelEscolar} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/oldexams"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={OldExams} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/activeexams"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={ActiveExams} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/crearexamen"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={CreateExam} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route
+            path="/userslist"
+            element={
+              /* authInfo.roles_name.includes('ADMINISTRADOR')
+                ? */
+                <RequireAuth>
+                  <RouteWithLayout component={EnhancedTable} layout={MainLayout} />
+                </RequireAuth>
+                /* :
+                <Navigate to={"/login"} /> */
+            }
+          />
+          <Route
+            path="/responderpruebas"
+            element={
+              <RequireAuth>
+                <RouteWithLayout component={AnswerTest} layout={MainLayout} />
+              </RequireAuth>}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route element={<Navigate to={"/login"} />} path="*" />
+        </Routes>
       </BrowserRouter>
-      </Provider>
-    
+    </Provider>
   );
 }
 

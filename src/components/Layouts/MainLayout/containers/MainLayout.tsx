@@ -1,5 +1,5 @@
 import { FC, ReactNode, useState, useEffect, useRef } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import SideBar from '../components/sideBar';
 import TopBar from '../components/topBar';
 import SubTopBar from '../components/subTopBar';
@@ -12,10 +12,11 @@ interface ILayoutProps {
  let counter = 0
 
 const MainLayout: FC<ILayoutProps> = ({ children }) => {
-  const [hideSB, setHideSB] = useState(false)
-  const ref = useRef(null);
+  // const [hideSB, setHideSB] = useState(false)
+  const hideSB/* isSmallerThan850px */ = useMediaQuery('(max-width:1200px)');
+ // const ref = useRef(null);
    
-  useEffect(() => {
+  /* useEffect(() => {
     const showSideBarByVpWidth = ()=>{if (window.visualViewport.width < 1200) setHideSB(true); else { setHideSB(false) }}
     window.visualViewport.addEventListener("resize", () => { showSideBarByVpWidth() })
 
@@ -23,18 +24,18 @@ const MainLayout: FC<ILayoutProps> = ({ children }) => {
     return () => {
       window.visualViewport.removeEventListener("resize", () => { showSideBarByVpWidth() })
     }
-  })
+  }) 
 
 useEffect(() => {
   if (window.visualViewport.width < 1200)
   setHideSB(true)
-}, [])
+}, [])*/
 
 
    console.log('app rendered ' + counter++)
   return (
     <Box
-    ref = {ref}
+   // ref = {ref}
       className="app-container"
       sx={{...appContainer,overflowX:hideSB ? 'visible' : 'hidden'}}
     >
@@ -44,7 +45,7 @@ useEffect(() => {
       >
         <TopBar />
         <Box
-          sx={appSubTBarAndContent}
+          sx={{...appSubTBarAndContent, marginLeft:hideSB && '10px'}}
         >
           <SubTopBar />
           <Box sx={{width:'100%', marginTop: '10px', marginBottom: 10,display:'flex', justifyContent:'center' /*, backgroundColor:'red', marginLeft: '5px', */}}>
