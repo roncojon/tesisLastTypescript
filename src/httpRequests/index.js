@@ -25,7 +25,8 @@ export const endpoint = {
         userDelete: 'Usuario/Delete',
         usuariosDeleteSeveral: 'Usuario/DeleteSeveral',
         usuarioRol: 'UsuarioRol',
-        usuariosByName: 'Usuario/GetAll/usuariosConNombre'
+        usuariosByName: 'Usuario/GetAll/usuariosConNombre',
+        DataForCreateUser: 'Usuario/GetDataRequiredDataForCreateUser'
     }
 };
 
@@ -200,7 +201,8 @@ export const LoginPost = async (endP, data) => {
         throw new Error(message);
     }
     const result = await response.json();
-    //console.log(f)
+    console.log('result')
+    console.log(result)
 
     return result;
 

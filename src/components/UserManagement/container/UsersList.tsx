@@ -205,6 +205,10 @@ export default function EnhancedTable() {
   }, [selected]) */
   
   //testooo();
+  const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
+  const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
+  const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
+
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
       <SearchBar onResponseUsersByName={handleShowUsersByName} onRefresh={handleShowAllUsers} />
@@ -305,10 +309,11 @@ export default function EnhancedTable() {
           <>
           <h3>No se encontraron usuarios</h3>
           <Tooltip title="Ingresar un nuevo usuario">
-          <IconButton onClick={()=>{}}>
+          <IconButton onClick={handleOpenCreateUserModal}>
             <PersonAddAlt1Icon />
           </IconButton>
         </Tooltip>
+        <UserCreateOrModifyModal isOpen={openCreateUserModal}/>
           </>
           }
     </Box>

@@ -82,6 +82,7 @@ const Login = () => {
           isAuthenticated: true,
            accessToken: loginResponse.access_token,
            userId: loginResponse.usuario_id,
+           // userRoles
         }),
       );
 sessionStorage.setItem('modalIsOpen', 'true');

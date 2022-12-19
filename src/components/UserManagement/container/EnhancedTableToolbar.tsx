@@ -18,6 +18,9 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
+  const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
+  const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
 
   return (
     <Toolbar
@@ -71,11 +74,16 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             </Tooltip>
           </>
         ) :
-        <Tooltip title="Ingresar un nuevo usuario">
-          <IconButton onClick={handleOpen}>
-            <PersonAddAlt1Icon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Tooltip title="Ingresar un nuevo usuario">
+            <IconButton onClick={handleOpenCreateUserModal}>
+              <PersonAddAlt1Icon />
+            </IconButton>
+          </Tooltip>
+          <UserCreateOrModifyModal isOpen={openCreateUserModal}/>
+        </>
+
+
         /* (
           <Tooltip title="Filter list">
             <IconButton>
