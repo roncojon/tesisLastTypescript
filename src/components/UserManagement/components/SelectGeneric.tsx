@@ -13,7 +13,7 @@ export default function SelectGeneric({title,list,onSelected}) {
   };
 const menuList =()=>{return list.map((el)=>{return(<MenuItem value={el.uId}>{el.nombre}</MenuItem>)})}
   return (
-    <FormControl sx={{ m: 1, minWidth: 120, width:'275px' }} required /* size="small" */>
+    <FormControl sx={{ m: 1, minWidth: 120, width:'275px' }} /* required  */ /* size="small" */>
       <InputLabel id="demo-select-small">{title}</InputLabel>
       <Select
         labelId="demo-select-small"

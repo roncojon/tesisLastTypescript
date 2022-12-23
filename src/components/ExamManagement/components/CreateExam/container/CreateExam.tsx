@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox } from '@mui/material'
-import UsersList from 'components/ExamManagement/components/CreateExam/components/ExamUserManagement'
+// import UsersList from 'components/ExamManagement/components/CreateExam/components/ExamUserManagement'
 import SelectTest from 'components/ExamManagement/components/CreateExam/components/SelectTest'
 import { usePost } from 'hooks/usePost'
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric'

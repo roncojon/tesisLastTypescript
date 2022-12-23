@@ -1,7 +1,7 @@
 import { alpha, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import { useDeleteProtected } from "hooks/useDeleteProtected";
 import React from "react";
-import UserCreateOrModifyModal from "../components/CreateOrModifyModal";
+import UserCreateOrModifyModal from "../components/UserCreateOrModifyModal";
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -9,11 +9,12 @@ import { DeleteSeveral, endpoint } from "httpRequests";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
-  onDelete: () => void
+  onDelete: () => void;
+  userData:any
 }
 
 export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected,/* idsList, */onDelete } = props;
+  const { numSelected,/* idsList, */onDelete,userData } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -55,7 +56,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ?
         (
           <>
-            <UserCreateOrModifyModal isOpen={open} toClose={handleClose} />
+            <UserCreateOrModifyModal isOpen={open} onCloseModal={handleClose} userData={userData}/>
             {numSelected === 1 &&
               <Tooltip title="Modificar datos de usuario">
                 <IconButton onClick={handleOpen}>
@@ -80,7 +81,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               <PersonAddAlt1Icon />
             </IconButton>
           </Tooltip>
-          <UserCreateOrModifyModal isOpen={openCreateUserModal}/>
+          <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userData}/>
         </>
 
 

@@ -19,7 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 // import {DeleteIcon} from '@mui/icons-material/Delete';
 // import FilterListIcon from '@mui/icons-material/FilterList';
-import UserCreateOrModifyModal from '../components/CreateOrModifyModal';
+// import UserCreateOrModifyModal from '../components/UserCreateOrModifyModal';
 import { useDeleteProtected } from 'hooks/useDeleteProtected';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import { createData, Data, getComparator, Order, stableSort } from './Commons';
@@ -33,6 +33,7 @@ import { useSearchOne } from 'hooks/useSearchOne';
 // import { testooo } from 'functions/decodePatternFromBackend';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import UserCreateOrModifyModal from '../components/UserCreateOrModifyModal';
 
 
 // const rows = [
@@ -66,8 +67,9 @@ export default function EnhancedTable() {
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
   const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
   // console.log('ssssssss '+counter++);
-
-  const setDataState = (users) => {
+console.log('AllUsersData')
+console.log(data)
+const setDataState = (users) => {
     const rowsTemp = [];
     if (users !== null) {
       users.forEach(data => {
@@ -204,7 +206,22 @@ export default function EnhancedTable() {
 
   }, [selected]) */
   
-  //testooo();
+  // UserSelectedData if there is just one selected
+const [userSelectedData,setUserSelectedData] = React.useState<any | null>(null);
+useEffect(() => {
+if(idsList.length === 1)
+{
+let temp = data;
+ const userData = temp.filter(x => x.ci === idsList[0]);
+ setUserSelectedData(userData[0])
+}
+else
+setUserSelectedData(null)
+}, [idsList])
+console.log('userSelectedData')
+console.log(userSelectedData)
+
+//Modal;
   const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
   const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
@@ -217,7 +234,7 @@ export default function EnhancedTable() {
         rows.length > 0 ?
           <>
             <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler}/* idsList={} */ />
+              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler} userData={userSelectedData}/* idsList={} */ />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 950 }}
@@ -313,7 +330,7 @@ export default function EnhancedTable() {
             <PersonAddAlt1Icon />
           </IconButton>
         </Tooltip>
-        <UserCreateOrModifyModal isOpen={openCreateUserModal}/>
+        <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData}/>
           </>
           }
     </Box>

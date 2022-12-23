@@ -29,8 +29,9 @@ const baseUser = {
   "escolaridadUid": 1
 }
 
-const UserCreateOrModifyModal = ({ isOpen, toClose }: any) => {
+const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData }/* : any */) => {
 const {data,loading} = useGetAllGeneric(endpoint.usuarios.DataForCreateUser,true);
+// const {actualUserData,loadingActualUserData} = 
 console.log('DataForCreateUser')
 console.log(data)
 
@@ -47,12 +48,12 @@ console.log(data)
   const sexSelectedHandler =(sexoUidSelected)=>{console.log(sexoUidSelected);setUserObj(prevState => { return { ...prevState, sexoUid: sexoUidSelected } })} ;
   const scholaritySelectedHandler =(escolaridadUidSelected)=>{console.log(escolaridadUidSelected);setUserObj(prevState => { return { ...prevState, escolaridadUid: escolaridadUidSelected } })};
 
-  console.log('userObj')
-  console.log(userObj)
+  console.log('userData')
+  console.log(userData)
   return (
     <Modal
       open={isOpen}
-      onClose={toClose}
+      onClose={onCloseModal}
       /* aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description" */
     >
@@ -61,13 +62,23 @@ console.log(data)
         'Cargando...' : 
         data ? 
         <form>
-        <TextField type="text" required onChange={(e) => setUserObj(prevState => { return { ...prevState, ci: e.target.value } })} label="Ci" variant="standard"  autoComplete="off" sx={{ width: '100%' }} />
+        <TextField
+         type="text" /* required  */
+         defaultValue={userData ? userData.ci : ''}
+          onChange={(e) => setUserObj(prevState => { return { ...prevState, ci: e.target.value } })} 
+          label="Ci"
+           variant="standard"  
+           autoComplete="off"
+            sx={{ width: '100%' }} />
         <hr style={{ border: '1px solid transparent' }} />
-        <TextField  type="text" required onChange={(e) => setUserObj(prevState => { return { ...prevState, nombre: e.target.value } })} label="Nombre" autoComplete="off" variant="standard" sx={{ width: '100%' }} />
+        <TextField  
+        type="text" /* required  */
+        defaultValue={userData ? userData.nombre : ''}
+         onChange={(e) => setUserObj(prevState => { return { ...prevState, nombre: e.target.value } })} label="Nombre" autoComplete="off" variant="standard" sx={{ width: '100%' }} />
         <hr style={{ border: '1px solid transparent' }} />
-        <TextField  type="text" required onChange={(e) => setUserObj(prevState => { return { ...prevState, apellidos: e.target.value } })} label="Apellidos" autoComplete="off" variant="standard" sx={{ width: '100%' }} />
+        <TextField  type="text" /* required  */ onChange={(e) => setUserObj(prevState => { return { ...prevState, apellidos: e.target.value } })} label="Apellidos" autoComplete="off" variant="standard" sx={{ width: '100%' }} />
         <hr style={{ border: '1px solid transparent' }} />
-        <TextField type="password" required onChange={(e) => setUserObj(prevState => { return { ...prevState, password: e.target.value } })} label="Contraseña" autoComplete="new-password" variant="standard" sx={{ width: '100%' }} />
+        <TextField type="password" /* required  */ onChange={(e) => setUserObj(prevState => { return { ...prevState, password: e.target.value } })} label="Contraseña" autoComplete="new-password" variant="standard" sx={{ width: '100%' }} />
         <hr style={{ border: '1px solid transparent' }} />
 
         <br />
@@ -81,8 +92,8 @@ console.log(data)
         <SelectGeneric title='Escolaridad' list={data.escolaridadList} onSelected={scholaritySelectedHandler}/>
         <hr style={{ border: '1px solid transparent' }} />
         <br />
-        <Button style={{ border: 'none', backgroundColor: 'transparent' }}>Completar</Button>
-        <Button style={{ border: 'none', backgroundColor: 'transparent' }}>Cancelar</Button>
+        <Button sx={{ border: 'none', backgroundColor: 'transparent' }}>Completar</Button>
+        <Button sx={{ border: 'none', backgroundColor: 'transparent' }} onClick={()=>onCloseModal()}>Cancelar</Button>
       </form> : 
       'Error estableciendo comunicación con el servidor'}
         

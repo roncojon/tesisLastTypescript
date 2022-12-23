@@ -77,7 +77,7 @@ const showLabel = (val:string)=>{
 }
   return (
     <div>
-      <FormControl sx={{ m: 1, width: '275px' }} required>
+      <FormControl sx={{ m: 1, width: '275px' }} /* required  */>
         <InputLabel id="demo-multiple-chip-label">{title}</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
