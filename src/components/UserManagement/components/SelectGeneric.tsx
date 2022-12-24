@@ -3,9 +3,23 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useEffect } from 'react';
 
-export default function SelectGeneric({title,list,onSelected}) {
+export default function SelectGeneric({title,list,onSelected,value}) {
   const [val, setVal] = React.useState('');
+console.log('list')
+console.log(list)
+
+  useEffect(() => {
+    /* if(list)
+    { */
+    const temp = list.filter(el => el.nombre === value);
+    console.log('temp')
+    console.log(temp)
+    setVal(temp)
+  /* } */
+  }, [value])
+  
 
   const handleChange = (event: SelectChangeEvent) => {
     setVal(event.target.value)

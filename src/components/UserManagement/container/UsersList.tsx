@@ -211,12 +211,16 @@ const [userSelectedData,setUserSelectedData] = React.useState<any | null>(null);
 useEffect(() => {
 if(idsList.length === 1)
 {
+  console.log('1 USER IS SELECTED')
 let temp = data;
  const userData = temp.filter(x => x.ci === idsList[0]);
  setUserSelectedData(userData[0])
 }
 else
+{
+console.log('Less or More Than 1 User Is Selected')
 setUserSelectedData(null)
+}
 }, [idsList])
 console.log('userSelectedData')
 console.log(userSelectedData)

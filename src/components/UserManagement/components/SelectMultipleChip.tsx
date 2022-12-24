@@ -62,16 +62,16 @@ export default function MultipleSelectChip({title,list,onSelected}) {
   };
   const menuList =()=>{return list.map((el)=>{return(<MenuItem value={el.uId}>{el.nombre}</MenuItem>)})}
 
-console.log('list')
-console.log(list)
+/* console.log('list')
+console.log(list) */
 
 const showLabel = (val:string)=>{
   const actualRolObject = list.filter(rol=>{return rol.uId===val});
-  console.log('actualRolObject')
+  /* console.log('actualRolObject')
   console.log(actualRolObject)
 
   console.log('actualRolObject.nombre')
-  console.log(actualRolObject.nombre)
+  console.log(actualRolObject.nombre) */
 
   return actualRolObject[0].nombre
 }
