@@ -60,10 +60,10 @@ const Login = () => {
     )
   }; */
   // Credenciales de usuario
-  const [userCredentials, setUserCredentials] = useState({ userName: "", password: "" });
+  const [userCredentials, setUserCredentials] = useState({ ci: "", password: "" });
 
   //
-  const [userNameToSend, setUserNameToSend] = useState('')
+  const [userCiToSend, setUserCiToSend] = useState('')
   const [userPassToSend, setUserPassToSend] = useState('')
 
   // Respuesta del hook, es la respuesta del backend
@@ -128,10 +128,25 @@ console.log('JSON.parse(sessionStorage.authInfo)')
         let nickName= userName || '';
         let password= userPass || ''
         // console.log(userName,nickName,password) */
-    setUserCredentials({ userName: userNameToSend, password: userPassToSend })
+    setUserCredentials({ ci: userCiToSend, password: userPassToSend })
     setOpen(false)
   };
 
+useEffect(() => {
+  setUserCiToSend('')
+  setUserPassToSend('')
+}, [open])
+
+console.log('userCiToSend')
+console.log(userCiToSend)
+
+
+console.log('userPassToSend')
+console.log(userPassToSend)
+
+
+console.log('userCredentials')
+console.log(userCredentials)
 
 
 
@@ -177,6 +192,7 @@ console.log('JSON.parse(sessionStorage.authInfo)')
               onClick={() => setOpen(true) /* loginHandler(instanceTmp) */}
               style={{
                 height: '40px',
+                width:'150px',
                 top: '20px',
                 border: '1px solid #B4B4B4',
                 display: 'flex',
@@ -197,11 +213,11 @@ console.log('JSON.parse(sessionStorage.authInfo)')
             >
               <Box sx={style}>
                 {/* <form> */}
-                  <TextField onChange={(e) => { setUserNameToSend(e.target.value) }}/* id="loginuser" */ label="Ususario" variant="standard" sx={{ width: '80%' }} />
+                  <TextField type="number" onChange={(e) => {e.target.value = e.target.value.slice(0, 11); setUserCiToSend(e.target.value) }}/* id="loginuser" */ label="Carnet de identidad" variant="standard" sx={{ width: '80%' }} />
                   <hr style={{ border: '1px solid transparent' }} />
                   <TextField onChange={(e) => { setUserPassToSend(e.target.value) }}/* value={} *//* id="loginuser" */  type="password" label="Contraseña" variant="standard" sx={{ width: '80%' }} />
                   <hr style={{ border: '1px solid transparent' }} />
-                  <Button onClick={loginHandler} /* onClick={()=>{} */ style={{ border: 'none', backgroundColor: 'transparent' }}>Acceder</Button>
+                  <Button onClick={loginHandler}  disabled={userCiToSend.length!==11} style={{ border: 'none', backgroundColor: 'transparent' }}>Acceder</Button>
                 {/* </form> */}
               </Box>
             </Modal>

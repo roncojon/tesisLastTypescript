@@ -8,7 +8,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import useTheme from '@mui/material/styles/useTheme';
-import { Theme } from '@mui/material';
+import { FormHelperText, Theme } from '@mui/material';
+import { useEffect } from 'react';
 // import { Theme } from '@mui/material/styles';
 
 const ITEM_HEIGHT = 48;
@@ -44,15 +45,52 @@ const names = [
   };
 } */
 
-export default function MultipleSelectChip({title,list,onSelected}) {
+export default function MultipleSelectChip({title,list,onSelected,values,helperText}) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [uIds, setUIds] = React.useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+
+  console.log('roles default values')
+  console.log(values)
+
+  console.log('roles list ')
+  console.log(list)
+
+useEffect(() => {
+  const initialValues = [];
+
+  if (list && values) {
+    // Searching roles of selected user in the rolesList
+    values.forEach(elementOfInitialList => {
+    const temp = list.find(el => el.uId === elementOfInitialList.uId);
+      if(temp)
+      initialValues.push(temp.uId)
+    });
+    if (initialValues) {
+      console.log('initialValues')
+      console.log(initialValues)
+
+      if(JSON.stringify(initialValues)!== JSON.stringify(uIds) )
+      {
+        setUIds(initialValues);
+        onSelected(initialValues)
+      }
+      console.log('uIds')
+      console.log(uIds)
+    }
+  }
+}, [/* values */])
+
+/* useEffect(() => {
+  onSelected(uIds)
+}, [uIds]) */
+
+
+  const handleChange = (event: SelectChangeEvent<typeof uIds>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setUIds(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
@@ -62,8 +100,8 @@ export default function MultipleSelectChip({title,list,onSelected}) {
   };
   const menuList =()=>{return list.map((el)=>{return(<MenuItem value={el.uId}>{el.nombre}</MenuItem>)})}
 
-/* console.log('list')
-console.log(list) */
+console.log('list')
+console.log(list)
 
 const showLabel = (val:string)=>{
   const actualRolObject = list.filter(rol=>{return rol.uId===val});
@@ -77,13 +115,14 @@ const showLabel = (val:string)=>{
 }
   return (
     <div>
-      <FormControl sx={{ m: 1, width: '275px' }} /* required  */>
+      <FormControl sx={{ m: 1, width: '275px' }} /* required  */ 
+      >
         <InputLabel id="demo-multiple-chip-label">{title}</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
+          value={uIds}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
@@ -99,6 +138,7 @@ const showLabel = (val:string)=>{
         >
           {menuList()}
         </Select>
+        <FormHelperText>{helperText}</FormHelperText>
       </FormControl>
     </div>
   );

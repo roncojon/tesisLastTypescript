@@ -16,7 +16,7 @@ export default function CaritasEndExamInfoModal({ open, examId, finalString/* , 
     const [uExamObject, setUExamObject] = useState(null);
     const navigate = useNavigate();
     const { accessToken, userId } = useAppState((state) => state.authenticationInfo);
-    const {response, loading} = usePost(endpoint.uExamen.uExamenPost,uExamObject);
+    const {response, loading} = usePost(endpoint.uExamen.uExamenPost,uExamObject,true);
 console.log('response')
 console.log(response)
 

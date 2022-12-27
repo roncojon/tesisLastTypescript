@@ -21,6 +21,7 @@ export const endpoint = {
         usuariosAll: 'Usuario/GetAllPlus/usuariosPlus',
         usuariosAllPruebasActivas: 'Usuario/GetAll/pruebasActivas',
         usuarioRegister: 'Usuario/Register',
+        usuarioModify: 'Usuario/Modify',
         userLogin: 'Usuario/Login',
         userDelete: 'Usuario/Delete',
         usuariosDeleteSeveral: 'Usuario/DeleteSeveral',

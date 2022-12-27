@@ -123,7 +123,7 @@ const setDataState = (users) => {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -309,7 +309,7 @@ console.log(userSelectedData)
               </TableContainer>
               <TablePagination
               labelRowsPerPage="Filas por página: "
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[10, 25, 100]}
                 labelDisplayedRows={({ from, to, count }) =>{
                   return `${from}–${to} de ${count !== -1 ? count : `more than ${to}`}`;
                   }}

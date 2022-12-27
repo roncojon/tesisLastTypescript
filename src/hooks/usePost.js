@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Post } from "../httpRequests"
 
 // export const usePost = (key1,value1,key2,value2,endP,data)=>{
-  export const usePost = (endP,data)=>{
+  export const usePost = (endP,data,again)=>{
 
 const [response,setResponse] = useState(null)
 const [loading,setLoading]= useState(true)
@@ -18,10 +18,10 @@ async function httpResp(){
 useEffect(() => {
   if(data){
   setLoading(true)
-  setTimeout(() => httpResp(), 4000)
-    // httpResp()
+  // setTimeout(() => httpResp(), 4000)
+     httpResp()
   }
-},[data])
+},[data,again])
 
 return {response,loading}
 }
