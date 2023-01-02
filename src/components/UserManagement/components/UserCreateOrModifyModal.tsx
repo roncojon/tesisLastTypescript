@@ -44,9 +44,15 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData }/* : any */) 
       escolaridadUId: userObj.escolaridadUId
     };
     setUserDataToSend ({usuario:finalUserDataToSend,rolesUIds:userObj.rolesUIds})
-    setSend(!send)
+    setSend(true);
   }
+  
 const {response,loading:loadingRegisterResponse} = usePost(userData ? endpoint.usuarios.usuarioModify : endpoint.usuarios.usuarioRegister,userDataToSend,send)
+
+useEffect(() => {
+  setSend(false)
+}, [response])
+
 console.log('userDataToSend')
 console.log(userDataToSend)
 

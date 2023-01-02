@@ -108,8 +108,10 @@ const setDataState = (users) => {
 
   const handleShowUsersByName = (debVal) => {
     setSelected([]);
-    if (debVal !== debouncedValue)
+    if (debVal !== debouncedValue && debVal.length!==0)
       setDebouncedValue(debVal);
+     else if (debVal.length===0)
+      setGetAllAgain(!getAllAgain);
     else
       setGetByNameAgain(!getByNameAgain);
   }
@@ -228,7 +230,7 @@ console.log(userSelectedData)
 //Modal;
   const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
-  const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
+  const handleCloseCreateUserModal = () => {setGetAllAgain(!getAllAgain) ;setOpenCreateUserModal(false)};
 
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>

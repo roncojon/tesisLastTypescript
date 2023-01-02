@@ -16,7 +16,7 @@ async function httpResp(){
   }
 
 useEffect(() => {
-  if(data){
+  if(again){
   setLoading(true)
   // setTimeout(() => httpResp(), 4000)
      httpResp()
