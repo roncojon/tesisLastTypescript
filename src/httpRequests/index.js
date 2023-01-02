@@ -112,13 +112,13 @@ export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
                 //'Authorization': `Bearer ${accessToken}`
             }
         });
-console.log('response')
+/* console.log('response')
 console.log(response)
 const result = [await response.json(),response.status];
 console.log('result')
-console.log(result)
+console.log(result) */
 
-    return  await result;
+    return  response;
 
     /* const dat = await f.json();
       console.log(dat); */

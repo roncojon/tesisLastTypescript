@@ -6,22 +6,29 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { DeleteSeveral, endpoint } from "httpRequests";
+import { useGetAllGeneric } from "hooks/useGetAllGeneric";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
   onDelete: () => void;
-  userData:any
+  userData:any,
+  getAllAgain: any
 }
 
 export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected,/* idsList, */onDelete,userData } = props;
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { numSelected,/* idsList, */onDelete,userData,getAllAgain } = props;
+
+  const { data, loading } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
+
+  const [openModifyUserModal, setOpenModifyUserModal] = React.useState(false);
+  const handleOpenModifyUserModal = () => setOpenModifyUserModal(true);
+  const handleCloseModifyUserModal = () => setOpenModifyUserModal(false);
+  const handleUserModify = () => {getAllAgain();setOpenModifyUserModal(false);}
 
   const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
   const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
+  const handleUserCreate = () => {getAllAgain();setOpenCreateUserModal(false);}
 
   return (
     <Toolbar
@@ -56,10 +63,10 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ?
         (
           <>
-            <UserCreateOrModifyModal isOpen={open} onCloseModal={handleClose} userData={userData}/>
+            <UserCreateOrModifyModal isOpen={openModifyUserModal} onCloseModal={handleCloseModifyUserModal} userData={userData} data={data} loading={loading} onCreateOrModifyUser={handleUserModify}/>
             {numSelected === 1 &&
               <Tooltip title="Modificar datos de usuario">
-                <IconButton onClick={handleOpen}>
+                <IconButton onClick={handleOpenModifyUserModal}>
                   <ManageAccountsIcon />
                 </IconButton>
               </Tooltip>
@@ -81,7 +88,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               <PersonAddAlt1Icon />
             </IconButton>
           </Tooltip>
-          <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userData}/>
+          <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userData} data={data} loading={loading} onCreateOrModifyUser={handleUserCreate}/>
         </>
 
 

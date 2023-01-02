@@ -30,7 +30,7 @@ const baseUser = {
   escolaridadUId: ""
 }
 
-const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData }/* : any */) => {
+const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data , loading, onCreateOrModifyUser }/* : any */) => {
   // Final data oganized for backend
   const [userDataToSend,setUserDataToSend] = useState({});
   const [send,setSend] = useState(false);
@@ -45,22 +45,32 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData }/* : any */) 
     };
     setUserDataToSend ({usuario:finalUserDataToSend,rolesUIds:userObj.rolesUIds})
     setSend(true);
+    // onCreateOrModifyUser();
   }
   
 const {response,loading:loadingRegisterResponse} = usePost(userData ? endpoint.usuarios.usuarioModify : endpoint.usuarios.usuarioRegister,userDataToSend,send)
 
 useEffect(() => {
-  setSend(false)
-}, [response])
+ 
 
-console.log('userDataToSend')
+  setSend(false);
+  if(response){
+ console.log('ZZZZ OF CREATEOR MODIFY USER')
+ console.log(response)
+console.log(response.ok)
+onCreateOrModifyUser()
+}
+/*   return Ok("Usuario creado correctamente");
+  onCreateOrModifyUser(response) */
+}, [response,loadingRegisterResponse])
+
+/* console.log('userDataToSend')
 console.log(userDataToSend)
 
 console.log('loadingRegisterResponse')
-console.log(loadingRegisterResponse)
+console.log(loadingRegisterResponse) */
 // // // // // // 
 
-  const { data, loading } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
   const [userObj, setUserObj] = useState(baseUser);
 
   const rolesSelectedHandler = (rolesSelected) => { if (JSON.stringify(userObj.rolesUIds) !== JSON.stringify(rolesSelected)) { setUserObj(prevState => { return { ...prevState, rolesUIds: rolesSelected } }) } };

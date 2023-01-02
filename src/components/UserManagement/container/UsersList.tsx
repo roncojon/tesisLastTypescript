@@ -98,7 +98,9 @@ const setDataState = (users) => {
   useEffect(() => {
     setSourceUsed("All");
     if(data)
-    setDataState(data)
+    setDataState(data);
+    /* else
+    setRows([]) */
   }, [data/* , loading */])
 
   useEffect(() => {
@@ -228,9 +230,12 @@ console.log('userSelectedData')
 console.log(userSelectedData)
 
 //Modal;
-  const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
+// const { data:dataNeededForCreateUser, loading:loadingDataNeededForCreateUser } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
+
+
+  /* const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
-  const handleCloseCreateUserModal = () => {setGetAllAgain(!getAllAgain) ;setOpenCreateUserModal(false)};
+  const handleCloseCreateUserModal = () => {console.log('GAAAAAAAaa'); setOpenCreateUserModal(false); setGetAllAgain(!getAllAgain) }; */
 
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
@@ -240,7 +245,7 @@ console.log(userSelectedData)
         rows.length > 0 ?
           <>
             <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler} userData={userSelectedData}/* idsList={} */ />
+              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler} userData={userSelectedData} getAllAgain={()=>{setSelected([]);setGetAllAgain(!getAllAgain)}}/* data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser} *//* idsList={} */ />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 950 }}
@@ -331,12 +336,12 @@ console.log(userSelectedData)
           </> :
           <>
           <h3>No se encontraron usuarios</h3>
-          <Tooltip title="Ingresar un nuevo usuario">
+          {/* <Tooltip title="Ingresar un nuevo usuario">
           <IconButton onClick={handleOpenCreateUserModal}>
             <PersonAddAlt1Icon />
           </IconButton>
-        </Tooltip>
-        <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData}/>
+        </Tooltip> */}
+        {/* <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData} data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser}/>  */}
           </>
           }
     </Box>

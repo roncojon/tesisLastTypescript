@@ -11,11 +11,12 @@ const { accessToken } = useAppState((state) => state.authenticationInfo);
 async function httpResp(){
     const temp = await Get(endP/*, accessToken */)
     if(temp!==null)
-    await setData(temp)
-    await setLoading(false)
+     setData(temp)
+     setLoading(false)
   }
 
 useEffect(() => {
+  setData(null)
   console.log('BOOOOOOLEAANNNNNNNNN')
   setLoading(true)
     httpResp()
