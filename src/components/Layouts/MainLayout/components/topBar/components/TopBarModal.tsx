@@ -10,7 +10,7 @@ const style = {
   /* position: 'absolute' as 'absolute', */
   position: 'relative',
   top: '72px',
-  left: '116px',
+  left: '16px',
   /*  transform: 'translate(-50%, -50%)', */
   width: '386px',
   /* bgcolor: 'background.paper', */
@@ -48,7 +48,8 @@ export default function TopBarModal() {
     /*  <div style={{position:'relative', width:'124px', height:'124px', backgroundColor:'red', left:'100px', top:'100px', zIndex:'1'}}>
       <Button style={{position:'absolute',width:'124px', height:'124px', backgroundColor:'green'}} onClick={handleOpen}>Open modal</Button> */
     <Modal
-    BackdropProps={{ style: { backgroundColor: "transparent" } }}
+    // onFocus={(e)=>e.target.blur()}
+    // BackdropProps={{ style: { backgroundColor: "transparent" } }}
       /*     style={{height:'139px'}}
           sx={{height:'139px'}} */
       open={open}
@@ -59,7 +60,7 @@ export default function TopBarModal() {
     >
 
       <Box sx={style}
-        style={{ height: '139px' }}>
+        style={{ height: '139px',outline:'none' }}>
 
         <div className="pico" />
         <Typography
@@ -79,13 +80,13 @@ export default function TopBarModal() {
 
         <Typography id="modal-modal-description" style={{
           top: '5px',
-          fontFamily: 'ItauText-Regular',
+          fontFamily: 'Arial',
           fontStyle: ' normal',
           fontWeight: ' 400',
           fontSize: '14px',
           lineHeight: '16px',
         }}/* sx={{ mt: 2 }} */>
-          Puede ingresar un texto para buscar
+          Si tiene algún examen podrá realizarlo aquí 
         </Typography>
         <br />
         <Button onClick={handleClose} sx={{ float: 'right' }}>

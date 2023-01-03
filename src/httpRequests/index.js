@@ -44,11 +44,11 @@ export const Get = async (endP) => {
                 //'Authorization': `Bearer ${accessToken}`
             }
 
-        } */);
-    const pruebas = await pruebasResponse.json();
+        } */).then((resp)=>resp.json()).catch(()=>"Err");
+    // const pruebas = await pruebasResponse.json();
 
     //console.log(pruebas);
-    return await pruebas
+    return await pruebasResponse
 };
 export const GetWithParams = async (key, value, endP) => {
     //const {accessToken} = useContext(LoginContext);
@@ -212,20 +212,36 @@ export const LoginPost = async (endP, data) => {
     //return await f2
 };
 
-export const Put = async (id, endP, data, accessToken) => {
-    const response = await fetch(urlBase + endP + '/' + id,
+export const Put = async (id, endP, data/* , accessToken */) => {
+    /* const response = await fetch(urlBase + endP + '/' + id,
         {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': "Bearer " + accessToken
+                // 'Authorization': "Bearer " + accessToken
             }
         });
-    const result = await response.json();
+    const result = await response.json().catch(); */
+// let result = "";
+   const response =await  fetch(urlBase + endP + '/' + id,
+        {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': "Bearer " + accessToken
+            }
+        }).then((resp)=>resp.json()).catch(()=>"Err");
+    // const result = await response.json().catch();
     //console.log(f)
-
-    return result;
+    console.log('Put response')
+    console.log(response)
+/* const result = await response.json();
+if (!response.ok) {
+    throw new Error('Err')
+} */
+    return response;
 };
 
 export const Delete = async (id, endP) => {

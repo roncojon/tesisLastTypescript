@@ -146,7 +146,7 @@ export default function UsersTransferList({users,loadingUsers,onUsuariosAsignado
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
-        { users && <>
+        { users && users!=="Err" &&<>
       <Grid item>{customList(left,"Usuarios no asignados")}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">

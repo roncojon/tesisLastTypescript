@@ -13,6 +13,7 @@ export default function SelectTest({data,onTestSelected}) {
 
   return (
     <Box sx={{ minWidth: '350px', backgroundColor:'white' }}>
+      {data && data!=="Err" &&
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label"></InputLabel>
         <Select
@@ -22,7 +23,7 @@ export default function SelectTest({data,onTestSelected}) {
           label=""
           onChange={handleChange}
         >
-          {data &&
+          {data && data!=="Err" &&
           data.map((prueba)=>
             <MenuItem 
             value={prueba.nombre}
@@ -32,6 +33,7 @@ export default function SelectTest({data,onTestSelected}) {
           
         </Select>
       </FormControl>
+      }
     </Box>
   );
 }

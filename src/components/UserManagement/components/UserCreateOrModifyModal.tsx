@@ -6,6 +6,7 @@ import SelectGeneric from './SelectGeneric';
 import { endpoint } from 'httpRequests';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import { usePost } from 'hooks/usePost';
+import { usePut } from 'hooks/usePut';
 
 const style = {
   position: 'absolute',
@@ -30,11 +31,11 @@ const baseUser = {
   escolaridadUId: ""
 }
 
-const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data , loading, onCreateOrModifyUser }/* : any */) => {
+const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading, onCreateOrModifyUser }/* : any */) => {
   // Final data oganized for backend
-  const [userDataToSend,setUserDataToSend] = useState({});
-  const [send,setSend] = useState(false);
-  const prepareUserDataToSend = ()=>{
+  const [userDataToSend, setUserDataToSend] = useState({});
+  const [send, setSend] = useState(false);
+  const prepareUserDataToSend = () => {
     const finalUserDataToSend = {
       ci: userObj.ci,
       password: userObj.password,
@@ -43,33 +44,40 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data , loadin
       sexoUId: userObj.sexoUId,
       escolaridadUId: userObj.escolaridadUId
     };
-    setUserDataToSend ({usuario:finalUserDataToSend,rolesUIds:userObj.rolesUIds})
+    setUserDataToSend({ usuario: finalUserDataToSend, rolesUIds: userObj.rolesUIds })
     setSend(true);
     // onCreateOrModifyUser();
   }
-  
-const {response,loading:loadingRegisterResponse} = usePost(userData ? endpoint.usuarios.usuarioModify : endpoint.usuarios.usuarioRegister,userDataToSend,send)
 
-useEffect(() => {
- 
+  // const {response,loading:loadingRegisterResponse} = usePost(userData ? endpoint.usuarios.usuarioModify : endpoint.usuarios.usuarioRegister,userDataToSend,send)
+  // const {response,loading:loadingRegisterResponse} = usePost(endpoint.usuarios.usuarioRegister,userDataToSend,send)
 
-  setSend(false);
-  if(response){
- console.log('ZZZZ OF CREATEOR MODIFY USER')
- console.log(response)
-console.log(response.ok)
-onCreateOrModifyUser()
-}
-/*   return Ok("Usuario creado correctamente");
-  onCreateOrModifyUser(response) */
-}, [response,loadingRegisterResponse])
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { response, loading: loadingRegisterResponse } = userData ? usePut(userData.ci, endpoint.usuarios.usuarioModify, userDataToSend, send) : usePost(endpoint.usuarios.usuarioRegister, userDataToSend, send);
 
-/* console.log('userDataToSend')
-console.log(userDataToSend)
+  useEffect(() => {
 
-console.log('loadingRegisterResponse')
-console.log(loadingRegisterResponse) */
-// // // // // // 
+    setSend(false);
+    console.log('ZZZZ OF CREATEOR MODIFY USER')
+        console.log(response)
+    if (response && isOpen) {
+      if (response.ok) {
+        console.log(response.ok)
+        onCreateOrModifyUser(response)
+      }
+      else
+        onCreateOrModifyUser(false)
+    }
+    else if (isOpen)
+    onCreateOrModifyUser(false)
+
+    /*   return Ok("Usuario creado correctamente");
+      onCreateOrModifyUser(response) */
+  }, [response, loadingRegisterResponse])
+
+  /* console.log('loadingRegisterResponse')
+  console.log(loadingRegisterResponse) */
+  // // // // // // 
 
   const [userObj, setUserObj] = useState(baseUser);
 
@@ -107,7 +115,7 @@ console.log(loadingRegisterResponse) */
 
   const disableSubmitButtonHandler = () => {
     let disable = false;
-   
+
     if (userData) {
       const userTemp = { ...userObj }
       delete userTemp.password
@@ -136,9 +144,12 @@ console.log(loadingRegisterResponse) */
     disableSubmitButtonHandler()
   }, [userObj])
 
-   useEffect(() => {
-     disableSubmitButtonHandler()
-   }, [userData])
+  useEffect(() => {
+    disableSubmitButtonHandler()
+  }, [userData])
+
+  console.log('userObj')
+  console.log(userObj)
 
   return (
     <Modal
@@ -237,7 +248,7 @@ console.log(loadingRegisterResponse) */
               <hr style={{ border: '1px solid transparent' }} />
               <br />
               <Button sx={{ border: 'none', backgroundColor: 'transparent' }} onClick={prepareUserDataToSend} disabled={disableSendDataButton}>Completar</Button>
-              <Button sx={{ border: 'none', backgroundColor: 'transparent' }} onClick={() => {setUserObj(baseUser);onCloseModal()}}>Cancelar</Button>
+              <Button sx={{ border: 'none', backgroundColor: 'transparent' }} onClick={() => { setUserObj(baseUser); onCloseModal() }}>Cancelar</Button>
             </> :
             'Error estableciendo comunicación con el servidor'}
       </Box>

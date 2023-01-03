@@ -3,4 +3,4 @@ export type SubTopMenuElements = {
     elements: MenuElement[] | null,
 }
 
-export type MenuElement = {elementString:string,elementUrl:string}
+export type MenuElement = {elementString:string,elementUrl:string} | null

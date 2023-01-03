@@ -5,7 +5,7 @@ import React /* , { useEffect } */ from 'react';
 /* import { Link } from 'react-router-dom'; */
 /* import '../containers/SubTopBarStyles.css'; */
 import './NavigationLink.css'
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 type BorderStyleType = {
   borderStyle: string;
@@ -32,11 +32,12 @@ const NavigationLink = ({ borderStyle, linkName, onTabClick, index, linkUrl,isDi
 
 
   (
+    <NavLink to={linkUrl}>
   <Button
   disabled={isDisabled}
   className="subMenuLinkStyles"
-    component={Link}
-    to={linkUrl}
+    /* component={Link}
+    to={linkUrl} */
     onClick={() => {
       onTabClick(index);
     }}
@@ -66,5 +67,6 @@ const NavigationLink = ({ borderStyle, linkName, onTabClick, index, linkUrl,isDi
       {linkName}
     </Typography>
   </Button>
+  </NavLink>
 )
 export default NavigationLink;

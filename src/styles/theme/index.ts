@@ -174,9 +174,9 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'ItauDisplay-Regular, Arial',
+    fontFamily: ' Arial',
     h2: {
-      fontFamily: 'ItauText-Bold',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '700',
       fontSize: '20px',
@@ -184,7 +184,7 @@ const theme = createTheme({
       color: '#546576',
     },
     h3: {
-      fontFamily: 'ItauDisplay-Regular',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '700',
       fontSize: '16px',
@@ -192,7 +192,7 @@ const theme = createTheme({
       color: '#43484C',
     },
     h4: {
-      fontFamily: 'ItauDisplay-Bold',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '700',
       fontSize: '14px',
@@ -200,7 +200,7 @@ const theme = createTheme({
       color: '#43484C',
     },
     h5: {
-      fontFamily: 'ItauDisplay-Regular',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '400',
       fontSize: '14px',
@@ -208,7 +208,7 @@ const theme = createTheme({
       color: '#43484C',
     },
     h6: {
-      fontFamily: 'ItauDisplay-Regular',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '400',
       fontSize: '16px',
@@ -216,7 +216,7 @@ const theme = createTheme({
       color: '#43484C',
     },
     body1: {
-      fontFamily: 'ItauDisplay-Regular',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '400',
       fontSize: '14px',
@@ -224,7 +224,7 @@ const theme = createTheme({
       color: '#43484C',
     },
     body2: {
-      fontFamily: 'ItauDisplay-Bold',
+      fontFamily: 'Arial',
       fontStyle: 'normal',
       fontWeight: '700',
       fontSize: '14px',

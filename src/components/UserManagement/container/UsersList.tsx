@@ -97,7 +97,7 @@ const setDataState = (users) => {
 
   useEffect(() => {
     setSourceUsed("All");
-    if(data)
+    if(data && data!=="Err")
     setDataState(data);
     /* else
     setRows([]) */
@@ -315,7 +315,7 @@ console.log(userSelectedData)
                 </Table>
               </TableContainer>
               <TablePagination
-              labelRowsPerPage="Filas por página: "
+              labelRowsPerPage="Usuarios por página: "
                 rowsPerPageOptions={[10, 25, 100]}
                 labelDisplayedRows={({ from, to, count }) =>{
                   return `${from}–${to} de ${count !== -1 ? count : `more than ${to}`}`;
