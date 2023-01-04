@@ -18,13 +18,15 @@ function intersection(a: readonly number[], b: readonly number[]) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function UsersTransferList({users,loadingUsers,onUsuariosAsignados}) {
+interface UsersTransferListProps {
+  users,
+  loadingUsers,
+  onUsuariosAsignados,
+  assignedUsers?
+}
+
+export default function UsersTransferList({users,loadingUsers,onUsuariosAsignados,assignedUsers}:UsersTransferListProps) {
   const [checked, setChecked] = React.useState([]);
-  /* const [left, setLeft] = React.useState<readonly number[]>([0, 1, 2, 3]);
-  const [right, setRight] = React.useState<readonly number[]>([4, 5, 6, 7]); */
-
-
-
 
   const [left, setLeft] = React.useState(users);
   const [right, setRight] = React.useState([]);

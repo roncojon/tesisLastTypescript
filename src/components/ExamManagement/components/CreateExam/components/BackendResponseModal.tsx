@@ -6,10 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function NewExamModal({ open, onConfirm, onClosing }) {
+export default function BackendResponseModal({ open, onClosing, postResponse }) {
+console.log('ExamPOstReponse')
+console.log(postResponse)
 
-  return (
-
+return (
+    <>
+    {postResponse!=="" &&
     <Dialog
       open={open}
       onClose={onClosing}
@@ -21,16 +24,22 @@ export default function NewExamModal({ open, onConfirm, onClosing }) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          ¿Seguro que desea crear un nuevo examen?
+          {postResponse ? 
+          postResponse.status===200 ?
+          "Examen creado satisfactoriamente" :
+          "Error al crear examen" :
+          "Error al crear examen"
+        }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onConfirm}>Confirmar</Button>
-        <Button onClick={onClosing} autoFocus>
+        <Button onClick={onClosing}>Confirmar</Button>
+        {/* <Button onClick={onClosing} autoFocus>
           Cancelar
-        </Button>
+        </Button> */}
       </DialogActions>
     </Dialog>
-
+    }
+    </>
   );
 }

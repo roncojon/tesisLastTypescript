@@ -63,7 +63,7 @@ let sendTestDataCounter = 0;
   ]
 } */
 
-function PruebaCaritas({ pattern: imgs, examId }) {
+function PruebaCaritas({ pattern: imgs, examId ,cantColumnas}) {
   /* console.log('imgs')
   console.log(imgs) */
   console.log('examId')
@@ -77,7 +77,7 @@ function PruebaCaritas({ pattern: imgs, examId }) {
 
   const createFilas = () => {
     imgs.forEach(img => {
-      if (counter % 4 !== 0) {
+      if (counter % cantColumnas !== 0) {
         filaTemp.push({ img, counter });
       } else {
         filaTemp.push({ img, counter });

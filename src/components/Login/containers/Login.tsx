@@ -223,7 +223,7 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 								justifyContent: "center",
 								textAlign: "center",
 								fontWeight: 900,
-								color: "black",
+								color: "#444B62",
 							}}
 						>
 							Ingresar

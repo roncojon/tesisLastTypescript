@@ -13,7 +13,7 @@ import EnhancedTable from 'components/UserManagement';
 import CreateExam from 'components/ExamManagement/components/CreateExam';
 import AnswerTest from 'components/AnswerTest';
 import ActiveExams from 'components/ExamManagement/components/ActiveExams';
-import OldExams from 'components/ExamManagement/components/OldExams';
+import AllExams from 'components/ExamManagement/components/AllExams';
 import AdminSite from 'components/AdminSite';
 import NivelEscolar from 'components/NivelEscolar';
 
@@ -48,10 +48,10 @@ function App() {
               </RequireAuth>}
           />
           <Route
-            path="/oldexams"
+            path="/allexams"
             element={
               <RequireAuth>
-                <RouteWithLayout component={OldExams} layout={MainLayout} />
+                <RouteWithLayout component={AllExams} layout={MainLayout} />
               </RequireAuth>}
           />
           <Route

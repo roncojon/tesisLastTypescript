@@ -111,13 +111,14 @@ export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
                 'Content-Type': 'application/json',
                 //'Authorization': `Bearer ${accessToken}`
             }
-        });
+        }).catch(()=>null)/* .then((resp)=>resp.json()) *//* .catch(()=>null) */;
 /* console.log('response')
 console.log(response)
 const result = [await response.json(),response.status];
 console.log('result')
 console.log(result) */
-
+console.log('indexPostresponse')
+console.log(response)
     return  response;
 
     /* const dat = await f.json();

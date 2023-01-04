@@ -288,7 +288,7 @@ console.log(userSelectedData)
                               />
                             </TableCell>
                             <TableCell
-                              component="th"
+                              // component="th"
                               id={labelId}
                               scope="row"
                               padding="none"

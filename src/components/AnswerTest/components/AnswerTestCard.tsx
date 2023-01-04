@@ -44,7 +44,7 @@ console.log('decodePatternAsString(examen.patronClave)')
         onClick={()=>setOpenTest(true)}
         >Comenzar examen</Button>
         <Modal open={openTest} sx={{overflow:'auto', padding:'40px',
-      '& .MuiBackdrop-root':{backdropFilter: "blur(15px)"}}}><><PruebaCaritas pattern={pattern} examId={examen.id}/></></Modal>
+      '& .MuiBackdrop-root':{backdropFilter: "blur(15px)"}}}><><PruebaCaritas pattern={pattern} examId={examen.id} cantColumnas={examen.cantColumnas}/></></Modal>
       </CardActions>
     </Card>
   );

@@ -15,24 +15,8 @@ import ExamDateTimePicker from '../components/ExamDateTimePicker'
 import ErrorDateModal from '../components/ErrorDateModal'
 import ErrorSelectingTestModal from '../components/ErrorSelectintTestModal'
 import ErrorUsersCiListModal from '../components/ErrorUsersCiListModal'
+import BackendResponseModal from '../components/BackendResponseModal'
 
-/* export type User = {
-  "ci": string | null,
-  "nombre": string | null,
-  "apellidos": string | null,
-  "userName": string | null,
-  "password": string | null,
-  "sexoNombre": string | null,
-  "edad": number | null,
-  "roles": [
-    {
-      uId: string | null,
-      nombre: string | null
-    }
-  ],
-  "grupoEtarioNombre": string | null,
-  "escolaridadNombre": string | null
-} | null; */
 const CreateExam = () => {
   const [counter, setCounter] = useState<number>(0);
 
@@ -61,17 +45,15 @@ const CreateExam = () => {
       fechaFin: (new Date()).getTime()
     }
   )
-  const [postResponse, setPostResponse] = useState(null)
+  const [postResponse, setPostResponse] = useState("")
   const [loadingPostResponse, setLoadingPostResponse] = useState(false);
 
   async function httpResp() {
     const temp = await Post(endpoint.examenes.general, examObject)
-    if (temp !== null)
-      await setPostResponse(temp)
-    await setLoadingPostResponse(false)
-    /* } */
+    // if (temp !== null)
+       setPostResponse(temp)
+     setLoadingPostResponse(false)
   }
-
 
   const postExam = () => {
     setLoadingPostResponse(true)
@@ -81,25 +63,6 @@ const CreateExam = () => {
 
   useEffect(() => {
     const fechaActual = (new Date()).getTime();
-
-    /* console.log('examObject');
-    console.log(examObject);
-    console.log('fechainicio')
-    console.log(examObject.fechaInicio)
-    console.log('fechaFin')
-    console.log(examObject.fechaFin)
-    console.log('examObject.fechaFin <= examObject.fechaInicio')
-    console.log(examObject.fechaFin <= examObject.fechaInicio)
-    console.log('examObject.fechaFin <= fechaActual')
-    console.log(examObject.fechaFin <= fechaActual)
-    console.log('examObject.fechaInicio < fechaActual - 4000')
-    console.log(examObject.fechaInicio < fechaActual - 4000)
-    console.log('examObject.fechaInicio')
-    console.log(examObject.fechaInicio)
-    console.log('fechaActual')
-    console.log(fechaActual)
-    console.log('fechaActual - 4000')
-    console.log(fechaActual - 4000) */
 
     if (counter) {
       if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)
@@ -143,14 +106,15 @@ const CreateExam = () => {
   const [openDateError, setOpenDateError] = React.useState(false);
   const [openTestError, setOpenTestError] = React.useState(false);
   const [openUsersCiError, setOpenUsersCiError] = React.useState(false);
+  const [openResponseModal, setOpenResponseModal] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleCloseDateError = () => {
     setOpenDateError(false);
   };
@@ -160,22 +124,34 @@ const CreateExam = () => {
   const handleCloseUsersCiListError = () => {
     setOpenUsersCiError(false);
   };
+  const handleCloseResposneModal = () => { 
+    setOpenResponseModal(false);
+
+  }
+
+  useEffect(() => {
+    console.log('postResponse')
+    console.log(postResponse)
+    if(counter!==0 && postResponse!=="")
+    setOpenResponseModal(true)
+  }, [postResponse])
+  
+  useEffect(() => {
+    if(!openResponseModal)
+    {
+    setPostResponse("");
+    setLoadingPostResponse(false)
+  }
+  }, [openResponseModal])
+  
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-
-      {/*  <h3 style={{ marginBottom: '10px' }}>Asignar usuarios a examen: </h3>
-      <UsersList startWithUsers onUsuariosAsignados={usuariosAsignadosHandler} asignedUsers={usuariosAsignados}/>
-
-      <Separator />
-
-      <h3 style={{ marginBottom: '10px' }}>Usuarios asignados: </h3>
-      <UsersList startWithUsers={false} onUsuariosAsignados={usuariosAsignadosHandler} asignedUsers={usuariosAsignados}/>
- */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Asignar usuarios: </h3>
       <>{loadingUsers
         ?
         "Cargando..." :
         users ?
+          /* Seleccionar usuarios */
           <UsersTransferList users={users} loadingUsers={loadingUsers} onUsuariosAsignados={usuariosAsignadosHandler} />
           :
           "No se encuentran datos"
@@ -183,33 +159,36 @@ const CreateExam = () => {
       </>
       <Separator />
 
-      {/* SELECCIONADOR DE PRUEBA */}
+      {/* SELECCIONAR DE PRUEBA */}
       <h3 style={{ marginBottom: '10px' }}>Tipo de Prueba: </h3>
       <SelectTest data={tests} onTestSelected={testSelectedHandler} />
 
       <Separator />
-
+      {/* Seleccionar patron aleatorio o no */}
       <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} />
 
       <Separator />
+      {/* Seleccionar fecha inicio */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de inicio: </h3>
       <ExamDateTimePicker onDateSelected={startDateSelectedHandler} />
 
       <Separator />
+      {/* Seleccionar fecha fin */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de fin: </h3>
       <ExamDateTimePicker onDateSelected={endDateSelectedHandler} />
       <br />
       <Button
         variant='contained'
-        onClick={handleClickOpen /* setSend(!send) */}
+        onClick={handleClickOpen}
       >
         Completar creación de examen
       </Button>
       <NewExamModal open={open} onConfirm={() => { setSend(!send); handleClose() }} onClosing={handleClose} />
-      <ErrorDateModal open={openDateError} /* onConfirm={()=>{setSend(!send); handleClose()}} */ onClosing={handleCloseDateError} />
-      <ErrorSelectingTestModal open={openTestError} /* onConfirm={()=>{setSend(!send); handleClose()}} */ onClosing={handleCloseTestError} />
-      <ErrorUsersCiListModal open={openUsersCiError} /* onConfirm={()=>{setSend(!send); handleClose()}} */ onClosing={handleCloseUsersCiListError} />
+      <ErrorDateModal open={openDateError} onClosing={handleCloseDateError} />
+      <ErrorSelectingTestModal open={openTestError} onClosing={handleCloseTestError} />
+      <ErrorUsersCiListModal open={openUsersCiError} onClosing={handleCloseUsersCiListError} />
 
+      <BackendResponseModal open={openResponseModal} onClosing={handleCloseResposneModal} postResponse={postResponse} />
     </Box>
 
   )

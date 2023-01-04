@@ -45,7 +45,7 @@ useEffect(() => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                {!response  ? 'Guardando resultados de examen' : response[1] ===200 ? 'Examen guardado' : 'Error al guardar resultados de examen' }
+                {!response  ? 'Guardando resultados de examen' : response.status ===200 ? 'Examen guardado' : 'Error al guardar resultados de examen' }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

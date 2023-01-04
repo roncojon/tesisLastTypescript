@@ -1,4 +1,4 @@
-import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel, Typography } from "@mui/material";
 import { Data, Order } from "./Commons";
 import { visuallyHidden } from '@mui/utils';
 
@@ -88,7 +88,14 @@ interface EnhancedTableProps {
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
               >
-                {headCell.label}
+                <Typography sx={{
+                      fontWeight: 700,
+                      fontSize: '15px',
+                      lineHeight: '18px',
+                      color:"#444B62"
+                }}>
+                  {headCell.label}
+                  </Typography>
                 {orderBy === headCell.id ? (
                   <Box component="span" sx={visuallyHidden}>
                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}

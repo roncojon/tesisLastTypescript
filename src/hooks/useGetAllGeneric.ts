@@ -17,12 +17,10 @@ export const useGetAllGeneric = (endP, boolGetAllAgain) => {
 
   useEffect(() => {
     setData(null)
-    console.log('BOOOOOOLEAANNNNNNNNN')
+    // console.log('BOOOOOOLEAANNNNNNNNN')
     setLoading(true)
     httpResp()
-    /* return () => {
-      second
-    } */
+
   }, [endP, boolGetAllAgain])
   return { data, loading }
 
