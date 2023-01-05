@@ -6,30 +6,32 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import { Box, Button, IconButton, Modal, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import { endpoint } from 'httpRequests';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/';
+import CreateExam from '../../CreateExam';
+import { getComparator, Order, stableSort } from 'components/UserManagement/container/Commons';
 
 interface UserBasicInfo {
     nombre: string,
     apellidos: string,
     ci: string,
 }
-
-interface Trow {
-    testNombre: string,
+interface ExamInfoToShow {
+    nombre: string,
+    uId:string,
     fechaInicio: number,
     fechaFin: number,
     estaActivo: boolean,
-    modifyButton: any,
-    deleteButton: any,
     usersForTooltip: any/* UserBasicInfo[] | any */,
     usersRaw: any,
+    isOriginalPattern: boolean
 }
+
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -44,41 +46,35 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export default function AllExams() {
-    const { data: examenes, loading } = useGetAllGeneric(endpoint.examenes.getAllPlus, true)
+    // SHOWING EXAM INFO
+    const [getAgain,setGetAgain] = useState(false);
+    const { data: examenes, loading } = useGetAllGeneric(endpoint.examenes.getAllPlus, getAgain)
 
     const [rows, setRows] = useState([]);
     useEffect(() => {
         if (examenes) {
             // let usersBasicInfoForTooltipAsString ="";
-            setRows(examenes.map((e) => {
-                //    console.log('e.usuarios')
-                //  console.log(e.usuarios)
-                // e.usuarios.forEach((u)=>{usersBasicInfoForTooltipAsString=usersBasicInfoForTooltipAsString+"Nombre: "+u.nombre +" |  Apellidos: "+u.apellidos+" | Ci: "+u.ci+"\n"});
+            const order: Order = 'asc';
+            const orderBy: keyof ExamInfoToShow = 'fechaInicio';
+
+            const rowsTemp: ExamInfoToShow[] = examenes.map((e) => {
                 return {
-                    testNombre: e.testNombre,
+                    nombre: e.testNombre,
+                    uId: e.testUId,
                     fechaInicio: e.fechaInicio,
                     fechaFin: e.fechaFin,
                     estaActivo: e.estaActivo,
-
-                    modifyButton: <IconButton
-                        onClick={() => {
-                            //onDelete();
-                        }}
-                        size="small">
-                        <EditIcon />
-                    </IconButton>,
-
-                    deleteButton: <IconButton
-                    // onClick={handleOpenModifyUserModal}
-                    >
-                        <DeleteIcon />
-                    </IconButton>,
                     usersForTooltip: <>
-                        {e.usuarios.map((u) => <div /* style={{whiteSpace: 'nowrap'}} */>{"Nombre: " + u.nombre + " |  Apellidos: " + u.apellidos + " | Ci: " + u.ci}<br /></div>)}
+                        {e.usuarios.length ?
+                            e.usuarios.map((u) => <div>{"Nombre: " + u.nombre + " |  Apellidos: " + u.apellidos + " | Ci: " + u.ci}<br /></div>)
+                            :
+                            <div>Aún no hay usuarios asignados a este examen</div>}
                     </>,
-                    usersRaw: e.usuarios
+                    usersRaw: e.usuarios,
+                    isOriginalPattern: e.esPatronOriginal
                 }
-            }))
+            });
+            setRows(stableSort(rowsTemp, getComparator(order, orderBy)))
         }
     }, [examenes])
 
@@ -100,57 +96,83 @@ export default function AllExams() {
         // Minutes
         var minutes = "0" + date.getMinutes();
 
-         // Display date time in dd-MM-yyyy h:m:s format
-   return  day+'-'+month+'-'+year+' '+hours + ':' + minutes.substr(-2);
+        // Display date time in dd-MM-yyyy h:m:s format
+        return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes.substr(-2);
     }
+    // SHOWING EXAM INFO ends
+
+    // Passing exam values to modifyExam Modal
+    const [openModal, setOpenModal] = useState(false);
+    const [examValues, setExamValues] = useState(null);
+
+    const handleEdit = (row) => { setExamValues(row) }
+    useEffect(() => {
+        if (examValues)
+            setOpenModal(true)
+    }, [examValues])
+    const handleCloseModal = (row) => { setOpenModal(false);setGetAgain(!getAgain); }
+
     return (
-        <TableContainer component={Paper} sx={{ width: '80%' }}>
-            <Table sx={{ minWidth: 750, }} size="small" aria-label="a dense table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Nombre</TableCell>
-                        <TableCell align="left">Fecha inicio</TableCell>
-                        <TableCell align="left">Fecha de fin</TableCell>
-                        <TableCell align="left">Activo</TableCell>
-                        <TableCell align="right">&nbsp;</TableCell>
-                        <TableCell align="right">&nbsp;</TableCell>
-                    </TableRow>
-                </TableHead>
-                {!loading && rows.length > 0 ?
-                    <TableBody>
-                        {rows.map((row) => (
-                            <HtmlTooltip
-                                title={row.usersForTooltip}
-                            // placement="bottom"
-                            // enterNextDelay={1000}
-                            /* leaveDelay={10000}
-                            sx={{
-                                "& .MuiTooltip-tooltip": { maxWidth: '50px', backgroundColor:'red',border: "solid red 10px"},
-                                "& .MuiTooltip-popper": { maxWidth: '50px',},
-                                "& .MuiTooltip-tooltipPlacementBottom": { maxWidth: '50px',},
-                                
-                            }} */
-                            >
-                                <TableRow
-                                    // key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        <>
+            <TableContainer component={Paper} sx={{ width: '80%' }}>
+                <Table sx={{ minWidth: 750, }} size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Nombre</TableCell>
+                            <TableCell align="left">Fecha inicio</TableCell>
+                            <TableCell align="left">Fecha de fin</TableCell>
+                            <TableCell align="left">Activo</TableCell>
+                            <TableCell align="right">&nbsp;</TableCell>
+                            <TableCell align="right">&nbsp;</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    {!loading && rows.length > 0 ?
+                        <TableBody>
+                            {rows.map((row) => (
+                                <HtmlTooltip
+                                    title={row.usersForTooltip}
+                                    leaveDelay={200}
                                 >
-                                    <TableCell component="th" scope="row">
-                                        {row.testNombre}
-                                    </TableCell>
-                                    <TableCell align="left">{unixToDate(row.fechaInicio)}</TableCell>
-                                    <TableCell align="left">{unixToDate(row.fechaFin)}</TableCell>
-                                    <TableCell align="left">{row.estaActivo ? "Sí" : "No"}</TableCell>
-                                    <TableCell align="right">{row.modifyButton}</TableCell>
-                                    <TableCell align="right">{row.deleteButton}</TableCell>
-                                </TableRow>
-                            </HtmlTooltip>
-                        ))}
-                    </TableBody>
-                    :
-                    "Cargando..."
-                }
-            </Table>
-        </TableContainer>
+                                    <TableRow
+                                        // key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } , backgroundColor:row.estaActivo &&'#ffd0a0'}}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.testNombre}
+                                        </TableCell>
+                                        <TableCell align="left">{unixToDate(row.fechaInicio)}</TableCell>
+                                        <TableCell align="left">{unixToDate(row.fechaFin)}</TableCell>
+                                        <TableCell align="left">{row.estaActivo ? "Sí" : "No"}</TableCell>
+                                        <TableCell align="right">
+                                            {<IconButton
+                                                onClick={() => { handleEdit(row) }}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {<IconButton
+                                            // onClick={handleOpenModifyUserModal}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>}
+                                        </TableCell>
+                                    </TableRow>
+                                </HtmlTooltip>
+                            ))}
+                        </TableBody>
+                        :
+                        loading ?
+                            <Box sx={{ height: '50px', display: 'flex', alignItems: 'center', ml: '10px' }}>Cargando... </Box>
+                            :
+                            <Box sx={{ height: '50px', display: 'flex', alignItems: 'center', ml: '10px' }}>No se encuentran exámenes actualmente </Box>
+
+                    }
+                </Table>
+            </TableContainer>
+            <Modal open={openModal} sx={{ p: '20px', overflow: 'auto' }}>
+                <CreateExam examValues={examValues} onClose={handleCloseModal} />
+            </Modal>
+        </>
     );
 }

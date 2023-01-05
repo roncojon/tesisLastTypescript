@@ -21,7 +21,7 @@ export default function NewExamModal({ open, onConfirm, onClosing }) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          ¿Seguro que desea crear un nuevo examen?
+          ¿Seguro que desea terminar la edición del examen?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

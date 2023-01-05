@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox } from '@mui/material'
+import { Box, Button, Checkbox, IconButton } from '@mui/material'
 // import UsersList from 'components/ExamManagement/components/CreateExam/components/ExamUserManagement'
 import SelectTest from 'components/ExamManagement/components/CreateExam/components/SelectTest'
 import { usePost } from 'hooks/usePost'
@@ -16,8 +16,24 @@ import ErrorDateModal from '../components/ErrorDateModal'
 import ErrorSelectingTestModal from '../components/ErrorSelectintTestModal'
 import ErrorUsersCiListModal from '../components/ErrorUsersCiListModal'
 import BackendResponseModal from '../components/BackendResponseModal'
+import CloseIcon from '@mui/icons-material/Close';
 
-const CreateExam = () => {
+interface ExamValues {
+  examValues?: {
+    nombre: string,
+    uId:string,
+    fechaInicio: number,
+    fechaFin: number,
+    estaActivo: boolean,
+    usersForTooltip: any/* UserBasicInfo[] | any */,
+    usersRaw: any,
+    isOriginalPattern: boolean
+  } | null,
+  onClose?: any
+}
+// interface ExamVals {:ExamValues} 
+
+const CreateExam = ({ examValues, onClose }: ExamValues) => {
   const [counter, setCounter] = useState<number>(0);
 
   const [send, setSend] = useState<boolean>(false);
@@ -51,8 +67,8 @@ const CreateExam = () => {
   async function httpResp() {
     const temp = await Post(endpoint.examenes.general, examObject)
     // if (temp !== null)
-       setPostResponse(temp)
-     setLoadingPostResponse(false)
+    setPostResponse(temp)
+    setLoadingPostResponse(false)
   }
 
   const postExam = () => {
@@ -124,35 +140,45 @@ const CreateExam = () => {
   const handleCloseUsersCiListError = () => {
     setOpenUsersCiError(false);
   };
-  const handleCloseResposneModal = () => { 
+  const handleCloseResposneModal = () => {
     setOpenResponseModal(false);
-
+    // closing modal if exist
+    if (onClose)
+      onClose()
   }
 
   useEffect(() => {
     console.log('postResponse')
     console.log(postResponse)
-    if(counter!==0 && postResponse!=="")
-    setOpenResponseModal(true)
+    if (counter !== 0 && postResponse !== "")
+      setOpenResponseModal(true)
   }, [postResponse])
-  
+
   useEffect(() => {
-    if(!openResponseModal)
-    {
-    setPostResponse("");
-    setLoadingPostResponse(false)
-  }
+    if (!openResponseModal) {
+      setPostResponse("");
+      setLoadingPostResponse(false)
+    }
   }, [openResponseModal])
-  
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#f5f5f5', p: '20px',pb:examValues&&'40px' }}>
+      {examValues && 
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
+        <IconButton
+        onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      }
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Asignar usuarios: </h3>
       <>{loadingUsers
         ?
         "Cargando..." :
         users ?
           /* Seleccionar usuarios */
-          <UsersTransferList users={users} loadingUsers={loadingUsers} onUsuariosAsignados={usuariosAsignadosHandler} />
+          <UsersTransferList users={users} loadingUsers={loadingUsers} onUsuariosAsignados={usuariosAsignadosHandler} defaultValue={examValues && examValues.usersRaw}/>
           :
           "No se encuentran datos"
       }
@@ -161,21 +187,21 @@ const CreateExam = () => {
 
       {/* SELECCIONAR DE PRUEBA */}
       <h3 style={{ marginBottom: '10px' }}>Tipo de Prueba: </h3>
-      <SelectTest data={tests} onTestSelected={testSelectedHandler} />
+      <SelectTest data={tests} onTestSelected={testSelectedHandler} defaultValue={examValues && examValues}/>
 
       <Separator />
       {/* Seleccionar patron aleatorio o no */}
-      <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} />
+      <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} defaultValue={examValues && examValues.isOriginalPattern}/>
 
       <Separator />
       {/* Seleccionar fecha inicio */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de inicio: </h3>
-      <ExamDateTimePicker onDateSelected={startDateSelectedHandler} />
+      <ExamDateTimePicker onDateSelected={startDateSelectedHandler} defaultValue={examValues && examValues.fechaInicio}/>
 
       <Separator />
       {/* Seleccionar fecha fin */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de fin: </h3>
-      <ExamDateTimePicker onDateSelected={endDateSelectedHandler} />
+      <ExamDateTimePicker onDateSelected={endDateSelectedHandler} defaultValue={examValues && examValues.fechaFin}/>
       <br />
       <Button
         variant='contained'

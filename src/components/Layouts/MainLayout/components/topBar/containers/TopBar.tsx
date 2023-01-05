@@ -84,6 +84,18 @@ const TopBar = () => {
             </Button>
 
             <Button
+              component={Link}
+              to='/listado'
+              startIcon={<ReceiptLongIcon />}
+              sx={buttonStyle}
+              disableElevation={false}
+              disableRipple={false}
+              disableFocusRipple={false}
+            >
+              Resultados de pruebas
+            </Button>
+
+            <Button
               // onClick={() => subElementsHandler(adminSiteMenuElements,1)}
               component={Link}
               to="/userslist"
@@ -96,17 +108,7 @@ const TopBar = () => {
               Administrar sitio
             </Button>
 
-            <Button
-              component={Link}
-              to='/listado'
-              startIcon={<ReceiptLongIcon />}
-              sx={buttonStyle}
-              disableElevation={false}
-              disableRipple={false}
-              disableFocusRipple={false}
-            >
-              Resultados de pruebas
-            </Button>
+            
           </Box>
 
           <Box sx={{ flexGrow: 0, /* mr:10 */ }}>

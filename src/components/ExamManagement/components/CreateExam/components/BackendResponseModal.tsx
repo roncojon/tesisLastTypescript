@@ -26,9 +26,9 @@ return (
         <DialogContentText id="alert-dialog-description">
           {postResponse ? 
           postResponse.status===200 ?
-          "Examen creado satisfactoriamente" :
-          "Error al crear examen" :
-          "Error al crear examen"
+          "Examen guardado satisfactoriamente" :
+          "Error al guardar examen" :
+          "Error al guardar examen"
         }
         </DialogContentText>
       </DialogContent>

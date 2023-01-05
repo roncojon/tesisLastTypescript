@@ -5,13 +5,24 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-export default function RadioGroupForTestPattern({ onPatternSelected }) {
+interface RadioGroupForTestPatternProps { 
+  onPatternSelected: any,
+   defaultValue?: boolean
+  }
+
+export default function RadioGroupForTestPattern({ onPatternSelected, defaultValue }) {
+
+React.useEffect(() => {
+  if(defaultValue!==null && defaultValue!==undefined)
+  onPatternSelected(defaultValue)
+}, [defaultValue])
+
   return (
     <FormControl>
-      <h3 id="demo-radio-buttons-group-label">Patrón a usar en el examen</h3>
+      <h3 id="demo-radio-buttons-group-label">Patrón de examen</h3>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue={true}
+       defaultValue={(defaultValue!==null && defaultValue!==undefined) ? (defaultValue===true ? true : false) : true}
         name="radio-buttons-group"
       >
         <FormControlLabel
