@@ -20,17 +20,15 @@ import { useSearchOne } from 'hooks/useSearchOne';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 import SearchBar from '../components/SearchBar';
+// import SearchBar from '../components/SearchBar';
 
-const requestParamKey = "userName";
+//const requestParamKey = "userName";
 
 export default function EnhancedTable() {
 
   const [rows, setRows] = useState([]);
   const [getAllAgain, setGetAllAgain] = useState(true);
-  // const [getByNameAgain, setGetByNameAgain] = useState(false);
-  // const [debouncedValue, setDebouncedValue] = useState("");
-  // const [sourceUsed, setSourceUsed] = useState("");
-  //  const [usersByName, setUsersByName] = useState([]);
+
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
   // const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
 
@@ -65,13 +63,12 @@ const [rendering,setRendering] = useState(false);
   }
 
   useEffect(() => {
-    // setSourceUsed("All");
     setDataState(data);
-  }, [data/* , loading */])
+  }, [data])
 
   useEffect(() => {
     loading && setRendering(true)
-  }, [ loading, rows ])
+  }, [ loading ])
 
   useEffect(() => {
     !loading && setRendering(false)
@@ -98,7 +95,8 @@ const [rendering,setRendering] = useState(false);
       let allUsersTemp = data;
 
       let filteredByName = allUsersTemp.filter((u) =>
-        u.nombre.toLowerCase().includes(debVal.toLowerCase()) || u.apellidos.toLowerCase().includes(debVal.toLowerCase())
+       // u.nombre.toLowerCase().includes(debVal.toLowerCase()) || u.apellidos.toLowerCase().includes(debVal.toLowerCase())
+       (u.nombre.toLowerCase() + ' ' + u.apellidos.toLowerCase()).includes(debVal.toLowerCase())
       );
       setDataState(filteredByName);
 
