@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { Typography, Modal} from '@mui/material';
 /* import  from '@mui/material/Modal'; */
 /* import { searchBarModalStyles } from './TopBarModalStyles'; */
-import './searchBar.css';
+// import './searchBar.css';
 
 const style = {
   /* position: 'absolute' as 'absolute', */

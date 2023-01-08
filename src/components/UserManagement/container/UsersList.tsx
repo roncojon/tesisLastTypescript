@@ -14,11 +14,12 @@ import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import {  Data, getComparator, Order, stableSort } from './Commons';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { DeleteSeveral, endpoint } from 'httpRequests';
-import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
+// import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchOne } from 'hooks/useSearchOne';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import SearchBar from '../components/SearchBar';
 
 const requestParamKey = "userName";
 
