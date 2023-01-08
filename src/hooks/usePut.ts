@@ -8,15 +8,14 @@ const [response,setResponse] = useState(null)
 const [loading,setLoading]= useState(true)
 
 async function httpResp(){
-    // const temp = await PostGeneric(key1,value1,key2,value2,endP,data)
     const temp = await Put(id,endP,data)
-    if(temp!==null)
-    await setResponse(temp)
-    await setLoading(false)
+     setResponse(temp)
+     setLoading(false)
   }
 
 useEffect(() => {
   if(again){
+    setResponse("")
   setLoading(true)
   // setTimeout(() => httpResp(), 4000)
      httpResp()

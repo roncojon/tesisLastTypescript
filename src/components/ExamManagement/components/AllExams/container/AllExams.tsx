@@ -22,6 +22,7 @@ interface UserBasicInfo {
     ci: string,
 }
 interface ExamInfoToShow {
+    id:string,
     nombre: string,
     uId:string,
     fechaInicio: number,
@@ -47,7 +48,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 export default function AllExams() {
     // SHOWING EXAM INFO
-    const [getAgain,setGetAgain] = useState(false);
+    const [getAgain,setGetAgain] = useState(true);
     const { data: examenes, loading } = useGetAllGeneric(endpoint.examenes.getAllPlus, getAgain)
 
     const [rows, setRows] = useState([]);
@@ -57,8 +58,12 @@ export default function AllExams() {
             const order: Order = 'asc';
             const orderBy: keyof ExamInfoToShow = 'fechaInicio';
 
+            console.log('examenes')
+            console.log(examenes)
+            if (examenes.length>0){
             const rowsTemp: ExamInfoToShow[] = examenes.map((e) => {
                 return {
+                    id:e.id,
                     nombre: e.testNombre,
                     uId: e.testUId,
                     fechaInicio: e.fechaInicio,
@@ -75,6 +80,7 @@ export default function AllExams() {
                 }
             });
             setRows(stableSort(rowsTemp, getComparator(order, orderBy)))
+        }
         }
     }, [examenes])
 
@@ -110,8 +116,13 @@ export default function AllExams() {
         if (examValues)
             setOpenModal(true)
     }, [examValues])
-    const handleCloseModal = (row) => { setOpenModal(false);setGetAgain(!getAgain); }
+    const handleCloseModal = (row) => { setOpenModal(false);setGetAgain(true); }
 
+    useEffect(() => {
+if(!loading)
+setGetAgain(false)
+    }, [loading])
+    
     return (
         <>
             <TableContainer component={Paper} sx={{ width: '80%' }}>
@@ -138,7 +149,7 @@ export default function AllExams() {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } , backgroundColor:row.estaActivo &&'#ffd0a0'}}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {row.testNombre}
+                                            {row.nombre}
                                         </TableCell>
                                         <TableCell align="left">{unixToDate(row.fechaInicio)}</TableCell>
                                         <TableCell align="left">{unixToDate(row.fechaFin)}</TableCell>

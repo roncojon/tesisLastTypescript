@@ -17,9 +17,11 @@ import ErrorSelectingTestModal from '../components/ErrorSelectintTestModal'
 import ErrorUsersCiListModal from '../components/ErrorUsersCiListModal'
 import BackendResponseModal from '../components/BackendResponseModal'
 import CloseIcon from '@mui/icons-material/Close';
+import { usePut } from 'hooks/usePut'
 
 interface ExamValues {
   examValues?: {
+    id:string,
     nombre: string,
     uId:string,
     fechaInicio: number,
@@ -38,8 +40,8 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
 
   const [send, setSend] = useState<boolean>(false);
 
-  const { data: tests, loading } = useGetAllGeneric(endpoint.pruebas.matriz, null);
-  const { data: users, loading: loadingUsers } = useGetAllGeneric(endpoint.usuarios.usuariosAll, null);
+  const { data: tests, loading } = useGetAllGeneric(endpoint.pruebas.matriz, true);
+  const { data: users, loading: loadingUsers } = useGetAllGeneric(endpoint.usuarios.usuariosAll, true);
   // console.log(data)
 
   // USUARIOS ASIGNADOS
@@ -61,10 +63,15 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
       fechaFin: (new Date()).getTime()
     }
   )
-  const [postResponse, setPostResponse] = useState("")
-  const [loadingPostResponse, setLoadingPostResponse] = useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { response:postResponse, loading: loadingPostResponse } = examValues ? usePut(examValues.id,endpoint.examenes.general, examObject, send) : usePost(endpoint.examenes.general, examObject, send);
 
-  async function httpResp() {
+ 
+
+ /*  const [postResponse, setPostResponse] = useState("")
+  const [loadingPostResponse, setLoadingPostResponse] = useState(false); */
+
+/*   async function httpResp() {
     const temp = await Post(endpoint.examenes.general, examObject)
     // if (temp !== null)
     setPostResponse(temp)
@@ -96,11 +103,11 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
     }
     setCounter(counter + 1);
 
-  }, [send])
-  // TILL HERE
+  }, [send]) */
+  // POSTING THE NEW EXAM --- END 
 
-  const testSelectedHandler = (test) => {
-    setExamObject(prevState => { return { ...prevState, testUId: test.uId } })
+  const testSelectedHandler = (testUId) => {
+    setExamObject(prevState => { return { ...prevState, testUId: testUId } })
   }
 
   const patternSelectedHandler = (isPatronOriginal) => {
@@ -150,16 +157,41 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
   useEffect(() => {
     console.log('postResponse')
     console.log(postResponse)
-    if (counter !== 0 && postResponse !== "")
+    if (counter !== 0)
       setOpenResponseModal(true)
   }, [postResponse])
 
   useEffect(() => {
     if (!openResponseModal) {
-      setPostResponse("");
-      setLoadingPostResponse(false)
+      // setCounter(0);
+      setSend(false)
+/*       setPostResponse("");
+      setLoadingPostResponse(false) */
     }
   }, [openResponseModal])
+
+  useEffect(() => {
+    const fechaActual = (new Date()).getTime();
+
+    if (counter && !open) {
+      if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)
+        setOpenDateError(true)
+      else {
+        if (examObject.testUId === null)
+          setOpenTestError(true)
+        else {
+          if (examObject.usuariosCiList === null)
+            setOpenUsersCiError(true)
+          else
+            setSend(true)
+        }
+      }
+    }
+    setCounter(counter + 1);
+
+  }, [open])
+
+  // Put new exam
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#f5f5f5', p: '20px',pb:examValues&&'40px' }}>
@@ -209,7 +241,7 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
       >
         Completar creación de examen
       </Button>
-      <NewExamModal open={open} onConfirm={() => { setSend(!send); handleClose() }} onClosing={handleClose} />
+      <NewExamModal open={open} onConfirm={() => { /* setSend(send); */ handleClose() }} onClosing={handleClose} />
       <ErrorDateModal open={openDateError} onClosing={handleCloseDateError} />
       <ErrorSelectingTestModal open={openTestError} onClosing={handleCloseTestError} />
       <ErrorUsersCiListModal open={openUsersCiError} onClosing={handleCloseUsersCiListError} />

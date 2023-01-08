@@ -30,9 +30,12 @@ const baseUser = {
   rolesUIds: [],
   escolaridadUId: ""
 }
+interface UserCreateOrModifyModalProps { isOpen, onCloseModal, userData?, data, loading, onCreateOrModifyUser }
 
-const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading, onCreateOrModifyUser }/* : any */) => {
+const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading, onCreateOrModifyUser }: UserCreateOrModifyModalProps/* : any */) => {
   // Final data oganized for backend
+  const [counter, setCounter] = useState(0);
+
   const [userDataToSend, setUserDataToSend] = useState({});
   const [send, setSend] = useState(false);
   const prepareUserDataToSend = () => {
@@ -56,28 +59,27 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading
   const { response, loading: loadingRegisterResponse } = userData ? usePut(userData.ci, endpoint.usuarios.usuarioModify, userDataToSend, send) : usePost(endpoint.usuarios.usuarioRegister, userDataToSend, send);
 
   useEffect(() => {
+    console.log('modifyModalCounter')
+    console.log(counter)
+    if (isOpen && counter > 1 && send) {
 
-    setSend(false);
-    console.log('ZZZZ OF CREATEOR MODIFY USER')
-        console.log(response)
-    if (response && isOpen) {
-      if (response.ok) {
-        console.log(response.ok)
-        onCreateOrModifyUser(response)
+      if (response) {
+
+        if (response.ok) {
+          console.log('response.ok')
+          console.log(response.ok)
+          onCreateOrModifyUser(true)
+        }
+        else
+          onCreateOrModifyUser(false)
       }
       else
         onCreateOrModifyUser(false)
     }
-    else if (isOpen)
-    onCreateOrModifyUser(false)
+    setCounter(counter + 1);
 
-    /*   return Ok("Usuario creado correctamente");
-      onCreateOrModifyUser(response) */
-  }, [response, loadingRegisterResponse])
+  }, [response/* , loadingRegisterResponse */])
 
-  /* console.log('loadingRegisterResponse')
-  console.log(loadingRegisterResponse) */
-  // // // // // // 
 
   const [userObj, setUserObj] = useState(baseUser);
 
@@ -86,7 +88,7 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading
   const scholaritySelectedHandler = (escolaridadUidSelected) => { setUserObj(prevState => { return { ...prevState, escolaridadUId: escolaridadUidSelected } }) };
 
   useEffect(() => {
-    if (userData !== null) {
+    if (userData !== null && userData !== undefined) {
       const userDataTemp = baseUser;
       userDataTemp.ci = userData.ci;
       userDataTemp.nombre = userData.nombre
@@ -210,8 +212,7 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading
                 label="Contraseña"
                 autoComplete="new-password"
                 variant="standard"
-                sx={{ width: '100%'/* , backgroundColor:userData && (userData.password !== userObj.password ? '#e8cccc' : 'white')  */ }}
-                // helperText={userData && (userData.password !== userObj.password ? "Ha cambiado la contraseña" : '')}
+                sx={{ width: '100%' }}
                 helperText={userData ? '' : (userObj.password ? '' : 'Este campo es requerido')}
               />
               <hr style={{ border: '1px solid transparent' }} />

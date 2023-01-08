@@ -10,18 +10,21 @@ export const useGetAllGeneric = (endP, boolGetAllAgain) => {
 
   async function httpResp() {
     const temp = await Get(endP/*, accessToken */)
-    if (temp !== null)
-      setData(temp)
+    //if (temp !== null)
+    setData(temp)
     setLoading(false)
   }
 
   useEffect(() => {
-    setData(null)
-    // console.log('BOOOOOOLEAANNNNNNNNN')
-    setLoading(true)
-    httpResp()
+    if (boolGetAllAgain) {
+      setData("")
 
-  }, [endP, boolGetAllAgain])
+      setLoading(true)
+
+      // console.log('BOOOOOOLEAANNNNNNNNN')
+      httpResp()
+    }
+  }, [/* endP, */ boolGetAllAgain])
   return { data, loading }
 
 }

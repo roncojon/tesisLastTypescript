@@ -12,7 +12,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import { useEffect,useState } from 'react';
 import { endpoint } from 'httpRequests';
 
-export default function SearchBar({onResponseUsersByName,onRefresh}) {
+export default function SearchBar({onResponseUsersByName,/* onRefresh */}) {
 
 const [value, setValue] = useState('');
 const debouncedValue = useDebounce(value, 500);
@@ -40,7 +40,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               <InputAdornment position="end" disablePointerEvents={value.length < 4}>
                 {value.length > 3 
                 ?
-                <Button sx={{minHeight:0, minWidth:0}} onClick={()=>{setValue("");onRefresh()}}>
+                <Button sx={{minHeight:0, minWidth:0}} onClick={()=>{setValue("")/* ;onRefresh() */}}>
                 <CachedIcon/>
                 </Button>
                 :

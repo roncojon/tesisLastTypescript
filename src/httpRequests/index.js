@@ -44,7 +44,7 @@ export const Get = async (endP) => {
                 //'Authorization': `Bearer ${accessToken}`
             }
 
-        } */).then((resp)=>resp.json()).catch(()=>"Err");
+        } */).then((resp)=>resp.json()).catch(()=>null);
     // const pruebas = await pruebasResponse.json();
 
     //console.log(pruebas);
@@ -117,6 +117,7 @@ console.log(response)
 const result = [await response.json(),response.status];
 console.log('result')
 console.log(result) */
+
 console.log('indexPostresponse')
 console.log(response)
     return  response;
@@ -233,7 +234,7 @@ export const Put = async (id, endP, data/* , accessToken */) => {
                 'Content-Type': 'application/json',
                 // 'Authorization': "Bearer " + accessToken
             }
-        }).then((resp)=>resp.json()).catch(()=>"Err");
+        }).catch(()=>null)/* .then((resp)=>resp.json()).catch(()=>"Err") */;
     // const result = await response.json().catch();
     //console.log(f)
     console.log('Put response')
@@ -275,7 +276,7 @@ export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
             // 'Authorization': 'Bearer ' + accessToken
         },
         body: JSON.stringify(idsList)
-    })
+    }).catch(()=>null)
     // const result = await response.json();
     return response
 };

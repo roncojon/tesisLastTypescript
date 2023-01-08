@@ -1,79 +1,42 @@
 import * as React from 'react';
-// import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import { alpha, Typography } from '@mui/material/';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-// import {DeleteIcon} from '@mui/icons-material/Delete';
-// import FilterListIcon from '@mui/icons-material/FilterList';
-// import UserCreateOrModifyModal from '../components/UserCreateOrModifyModal';
-import { useDeleteProtected } from 'hooks/useDeleteProtected';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
-import { createData, Data, getComparator, Order, stableSort } from './Commons';
+import {  Data, getComparator, Order, stableSort } from './Commons';
 import { EnhancedTableHead } from './EnhancedTableHead';
-// import { useGetAllGeneric } from 'hooks/useUserGetAllProtected';
 import { DeleteSeveral, endpoint } from 'httpRequests';
-import { useAppState } from "stores";
 import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
 import { useEffect, useState } from 'react';
 import { useSearchOne } from 'hooks/useSearchOne';
-// import { testooo } from 'functions/decodePatternFromBackend';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import UserCreateOrModifyModal from '../components/UserCreateOrModifyModal';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
-
-// const rows = [
-/* createData('Cupcake', 305, 3.7, 67, 4.3),
-createData('Donut', 452, 25.0, 51, 4.9),
-createData('Eclair', 262, 16.0, 24, 6.0),
-createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-createData('Gingerbread', 356, 16.0, 49, 3.9),
-createData('Honeycomb', 408, 3.2, 87, 6.5),
-createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-createData('Jelly Bean', 375, 0.0, 94, 0.0),
-createData('KitKat', 518, 26.0, 65, 7.0),
-createData('Lollipop', 392, 0.2, 98, 0.0),
-createData('Marshmallow', 318, 0, 81, 2.0),
-createData('Nougat', 360, 19.0, 9, 37.0),
-createData('Oreo', 437, 18.0, 63, 4.0), */
-// ];
 const requestParamKey = "userName";
 
-// let counter = 0;
-
 export default function EnhancedTable() {
-  // const rowsAll = [];
-  // const rowsByName = [];
 
   const [rows, setRows] = useState([]);
-  const [getAllAgain, setGetAllAgain] = useState(true);
+  const [getAllAgain, setGetAllAgain] = useState(false);
   const [getByNameAgain, setGetByNameAgain] = useState(false);
   const [debouncedValue, setDebouncedValue] = useState("");
   const [sourceUsed, setSourceUsed] = useState("");
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
   const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
-  // console.log('ssssssss '+counter++);
 console.log('AllUsersData')
 console.log(data)
 const setDataState = (users) => {
     const rowsTemp = [];
-    if (users !== null) {
+    if (users) {
       users.forEach(data => {
-        // console.log(data)
         const rolesNames = data.roles.map((rol,index)=>{ 
           if(index!==data.roles.length-1)
            return (rol.nombre + ', ')
@@ -84,23 +47,25 @@ const setDataState = (users) => {
           id: data.id,
           nombre: data.nombre,
           apellidos: data.apellidos,
-          // grupoEtario: data.grupoEtarioNombre,
           ci: data.ci,
           escolaridad: data.escolaridadNombre,
           roles: rolesNames ? rolesNames : '-',
         })
       });
-    }
-    setRows(rowsTemp);
+      setRows(rowsTemp);
     setIdsList([]);
+    }
+    else
+    {
+      setRows([]);
+    setIdsList([]);
+    }
+    
   }
 
   useEffect(() => {
     setSourceUsed("All");
-    if(data && data!=="Err")
     setDataState(data);
-    /* else
-    setRows([]) */
   }, [data/* , loading */])
 
   useEffect(() => {
@@ -113,13 +78,22 @@ const setDataState = (users) => {
     if (debVal !== debouncedValue && debVal.length!==0)
       setDebouncedValue(debVal);
      else if (debVal.length===0)
-      setGetAllAgain(!getAllAgain);
+     // setGetAllAgain(true);
+     handleShowAllUsers()
     else
+    {
+    // setGetAllAgain(false);
       setGetByNameAgain(!getByNameAgain);
+    }
   }
 
-  const handleShowAllUsers = () => { setSelected([]); setGetAllAgain(!getAllAgain) }
+  const handleShowAllUsers = () => { setSelected([]); setGetAllAgain(true) }
 
+  useEffect(() => {
+    if(!loading)
+    setGetAllAgain(false)
+  }, [loading])
+  
   const [idsList, setIdsList] = useState([]);
 
   const [order, setOrder] = React.useState<Order>('asc');
@@ -163,7 +137,6 @@ const setDataState = (users) => {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
     modifyIdsList(ci);
   };
@@ -192,23 +165,15 @@ const setDataState = (users) => {
       setIdsList((prevState) => { let temp = prevState; return temp.filter(x => x !== ci) }) :
       setIdsList((prevState) => [...prevState, ci])
   }
+  const [deleteBackenResponse,setDeleteBackendResponse] = useState(null);
   const deleteHandler = async () => {
-    console.log('idsList')
-    console.log(idsList)
-    await DeleteSeveral(idsList, endpoint.usuarios.usuariosDeleteSeveral)
-    setSelected([]);
-    setIdsList([]);
-    // console.log('ZZZZZZZZZZZZZZZZZZZZZZ ' + sourceUsed)
-    if (sourceUsed === "All")
-      setGetAllAgain(!getAllAgain);
-    else
-      setGetByNameAgain(!getByNameAgain);
+    setOpenDeleteModal(false)
+
+    const delResp = await DeleteSeveral(idsList, endpoint.usuarios.usuariosDeleteSeveral)
+    setDeleteBackendResponse(delResp);
   }
 
-  /* useEffect(() => {
-    if (selected.length ===0)
 
-  }, [selected]) */
   
   // UserSelectedData if there is just one selected
 const [userSelectedData,setUserSelectedData] = React.useState<any | null>(null);
@@ -237,15 +202,26 @@ console.log(userSelectedData)
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
   const handleCloseCreateUserModal = () => {console.log('GAAAAAAAaa'); setOpenCreateUserModal(false); setGetAllAgain(!getAllAgain) }; */
 
+   // DELETE ASK CONFIRMATION MODAL
+   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+   const handleCloseDeleteModal = () => { setOpenDeleteModal(false) /* setOpenResponseModal(false);getAllAgain(); */ };
+
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
-      <SearchBar onResponseUsersByName={handleShowUsersByName} onRefresh={handleShowAllUsers} />
-      {loading || loadingUsuariosByName ?
+      <SearchBar onResponseUsersByName={handleShowUsersByName} /* onRefresh="" *//* {()=>handleShowUsersByName("")} */ />
+      {loading || loadingUsuariosByName || (!rows.length && (data || usuariosByName)) ?
         <h3>Cargando...</h3> :
         rows.length > 0 ?
           <>
             <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar numSelected={selected.length} onDelete={deleteHandler} userData={userSelectedData} getAllAgain={()=>{setSelected([]);setGetAllAgain(!getAllAgain)}}/* data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser} *//* idsList={} */ />
+              <EnhancedTableToolbar 
+              numSelected={selected.length} 
+              onDelete={handleOpenDeleteModal}
+               userData={userSelectedData}
+                getAllAgain={handleShowAllUsers}
+              deleteBackenResponse={deleteBackenResponse}
+               />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 950 }}
@@ -344,6 +320,7 @@ console.log(userSelectedData)
         {/* <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData} data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser}/>  */}
           </>
           }
+          <DeleteConfirmationModal open={openDeleteModal} onConfirm={deleteHandler} onClose={handleCloseDeleteModal}/>
     </Box>
   );
 }

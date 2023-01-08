@@ -20,6 +20,8 @@ export default function SelectTest({ data, onTestSelected, defaultValue }:Select
 
   useEffect(() => {
     if (defaultValue) {
+      console.log('SELECTING TEST defaultValue')
+      console.log(defaultValue)
       if (defaultValue.nombre) {
         setTest(defaultValue.nombre);
         onTestSelected(defaultValue.uId)
@@ -43,7 +45,7 @@ export default function SelectTest({ data, onTestSelected, defaultValue }:Select
               data.map((prueba) =>
                 <MenuItem
                   value={prueba.nombre}
-                  onClick={() => onTestSelected(prueba)}
+                  onClick={() => onTestSelected(prueba.uId)}
                 >{prueba.nombre}</MenuItem>
               )}
 

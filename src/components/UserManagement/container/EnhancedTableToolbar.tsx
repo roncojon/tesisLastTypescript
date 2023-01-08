@@ -13,35 +13,76 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   onDelete: () => void;
   userData:any,
-  getAllAgain: any
+  getAllAgain: any,
+  deleteBackenResponse?
 }
 
 export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected,/* idsList, */onDelete,userData,getAllAgain } = props;
+  const { numSelected,/* idsList, */onDelete,userData,getAllAgain,deleteBackenResponse } = props;
+  const [counter, setCounter] = React.useState(0);
 
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
+
+  // RESPONSE OF POST OR PUT REQUEST -- BOOLEAN
+  const [isBackendResponseOkTemp, setIsBackendResponseOkTemp] = React.useState(null);
+  const [isBackendResponseOk, setIsBackendResponseOk] = React.useState(null);
 
   const [openModifyUserModal, setOpenModifyUserModal] = React.useState(false);
   const handleOpenModifyUserModal = () => setOpenModifyUserModal(true);
   const handleCloseModifyUserModal = () => setOpenModifyUserModal(false);
-  const handleUserModify = (isBackendResponseOk) => {setIsBackendResponseOk(isBackendResponseOk ? true : false); setOpenModifyUserModal(false);/* getAllAgain();setOpenModifyUserModal(false); */}
+  const handleUserModify = (isBackendResponseOk) => {
+
+    setIsBackendResponseOkTemp(isBackendResponseOk);
+     setOpenModifyUserModal(false);}
 
   const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
   const handleCloseCreateUserModal = () => setOpenCreateUserModal(false);
-  const handleUserCreate = (isBackendResponseOk) => {setIsBackendResponseOk(isBackendResponseOk ? true : false); setOpenCreateUserModal(false);}
+  const handleUserCreate = (isBackendResponseOk) => {setIsBackendResponseOkTemp(isBackendResponseOk ? true : false);setOpenCreateUserModal(false); }
 
   const [openResponseModal, setOpenResponseModal] = React.useState(false);
   const handleOpenResponseModal = () => setOpenResponseModal(true);
-  const [isBackendResponseOk, setIsBackendResponseOk] = React.useState(null);
-  const handleCloseResponseModal = () => {setIsBackendResponseOk(null); setOpenResponseModal(false);getAllAgain(); };
+  const handleCloseResponseModal = () => { setOpenResponseModal(false);getAllAgain(); };
  
-  // const handlResponseModal = () => {setOpenResponseModal(true)};
+
+  useEffect(() => {
+    console.log('isBackendResponseOkTemp')
+    console.log(isBackendResponseOkTemp)
+    if(!openModifyUserModal)
+    {
+
+   setIsBackendResponseOk(isBackendResponseOkTemp/*  ? true : false */);
+  }
+  }, [openModifyUserModal])
+
+useEffect(() => {
+  if(!openCreateUserModal)
+ setIsBackendResponseOk(isBackendResponseOkTemp/*  ? true : false */);
+}, [openCreateUserModal])
+
 
   useEffect(() => {
     if(isBackendResponseOk!==null)
     handleOpenResponseModal();
   }, [isBackendResponseOk])
+  
+  useEffect(() => {
+    if(!openResponseModal){
+    setIsBackendResponseOk(null);
+    setIsBackendResponseOkTemp(null);
+  }
+  }, [openResponseModal])
+  
+  // DELETE RESPONSE FROM BACKEND
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => {setOpenDeleteModal(false);getAllAgain(); };
+
+  useEffect(() => {
+     if(numSelected>0)
+    handleOpenDeleteModal()
+    // setCounter(counter+1)
+  }, [deleteBackenResponse])
   
   return (
     <Toolbar
@@ -88,6 +129,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               <IconButton
                 onClick={() => {
                   onDelete();
+                 /*  handleOpenDeleteModal() */
                 }}
                 size="small">
                 <DeleteIcon />
@@ -101,7 +143,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
               <PersonAddAlt1Icon />
             </IconButton>
           </Tooltip>
-          <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userData} data={data} loading={loading} onCreateOrModifyUser={handleUserCreate}/>
+          <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} /* userData={userData} */ data={data} loading={loading} onCreateOrModifyUser={handleUserCreate}/>
         </>
         /* (
           <Tooltip title="Filter list">
@@ -111,7 +153,13 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             </IconButton>
           </Tooltip>
         ) */}
+        {/* CREATE OR MODIFY BACKEND RESPONSE */}
 <CrudConfirmationModal isOpen={openResponseModal} backendResponse={isBackendResponseOk} onClose={handleCloseResponseModal}/>
+
+{/* <DeleteConfirmationModal isOpen={openDeleteResponseModal} backendResponse={isBackendResponseOk} onClose={handleCloseResponseModal}/> */}
+
+{/* DELETE BACKEND RESPONSE */}
+<CrudConfirmationModal isOpen={openDeleteModal} backendResponse={deleteBackenResponse} isDeleteModal onClose={handleCloseDeleteModal}/>
 
     </Toolbar>
   );
