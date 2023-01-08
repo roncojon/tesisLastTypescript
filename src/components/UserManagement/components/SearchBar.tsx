@@ -12,15 +12,22 @@ import CachedIcon from '@mui/icons-material/Cached';
 import { useEffect,useState } from 'react';
 import { endpoint } from 'httpRequests';
 
-export default function SearchBar({onResponseUsersByName,/* onRefresh */}) {
+export default function SearchBar({onResponseUsersByName, refresh/* onRefresh */}) {
+const [counter,setCounter] = useState(0);
 
 const [value, setValue] = useState('');
 const debouncedValue = useDebounce(value, 500);
 
 useEffect(() => {
+  // counter>0 &&
     onResponseUsersByName(debouncedValue)
-
+   // setCounter(counter+1)
 }, [debouncedValue])
+
+useEffect(() => {
+  refresh && setValue("")
+}, [refresh])
+
 
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

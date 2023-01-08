@@ -11,7 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
-import {  Data, getComparator, Order, stableSort } from './Commons';
+import { Data, getComparator, Order, stableSort } from './Commons';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { DeleteSeveral, endpoint } from 'httpRequests';
 // import SearchBar from 'components/Layouts/MainLayout/components/topBar/components/SearchBar';
@@ -26,24 +26,26 @@ const requestParamKey = "userName";
 export default function EnhancedTable() {
 
   const [rows, setRows] = useState([]);
-  const [getAllAgain, setGetAllAgain] = useState(false);
-  const [getByNameAgain, setGetByNameAgain] = useState(false);
-  const [debouncedValue, setDebouncedValue] = useState("");
-  const [sourceUsed, setSourceUsed] = useState("");
+  const [getAllAgain, setGetAllAgain] = useState(true);
+  // const [getByNameAgain, setGetByNameAgain] = useState(false);
+  // const [debouncedValue, setDebouncedValue] = useState("");
+  // const [sourceUsed, setSourceUsed] = useState("");
+  //  const [usersByName, setUsersByName] = useState([]);
   const { data, loading } = useGetAllGeneric(endpoint.usuarios.usuariosAll, getAllAgain);
-  const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
-console.log('AllUsersData')
-console.log(data)
-const setDataState = (users) => {
+  // const { usuariosByName, loadingUsuariosByName } = useSearchOne(requestParamKey, debouncedValue, endpoint.usuarios.usuariosByName, getByNameAgain);
+
+const [rendering,setRendering] = useState(false);
+
+  const setDataState = (users) => {
     const rowsTemp = [];
     if (users) {
       users.forEach(data => {
-        const rolesNames = data.roles.map((rol,index)=>{ 
-          if(index!==data.roles.length-1)
-           return (rol.nombre + ', ')
+        const rolesNames = data.roles.map((rol, index) => {
+          if (index !== data.roles.length - 1)
+            return (rol.nombre + ', ')
           else
-        return rol.nombre
-      })
+            return rol.nombre
+        })
         rowsTemp.push({
           id: data.id,
           nombre: data.nombre,
@@ -54,47 +56,62 @@ const setDataState = (users) => {
         })
       });
       setRows(rowsTemp);
-    setIdsList([]);
+      setIdsList([]);
     }
-    else
-    {
+    else {
       setRows([]);
-    setIdsList([]);
+      setIdsList([]);
     }
-    
   }
 
   useEffect(() => {
-    setSourceUsed("All");
+    // setSourceUsed("All");
     setDataState(data);
   }, [data/* , loading */])
 
   useEffect(() => {
-    setSourceUsed("By Name");
-    setDataState(usuariosByName)
-  }, [usuariosByName, loadingUsuariosByName])
+    loading && setRendering(true)
+  }, [ loading, rows ])
+
+  useEffect(() => {
+    !loading && setRendering(false)
+  }, [ rows ])
+
+  /*   useEffect(() => {
+      setSourceUsed("By Name");
+      setDataState(usuariosByName)
+    }, [usuariosByName, loadingUsuariosByName]) */
 
   const handleShowUsersByName = (debVal) => {
     setSelected([]);
-    if (debVal !== debouncedValue && debVal.length!==0)
-      setDebouncedValue(debVal);
-     else if (debVal.length===0)
-     // setGetAllAgain(true);
-     handleShowAllUsers()
-    else
+    console.log('debVal')
+    console.log(debVal)
+    // Filtrar data para obtener los q tengan ese nombre-apellidos y hacer rows=(resultado de ese filtro)
+    if (!debVal.length)
     {
-    // setGetAllAgain(false);
-      setGetByNameAgain(!getByNameAgain);
+      if(!refresh)
+      handleShowAllUsers();
+    }
+      // setRefresh(true)
+    else {
+      setRefresh(false)
+      let allUsersTemp = data;
+
+      let filteredByName = allUsersTemp.filter((u) =>
+        u.nombre.toLowerCase().includes(debVal.toLowerCase()) || u.apellidos.toLowerCase().includes(debVal.toLowerCase())
+      );
+      setDataState(filteredByName);
+
     }
   }
-
-  const handleShowAllUsers = () => { setSelected([]); setGetAllAgain(true) }
+const [refresh,setRefresh] = useState(false);
+  const handleShowAllUsers = () => { setSelected([]); setRefresh(true); setGetAllAgain(true) }
 
   useEffect(() => {
-    if(!loading)
-    setGetAllAgain(false)
+    if (!loading)
+      setGetAllAgain(false)
   }, [loading])
-  
+
   const [idsList, setIdsList] = useState([]);
 
   const [order, setOrder] = React.useState<Order>('asc');
@@ -166,7 +183,7 @@ const setDataState = (users) => {
       setIdsList((prevState) => { let temp = prevState; return temp.filter(x => x !== ci) }) :
       setIdsList((prevState) => [...prevState, ci])
   }
-  const [deleteBackenResponse,setDeleteBackendResponse] = useState(null);
+  const [deleteBackenResponse, setDeleteBackendResponse] = useState("");
   const deleteHandler = async () => {
     setOpenDeleteModal(false)
 
@@ -174,55 +191,51 @@ const setDataState = (users) => {
     setDeleteBackendResponse(delResp);
   }
 
-
-  
   // UserSelectedData if there is just one selected
-const [userSelectedData,setUserSelectedData] = React.useState<any | null>(null);
-useEffect(() => {
-if(idsList.length === 1)
-{
-  console.log('1 USER IS SELECTED')
-let temp = data;
- const userData = temp.filter(x => x.ci === idsList[0]);
- setUserSelectedData(userData[0])
-}
-else
-{
-console.log('Less or More Than 1 User Is Selected')
-setUserSelectedData(null)
-}
-}, [idsList])
-console.log('userSelectedData')
-console.log(userSelectedData)
+  const [userSelectedData, setUserSelectedData] = React.useState<any | null>(null);
+  useEffect(() => {
+    if (idsList.length === 1) {
+      console.log('1 USER IS SELECTED')
+      let temp = data;
+      const userData = temp.filter(x => x.ci === idsList[0]);
+      setUserSelectedData(userData[0])
+    }
+    else {
+      console.log('Less or More Than 1 User Is Selected')
+      setUserSelectedData(null)
+    }
+  }, [idsList])
+  console.log('userSelectedData')
+  console.log(userSelectedData)
 
-//Modal;
-// const { data:dataNeededForCreateUser, loading:loadingDataNeededForCreateUser } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
+  //Modal;
+  // const { data:dataNeededForCreateUser, loading:loadingDataNeededForCreateUser } = useGetAllGeneric(endpoint.usuarios.DataForCreateUser, true);
 
 
   /* const [openCreateUserModal, setOpenCreateUserModal] = React.useState(false);
   const handleOpenCreateUserModal = () => setOpenCreateUserModal(true);
   const handleCloseCreateUserModal = () => {console.log('GAAAAAAAaa'); setOpenCreateUserModal(false); setGetAllAgain(!getAllAgain) }; */
 
-   // DELETE ASK CONFIRMATION MODAL
-   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-   const handleCloseDeleteModal = () => { setOpenDeleteModal(false) /* setOpenResponseModal(false);getAllAgain(); */ };
+  // DELETE ASK CONFIRMATION MODAL
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => { setOpenDeleteModal(false) ; setDeleteBackendResponse("")/* setOpenResponseModal(false);getAllAgain(); */ };
 
   return (
     <Box sx={{ width: '80%', minWidth: '1000px' }}>
-      <SearchBar onResponseUsersByName={handleShowUsersByName} /* onRefresh="" *//* {()=>handleShowUsersByName("")} */ />
-      {loading || loadingUsuariosByName || (!rows.length && (data || usuariosByName)) ?
+      <SearchBar onResponseUsersByName={handleShowUsersByName} refresh={refresh}/* onRefresh="" *//* {()=>handleShowUsersByName("")} */ />
+      {loading || rendering/* || loadingUsuariosByName || (!rows.length && (data || usuariosByName)) */ ?
         <h3>Cargando...</h3> :
         rows.length > 0 ?
           <>
             <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar 
-              numSelected={selected.length} 
-              onDelete={handleOpenDeleteModal}
-               userData={userSelectedData}
+              <EnhancedTableToolbar
+                numSelected={selected.length}
+                onDelete={handleOpenDeleteModal}
+                userData={userSelectedData}
                 getAllAgain={handleShowAllUsers}
-              deleteBackenResponse={deleteBackenResponse}
-               />
+                deleteBackenResponse={deleteBackenResponse}
+              />
               <TableContainer>
                 <Table
                   sx={{ minWidth: 950 }}
@@ -292,11 +305,11 @@ console.log(userSelectedData)
                 </Table>
               </TableContainer>
               <TablePagination
-              labelRowsPerPage="Usuarios por página: "
+                labelRowsPerPage="Usuarios por página: "
                 rowsPerPageOptions={[10, 25, 100]}
-                labelDisplayedRows={({ from, to, count }) =>{
+                labelDisplayedRows={({ from, to, count }) => {
                   return `${from}–${to} de ${count !== -1 ? count : `more than ${to}`}`;
-                  }}
+                }}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
@@ -312,16 +325,16 @@ console.log(userSelectedData)
             />
           </> :
           <>
-          <h3>No se encontraron usuarios</h3>
-          {/* <Tooltip title="Ingresar un nuevo usuario">
+            <h3>No se encontraron usuarios</h3>
+            {/* <Tooltip title="Ingresar un nuevo usuario">
           <IconButton onClick={handleOpenCreateUserModal}>
             <PersonAddAlt1Icon />
           </IconButton>
         </Tooltip> */}
-        {/* <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData} data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser}/>  */}
+            {/* <UserCreateOrModifyModal isOpen={openCreateUserModal} onCloseModal={handleCloseCreateUserModal} userData={userSelectedData} data={dataNeededForCreateUser} loading={loadingDataNeededForCreateUser}/>  */}
           </>
-          }
-          <DeleteConfirmationModal open={openDeleteModal} onConfirm={deleteHandler} onClose={handleCloseDeleteModal}/>
+      }
+      <DeleteConfirmationModal open={openDeleteModal} onConfirm={deleteHandler} onClose={handleCloseDeleteModal} />
     </Box>
   );
 }
