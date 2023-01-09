@@ -92,7 +92,7 @@ const TopBar = () => {
               disableRipple={false}
               disableFocusRipple={false}
             >
-              Resultados de pruebas
+              Resultados de exámenes
             </Button>
 
             <Button

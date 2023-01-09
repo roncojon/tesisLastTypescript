@@ -16,6 +16,7 @@ import ActiveExams from 'components/ExamManagement/components/ActiveExams';
 import AllExams from 'components/ExamManagement/components/AllExams';
 import AdminSite from 'components/AdminSite';
 import NivelEscolar from 'components/NivelEscolar';
+import Chart from 'components/ExamResults/components/Chart';
 
 
 function App() {
@@ -87,7 +88,7 @@ function App() {
                 <RouteWithLayout component={AnswerTest} layout={MainLayout} />
               </RequireAuth>}
           />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Chart />} />
           <Route element={<Navigate to={"/login"} />} path="*" />
         </Routes>
       </BrowserRouter>
