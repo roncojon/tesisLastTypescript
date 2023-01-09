@@ -16,11 +16,11 @@ export default function CaritasEndExamInfoModal({ open, examId, finalString/* , 
     const [uExamObject, setUExamObject] = useState(null);
     const navigate = useNavigate();
     const { accessToken, userId } = useAppState((state) => state.authenticationInfo);
-    const {response, loading} = usePost(endpoint.uExamen.uExamenPost,uExamObject,true);
-console.log('response')
-console.log(response)
+    const { response, loading } = usePost(endpoint.uExamen.uExamenPost, uExamObject, true);
+    console.log('response')
+    console.log(response)
 
-useEffect(() => {
+    useEffect(() => {
         // const uExamPostHandler = ()=>{
         if (finalString && examId) {
             setUExamObject({
@@ -29,8 +29,8 @@ useEffect(() => {
                 respuestaDeUsuarioAExamen: finalString
             })
         }
-    // }
-     }, [finalString, examId])
+        // }
+    }, [finalString, examId])
 
 
     return (
@@ -45,14 +45,18 @@ useEffect(() => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                {!response  ? 'Guardando resultados de examen' : response.status ===200 ? 'Examen guardado' : 'Error al guardar resultados de examen' }
+                    {loading ?
+                        'Guardando resultados de examen' :
+                        response ?
+                            (response.status === 200 ?
+                                'Examen guardado' :
+                                'Error al guardar resultados de examen') :
+                            'Error al guardar resultados de examen'
+                    }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-{response ? <Button onClick={()=>navigate('/')}>Aceptar</Button> : <>{console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa')}</>}
-                {/* <Button onClick={onClosing} autoFocus>
-          Cancelar
-        </Button> */}
+                <Button onClick={() => navigate('/')}>Aceptar</Button> : <>{console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa')}</> 
             </DialogActions>
         </Dialog>
     );

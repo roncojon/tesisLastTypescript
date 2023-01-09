@@ -22,8 +22,8 @@ const adminSiteMenuElements: MenuInfo = {
   title: "Administrar sitio",
   elements: [
     { elementString: "Usuarios", elementUrl: "/userslist" },
-    { elementString: "Grupo etario", elementUrl: "/grupoetario" },
-    { elementString: "Nivel escolar", elementUrl: "/nivelescolar" }
+    /* { elementString: "Grupo etario", elementUrl: "/grupoetario" },
+    { elementString: "Nivel escolar", elementUrl: "/nivelescolar" } */
   ]
 };
 const createExamMenuElements: MenuInfo = {

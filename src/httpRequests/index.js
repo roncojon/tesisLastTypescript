@@ -247,7 +247,16 @@ if (!response.ok) {
 };
 
 export const Delete = async (id, endP) => {
-    await fetch(urlBase + endP + '/' + id, { method: 'DELETE' })
+    const response = await fetch(urlBase + endP + '/' + id,
+    {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer ' + accessToken
+        },
+        // body: JSON.stringify(idsList)
+    }).catch(()=>null);
+     return response;
 };
 
 

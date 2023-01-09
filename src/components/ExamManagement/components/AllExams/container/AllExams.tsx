@@ -8,13 +8,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, Button, IconButton, Modal, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
-import { endpoint } from 'httpRequests';
+import { Delete, endpoint } from 'httpRequests';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/';
 import CreateExam from '../../CreateExam';
 import { getComparator, Order, stableSort } from 'components/UserManagement/container/Commons';
+import DeleteAskConfirmationModal from '../components/DeleteAskConfirmationModal';
+import DeleteResponseModal from '../components/DeleteResponseModal';
 
 interface UserBasicInfo {
     nombre: string,
@@ -22,9 +24,9 @@ interface UserBasicInfo {
     ci: string,
 }
 interface ExamInfoToShow {
-    id:string,
+    id: string,
     nombre: string,
-    uId:string,
+    uId: string,
     fechaInicio: number,
     fechaFin: number,
     estaActivo: boolean,
@@ -48,7 +50,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 export default function AllExams() {
     // SHOWING EXAM INFO
-    const [getAgain,setGetAgain] = useState(true);
+    const [getAgain, setGetAgain] = useState(true);
     const { data: examenes, loading } = useGetAllGeneric(endpoint.examenes.getAllPlus, getAgain)
 
     const [rows, setRows] = useState([]);
@@ -60,28 +62,30 @@ export default function AllExams() {
 
             console.log('examenes')
             console.log(examenes)
-            if (examenes.length>0){
-            const rowsTemp: ExamInfoToShow[] = examenes.map((e) => {
-                return {
-                    id:e.id,
-                    nombre: e.testNombre,
-                    uId: e.testUId,
-                    fechaInicio: e.fechaInicio,
-                    fechaFin: e.fechaFin,
-                    estaActivo: e.estaActivo,
-                    usersForTooltip: <>
-                        {e.usuarios.length ?
-                            e.usuarios.map((u) => <div>{"Nombre: " + u.nombre + " |  Apellidos: " + u.apellidos + " | Ci: " + u.ci}<br /></div>)
-                            :
-                            <div>Aún no hay usuarios asignados a este examen</div>}
-                    </>,
-                    usersRaw: e.usuarios,
-                    isOriginalPattern: e.esPatronOriginal
-                }
-            });
-            setRows(stableSort(rowsTemp, getComparator(order, orderBy)))
+            if (examenes.length > 0) {
+                const rowsTemp: ExamInfoToShow[] = examenes.map((e) => {
+                    return {
+                        id: e.id,
+                        nombre: e.testNombre,
+                        uId: e.testUId,
+                        fechaInicio: e.fechaInicio,
+                        fechaFin: e.fechaFin,
+                        estaActivo: e.estaActivo,
+                        usersForTooltip: <>
+                            {e.usuarios.length ?
+                                e.usuarios.map((u) => <div>{"Nombre: " + u.nombre + " |  Apellidos: " + u.apellidos + " | Ci: " + u.ci}<br /></div>)
+                                :
+                                <div>Aún no hay usuarios asignados a este examen</div>}
+                        </>,
+                        usersRaw: e.usuarios,
+                        isOriginalPattern: e.esPatronOriginal
+                    }
+                });
+                setRows(stableSort(rowsTemp, getComparator(order, orderBy)))
+            }
         }
-        }
+        else
+        setRows([])
     }, [examenes])
 
     const unixToDate = (unixtimestamp) => {
@@ -116,13 +120,38 @@ export default function AllExams() {
         if (examValues)
             setOpenModal(true)
     }, [examValues])
-    const handleCloseModal = (row) => { setOpenModal(false);setGetAgain(true); }
+    const handleCloseModal = (row) => { setOpenModal(false); setGetAgain(true); }
 
     useEffect(() => {
-if(!loading)
-setGetAgain(false)
-    }, [loading])
+        if (!loading)
+            setGetAgain(false)
+    }, [examenes, loading])
+
+
+    // DELETE ASK CONFIRMATION MODAL
+    const [selectedExamId,setSelectedExamId] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenDeleteModal = (id) => {setSelectedExamId(id); setOpenDeleteModal(true);}
+  const handleCloseDeleteModal = () => { setOpenDeleteModal(false); /* setDeleteBackendResponse("") */};
     
+
+  const deleteHandler = async () => {
+
+    const delResp = await Delete(selectedExamId, endpoint.examenes.general)
+    setDeleteBackendResponse(delResp);
+    setOpenDeleteModal(false)
+    setOpenDeleteBackendResponseModal(true);
+}
+  // DELETE BACKEND RESPONSE
+  const [openDeleteBackendResponseModal, setOpenDeleteBackendResponseModal] = React.useState(false);
+
+    const [deleteBackenResponse, setDeleteBackendResponse] = useState("");
+
+    const deleteResponseHandler = ()=>{
+        setOpenDeleteBackendResponseModal(false);
+        setDeleteBackendResponse("");
+        setGetAgain(true);
+    }
     return (
         <>
             <TableContainer component={Paper} sx={{ width: '80%' }}>
@@ -146,7 +175,7 @@ setGetAgain(false)
                                 >
                                     <TableRow
                                         // key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } , backgroundColor:row.estaActivo &&'#ffd0a0'}}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: row.estaActivo && '#ffd0a0' }}
                                     >
                                         <TableCell component="th" scope="row">
                                             {row.nombre}
@@ -163,7 +192,7 @@ setGetAgain(false)
                                         </TableCell>
                                         <TableCell align="right">
                                             {<IconButton
-                                            // onClick={handleOpenModifyUserModal}
+                                                onClick={()=>handleOpenDeleteModal(row.id)}
                                             >
                                                 <DeleteIcon />
                                             </IconButton>}
@@ -181,9 +210,20 @@ setGetAgain(false)
                     }
                 </Table>
             </TableContainer>
+            {/* MODIFY EXAM MODAL */}
             <Modal open={openModal} sx={{ p: '20px', overflow: 'auto' }}>
                 <CreateExam examValues={examValues} onClose={handleCloseModal} />
             </Modal>
+
+            {/* DELETE ASK CONFIRMATION MODAL */}
+            {/* <Modal open={openDeleteModal} sx={{ p: '20px', overflow: 'auto' }}> */}
+                <DeleteAskConfirmationModal open={openDeleteModal} onConfirm={deleteHandler} onClose={handleCloseDeleteModal} />
+            {/* </Modal> */}
+
+            {/* DELETE Backend Response MODAL */}
+            {/* <Modal open={openDeleteBackendResponseModal} sx={{ p: '20px', overflow: 'auto' }}> */}
+                <DeleteResponseModal open={openDeleteBackendResponseModal} backendResponse={deleteBackenResponse} onClose={deleteResponseHandler} />
+            {/* </Modal> */}
         </>
     );
 }
