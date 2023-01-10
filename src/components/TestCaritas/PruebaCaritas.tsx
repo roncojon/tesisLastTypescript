@@ -120,7 +120,7 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
 // Cuando termina la funcion resultadosHandler() se activa el done, y al hacerlo se convierten los resultadosDePrueba q
 // actualmente estan en forma de array, en string listos para el backend y se pasan al componente endExamModal
 // el cual indica q se termino la prueba e indica q se subieron correctamente los resultados
-  useEffect(() => { setTimeout(() => setTiempoAgotado(true), (tiempoLimiteMs +20000)/* 6000 */ /* 180000 */); }, [])
+  useEffect(() => { setTimeout(() => setTiempoAgotado(true), /* tiempoLimiteMs */6000 /* 180000 */); }, [])
 
   const [finalString, setFinalString] = useState('');
 

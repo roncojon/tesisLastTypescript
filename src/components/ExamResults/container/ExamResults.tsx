@@ -1,9 +1,9 @@
 import React from 'react'
 import ExamsResultsTable from '../components/ExamResultsTable'
 
-const ExamResults = () => {
+const ExamResults = ({data,onClose}) => {
   return (
-    <ExamsResultsTable/>
+    <ExamsResultsTable data={data } onClose={onClose}/>
   )
 }
 

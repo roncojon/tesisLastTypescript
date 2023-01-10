@@ -71,20 +71,12 @@ const CustomTableCell = (props) => {
     )
 }
 
-export default function ExamsResultsTable () {
+export default function ExamsResultsTable ({data,onClose})/* ({ data }: UserExamResult[]) */ {
     return (
-        <div style={{width:'1024px', padding:'2px'}}>
-        <ERTable data={[testo, testo2]} />
-        </div>
-    )
-}
-
-export function ERTable({ data }: UserExamResultArr) {
-    // const classes = useStyles();
-
-    return (
+        <div style={{width:'1000px', padding:'2px'}}>
+        {/* <ERTable data={[testo, testo2]} /> */}
         <TableContainer component={Paper} >
-            <Table sx={{ minWidth: '1000px', }}/* className={classes.table} */ aria-label="simple table">
+            <Table sx={{ minWidth: '980px', }}/* className={classes.table} */ aria-label="simple table">
                 <TableHead sx={{ fontSize: '8px' }}>
                     <TableRow sx={{ height: '30px', }}>
                         <CustomTableCell /* width={110} */component="th" scope="row" >Nombre</CustomTableCell>
@@ -123,5 +115,53 @@ export function ERTable({ data }: UserExamResultArr) {
                 </TableBody>
             </Table>
         </TableContainer>
-    );
+        </div>
+    )
 }
+
+/* export function ERTable({ data }: UserExamResultArr) {
+    // const classes = useStyles();
+
+    return (
+        <TableContainer component={Paper} >
+            <Table sx={{ minWidth: '980px', }}aria-label="simple table">
+                <TableHead sx={{ fontSize: '8px' }}>
+                    <TableRow sx={{ height: '30px', }}>
+                        <CustomTableCell component="th" scope="row" >Nombre</CustomTableCell>
+                        <CustomTableCell >Apellidos</CustomTableCell>
+                        <CustomTableCell>Intentos</CustomTableCell>
+                        <CustomTableCell>Anotaciones</CustomTableCell>
+                        <CustomTableCell>Errores</CustomTableCell>
+                        <CustomTableCell>Omisiones</CustomTableCell>
+                        <CustomTableCell>Igap</CustomTableCell>
+                        <CustomTableCell>Ici</CustomTableCell>
+                        <CustomTableCell>% aciertos</CustomTableCell>
+                        <CustomTableCell>Eficacia atencional</CustomTableCell>
+                        <CustomTableCell>Eficiencia atencional</CustomTableCell>
+                        <CustomTableCell>Rendimiento Atencional</CustomTableCell>
+                        <CustomTableCell>Calidad atención</CustomTableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody sx={{ fontSize: '8px' }}>
+                    {data.map((row) => (
+                        <TableRow key={row.Intentos}>
+                            <CustomTableCell component="th" scope="row" >{row.Nombre}</CustomTableCell>
+                            <CustomTableCell>{row.Apellidos}</CustomTableCell>
+                            <CustomTableCell>{row.Intentos}</CustomTableCell>
+                            <CustomTableCell>{row.Anotaciones}</CustomTableCell>
+                            <CustomTableCell>{row.Errores}</CustomTableCell>
+                            <CustomTableCell>{row.Omisiones}</CustomTableCell>
+                            <CustomTableCell>{row.Igap}</CustomTableCell>
+                            <CustomTableCell>{row.Ici}</CustomTableCell>
+                            <CustomTableCell>{row.Pcaciertos}</CustomTableCell>
+                            <CustomTableCell>{row.Eficaciaatencional}</CustomTableCell>
+                            <CustomTableCell>{row.Eficienciaatencional}</CustomTableCell>
+                            <CustomTableCell>{row.RendimientoAtencional}</CustomTableCell>
+                            <CustomTableCell>{row.Calidaddeatencion}</CustomTableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+} */

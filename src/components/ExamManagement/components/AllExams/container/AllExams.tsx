@@ -17,6 +17,8 @@ import CreateExam from '../../CreateExam';
 import { getComparator, Order, stableSort } from 'components/UserManagement/container/Commons';
 import DeleteAskConfirmationModal from '../components/DeleteAskConfirmationModal';
 import DeleteResponseModal from '../components/DeleteResponseModal';
+import Visibility from '@mui/icons-material/Visibility';
+import ExamResults from 'components/ExamResults';
 
 interface UserBasicInfo {
     nombre: string,
@@ -32,7 +34,8 @@ interface ExamInfoToShow {
     estaActivo: boolean,
     usersForTooltip: any/* UserBasicInfo[] | any */,
     usersRaw: any,
-    isOriginalPattern: boolean
+    isOriginalPattern: boolean,
+    results:any
 }
 
 
@@ -78,7 +81,8 @@ export default function AllExams() {
                                 <div>Aún no hay usuarios asignados a este examen</div>}
                         </>,
                         usersRaw: e.usuarios,
-                        isOriginalPattern: e.esPatronOriginal
+                        isOriginalPattern: e.esPatronOriginal,
+                        results:e.results
                     }
                 });
                 setRows(stableSort(rowsTemp, getComparator(order, orderBy)))
@@ -152,6 +156,18 @@ export default function AllExams() {
         setDeleteBackendResponse("");
         setGetAgain(true);
     }
+
+    // SHOW EXAM RESULTS
+    const [openExamResultsModal, setOpenExamResultsModal] = React.useState(false);
+    const [examResults, setExamResults] = React.useState<any | null>(null);
+
+    useEffect(() => {
+        if(examResults!==null)
+        setOpenExamResultsModal(true)
+    }, [examResults])
+    
+    console.log('examResults')
+    console.log(examResults)
     return (
         <>
             <TableContainer component={Paper} sx={{ width: '80%' }}>
@@ -162,6 +178,7 @@ export default function AllExams() {
                             <TableCell align="left">Fecha inicio</TableCell>
                             <TableCell align="left">Fecha de fin</TableCell>
                             <TableCell align="left">Activo</TableCell>
+                            <TableCell align="right">&nbsp;</TableCell>
                             <TableCell align="right">&nbsp;</TableCell>
                             <TableCell align="right">&nbsp;</TableCell>
                         </TableRow>
@@ -197,6 +214,13 @@ export default function AllExams() {
                                                 <DeleteIcon />
                                             </IconButton>}
                                         </TableCell>
+                                        <TableCell align="right">
+                                            {<IconButton
+                                                onClick={()=>setExamResults(row)}
+                                            >
+                                                <Visibility/>
+                                            </IconButton>}
+                                        </TableCell>
                                     </TableRow>
                                 </HtmlTooltip>
                             ))}
@@ -224,6 +248,10 @@ export default function AllExams() {
             {/* <Modal open={openDeleteBackendResponseModal} sx={{ p: '20px', overflow: 'auto' }}> */}
                 <DeleteResponseModal open={openDeleteBackendResponseModal} backendResponse={deleteBackenResponse} onClose={deleteResponseHandler} />
             {/* </Modal> */}
+
+            <Modal open={openExamResultsModal} sx={{ p: '20px', overflow: 'auto' }}>
+                <ExamResults data onClose={()=>{setExamResults(null);setOpenExamResultsModal(false)}}/* examValues={examValues} onClose={handleCloseModal} */ />
+            </Modal>
         </>
     );
 }
