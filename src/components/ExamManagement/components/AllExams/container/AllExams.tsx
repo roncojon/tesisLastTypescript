@@ -18,7 +18,7 @@ import { getComparator, Order, stableSort } from 'components/UserManagement/cont
 import DeleteAskConfirmationModal from '../components/DeleteAskConfirmationModal';
 import DeleteResponseModal from '../components/DeleteResponseModal';
 import Visibility from '@mui/icons-material/Visibility';
-import ExamResults from 'components/ExamResults';
+import ExamResultsModal from 'components/ExamResults';
 
 interface UserBasicInfo {
     nombre: string,
@@ -249,9 +249,14 @@ export default function AllExams() {
                 <DeleteResponseModal open={openDeleteBackendResponseModal} backendResponse={deleteBackenResponse} onClose={deleteResponseHandler} />
             {/* </Modal> */}
 
-            <Modal open={openExamResultsModal} sx={{ p: '20px', overflow: 'auto' }}>
-                <ExamResults data onClose={()=>{setExamResults(null);setOpenExamResultsModal(false)}}/* examValues={examValues} onClose={handleCloseModal} */ />
-            </Modal>
+            {/* <Modal open={openExamResultsModal} sx={{ p: '20px', overflow: 'auto' }}> */}
+                <ExamResultsModal
+                open={openExamResultsModal} 
+                data={examResults}
+                onClose={()=>{setExamResults(null);setOpenExamResultsModal(false)}}
+                sx={{ p: '20px', overflow: 'auto', width:'100%', height:'100vh'}}
+                />
+           {/*  </Modal> */}
         </>
     );
 }

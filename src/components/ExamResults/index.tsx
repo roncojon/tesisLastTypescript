@@ -1,3 +1,3 @@
-import ExamResults from "./container/ExamResults";
+import ExamResultsModal from "./container/ExamResults";
 
-export default ExamResults
+export default ExamResultsModal

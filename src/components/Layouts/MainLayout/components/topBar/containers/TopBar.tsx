@@ -83,7 +83,7 @@ const TopBar = () => {
               Gestionar exámenes
             </Button>
 
-            <Button
+            {/* <Button
               component={Link}
               to='/listado'
               startIcon={<ReceiptLongIcon />}
@@ -93,7 +93,7 @@ const TopBar = () => {
               disableFocusRipple={false}
             >
               Resultados de exámenes
-            </Button>
+            </Button> */}
 
             <Button
               // onClick={() => subElementsHandler(adminSiteMenuElements,1)}
