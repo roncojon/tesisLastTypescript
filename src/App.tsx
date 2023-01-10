@@ -88,7 +88,7 @@ function App() {
                 <RouteWithLayout component={AnswerTest} layout={MainLayout} />
               </RequireAuth>}
           />
-          <Route path="/login" element={<Chart />} />
+          <Route path="/login" element={<Login />} />
           <Route element={<Navigate to={"/login"} />} path="*" />
         </Routes>
       </BrowserRouter>

@@ -13,38 +13,52 @@ import { useState } from 'react';
 import PruebaCaritas from 'components/TestCaritas/PruebaCaritas';
 import { decodePatternAsString, patternAsObjArray, patternToTest } from 'functions/decodePatternFromBackend';
 //.....
-export default function AnswerTestCard({examen}) {
-const [openTest,setOpenTest] = useState(false);
-const [pattern,setPattern] = useState(decodePatternAsString(examen.patronClave))
-console.log('decodePatternAsString(examen.patronClave)')
+export default function AnswerTestCard({ examen }) {
+  const [openTest, setOpenTest] = useState(false);
+  const [pattern, setPattern] = useState(decodePatternAsString(examen.patronClave))
+  console.log('decodePatternAsString(examen.patronClave)')
   return (
-    <Card sx={{ margin:'10px', width: 300  }}>
-      <CardContent sx={{height:'46px',}}>
-      <Typography sx={{fontSize:'20px',fontWeight:'600'}} gutterBottom variant="h5" component="div">
+    <Card sx={{ margin: '10px', width: '320px' }}>
+      <CardContent sx={{ height: '46px', }}>
+        <Typography sx={{ fontSize: '20px', fontWeight: '600' }} gutterBottom variant="h5" component="div">
           {examen.testNombre}
         </Typography>
-        </CardContent>
-      <div className='divCardMedia'><CardMedia sx={{margin:'0'}}
+      </CardContent>
+      <div className='divCardMedia'><CardMedia sx={{ margin: '0' }}
         component="img"
         height="100"
         width='300px'
         image={imge}
         alt="Caritas"
       /></div>
-      <CardContent sx={{height:'86px',}}>
-        
-        <Typography sx={{height:'66px',overflowY:'auto'}}   variant="body2" color="text.secondary">
+      <CardContent sx={{ height: '86px', mb: '5px' }}>
+
+        <Typography sx={{ height: '76px', overflowY: 'auto' }} variant="body2" color="text.secondary">
           {examen.descripcion}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button 
-        variant='contained' 
-        size="small"
-        onClick={()=>setOpenTest(true)}
+        <Button
+          variant='contained'
+          size="small"
+          onClick={() => setOpenTest(true)}
         >Comenzar examen</Button>
-        <Modal open={openTest} sx={{overflow:'auto', padding:'40px',
-      '& .MuiBackdrop-root':{backdropFilter: "blur(15px)"}}}><><PruebaCaritas pattern={pattern} examId={examen.id} cantColumnas={examen.cantColumnas}/></></Modal>
+        <Modal
+          open={openTest}
+          sx={{
+            overflow: 'auto', padding: '40px',
+            '& .MuiBackdrop-root': { backdropFilter: "blur(15px)" }
+          }}
+        >
+          <>
+            <PruebaCaritas
+              pattern={pattern}
+              examId={examen.id}
+              cantColumnas={examen.cantColumnas}
+              tiempoLimiteMs={examen.tiempoLimiteMs}
+            />
+          </>
+        </Modal>
       </CardActions>
     </Card>
   );

@@ -74,20 +74,21 @@ const navigate = useNavigate();
   
 
 
-  console.log('REALIZAAAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRR: ')
-  console.log( ' valor de la dataaaaaaaa', data)
+ 
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap',justifyContent:'center' }}>
       {/* !loading &&  */data ?
         data.map((e) =>
-          <AnswerTestCard key={e.id} examen={e}
+        {/* console.log('One Exam: ')
+        console.log(e) */
+          return (<AnswerTestCard key={e.id} examen={e}
             /* onClick={() => {
               if (e.testNombre === 'Caritas')
               navigate('/pruebacaritas')
         }} */
-          />
-          
+          />)
+        }
           
         )
         : '...'}

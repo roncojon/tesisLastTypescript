@@ -63,7 +63,7 @@ let sendTestDataCounter = 0;
   ]
 } */
 
-function PruebaCaritas({ pattern: imgs, examId ,cantColumnas}) {
+function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
   /* console.log('imgs')
   console.log(imgs) */
   console.log('examId')
@@ -120,7 +120,7 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas}) {
 // Cuando termina la funcion resultadosHandler() se activa el done, y al hacerlo se convierten los resultadosDePrueba q
 // actualmente estan en forma de array, en string listos para el backend y se pasan al componente endExamModal
 // el cual indica q se termino la prueba e indica q se subieron correctamente los resultados
-  useEffect(() => { setTimeout(() => setTiempoAgotado(true), 4000); }, [])
+  useEffect(() => { setTimeout(() => setTiempoAgotado(true), (tiempoLimiteMs +20000)/* 6000 */ /* 180000 */); }, [])
 
   const [finalString, setFinalString] = useState('');
 
@@ -146,7 +146,7 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas}) {
       {/* OTRA OPCION, en el Context solo guardar un numero, el index de la ultima imagen marcada, CUANDO MARCA MANDA AL CONTEXT y
        compara, si es menor pues no deja marcar. O sea cada Imagen.js comprobar si su index es menor q el index del Context, y si es asi cambia estilo y no deja marcarse  */}
       <PruebaCaritasProvider>
-        <Box sx={{ ...pCaritasContainer, overflow: `${isSmallerThan850px && 'auto'}`, }}/* className='pCaritas' */>
+        <Box sx={{ ...pCaritasContainer, overflow: isSmallerThan850px && 'auto', }}/* className='pCaritas' */>
           {matriz.map((fila) => {
             counter2++;
             return <FilaDe4Imagenes key={`${fila[0].counter}`} imagenes={fila} numeroDeFila={counter2} onTiempoAgotado={resultadosHandler} timeAgotado={tiempoAgotado} />
