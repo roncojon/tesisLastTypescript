@@ -19,8 +19,8 @@ import { endpoint, urlBase } from "../../../httpRequests";
 import { useAppDispatch } from "stores";
 import { setAuthenticationInfo } from "stores/authenticationState.store";
 // import { loginRequest } from '../../../authConfigItau';
-import logoUne from "../../../imgs/une.svg";
-import fotoUne from "../../../imgs/guiteras.jpeg";
+import logoUne from "assets/imgs/une.svg";
+import fotoUne from "assets/imgs/guiteras.jpeg";
 
 const style = {
 	position: "absolute",

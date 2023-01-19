@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import sideBarStyles, { logo, logoStyles, /* sideBarContainer, */ sideBarSuperContainer, sideBarTop } from './SideBarStyles';
-import logoUne from '../../../../../../imgs/une.svg'
+import logoUne from 'assets/imgs/une.svg'
 /* const CustomizedButton = styled(Button)`
   color: #20b2aa;
 

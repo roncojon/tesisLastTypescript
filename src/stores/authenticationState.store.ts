@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthenticationStateObject } from 'interfaces/authenticationStateObject';
+import { AuthenticationStateObject } from 'commons/storeTypes/authenticationStateObject';
 
 
 /* const initialState: CompanyState = {

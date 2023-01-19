@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './SubTopBarStyles.css';
 import { Box, Container, Tab, Tabs } from '@mui/material';
 import {  useAppDispatch } from 'stores';
-import { MenuElement } from 'interfaces/subTopMenuElements';
+import { MenuElement } from 'commons/storeTypes/subTopMenuElements';
 import { Link, useLocation } from 'react-router-dom';
 
 /* const CustomizedButton = styled(Button)`

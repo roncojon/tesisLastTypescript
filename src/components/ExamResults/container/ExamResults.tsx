@@ -2,15 +2,19 @@ import { Modal } from '@mui/material'
 import React from 'react'
 import ExamsResultsTable from '../components/ExamResultsTable'
 
-const ExamResultsModal = ({open,data,onClose, /* children , */ ...rest}) => {
-  
+const ExamResultsModal = ({ open, data, onClose, /* children , */ ...rest }) => {
+
   return (
-    <Modal 
-    open={open} 
-    onClose={onClose}
-    {...rest}
+    <Modal
+      open={open}
+      onClose={onClose}
+      {...rest}
     >
-    <ExamsResultsTable data={data } onClose={onClose}/>
+      {data ?
+        <ExamsResultsTable data={data} onClose={onClose} />
+        :
+        <h2>No se encuentran usuarios en este examen</h2>
+      }
     </Modal>
   )
 }

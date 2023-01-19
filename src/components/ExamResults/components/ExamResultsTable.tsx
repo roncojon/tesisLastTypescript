@@ -91,7 +91,7 @@ console.log(data.results)
                     <Close />
                 </IconButton>
             </Box>
-            {data.results ?
+            {data.results.length ?
                 <TableContainer component={Paper} sx={{ minWidth: '980px', mt: '30px' }}>
                     <Table /* sx={{ minWidth: '980px', }} *//* className={classes.table} */ aria-label="simple table">
                         <TableHead sx={{ fontSize: '8px' }}>
@@ -113,30 +113,28 @@ console.log(data.results)
                         </TableHead>
                         <TableBody sx={{ fontSize: '8px' }}>
                            {data.results.map((userResult)=>{
-
                                return(
                                 <TableRow /*  key={row.intentosTotales} */>
                                     <CustomTableCell component="th" scope="row" >{(data.usersRaw.find((u) => u.ci === userResult.usuarioCi)).nombre}</CustomTableCell>
                                     <CustomTableCell>{(data.usersRaw.find((u) => u.ci === userResult.usuarioCi)).apellidos}</CustomTableCell>
-                                    <CustomTableCell>{userResult.intentosTotales}</CustomTableCell>
-                                    <CustomTableCell>{userResult.anotacionesTotales}</CustomTableCell>
-                                    <CustomTableCell>{userResult.erroresTotales}</CustomTableCell>
-                                    <CustomTableCell>{userResult.omisionesTotales}</CustomTableCell>
-                                    <CustomTableCell>{userResult.igap}</CustomTableCell>
-                                    <CustomTableCell>{userResult.ici}</CustomTableCell>
-                                    <CustomTableCell>{userResult.porCientoDeAciertos}</CustomTableCell>
-                                    <CustomTableCell>{userResult.eficaciaAtencional}</CustomTableCell>
-                                    <CustomTableCell>{userResult.eficienciaAtencional}</CustomTableCell>
-                                    <CustomTableCell>{userResult.rendimientoAtencional}</CustomTableCell>
-                                    <CustomTableCell>{userResult.calidadDeLaAtencion}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.intentosTotales : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.anotacionesTotales : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.erroresTotales : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.omisionesTotales : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.igap : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.ici : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.porCientoDeAciertos : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.eficaciaAtencional : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.eficienciaAtencional : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.rendimientoAtencional : '-'}</CustomTableCell>
+                                    <CustomTableCell>{userResult.intentosTotales ? userResult.calidadDeLaAtencion : '-'}</CustomTableCell>
                                 </TableRow>
-                            
                             )})}
                         </TableBody>
                     </Table>
                 </TableContainer> :
                 <Box>
-                    <h3>Ningún usuario ha realizado este examen</h3>
+                    <h3>No se encuentran usuarios asignados a este examen</h3>
                 </Box>
             }
         </Box>

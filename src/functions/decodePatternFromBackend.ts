@@ -1,4 +1,4 @@
-import { imagenes } from "imgs";
+import { imagenes } from "assets/imgs";
 import { type } from "os";
 // import patternAsString 
 
