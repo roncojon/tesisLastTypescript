@@ -2,7 +2,7 @@
 import LoginContext from "../context/LoginContext";
  */
 
-export const urlBase = 'http://192.168.188.201:5000/api/';
+export const urlBase = 'http://192.168.188.202:5001/api/'// 'http://192.168.188.201:5000/api/';
 export const endpoint = {
     pruebas: {
         caritas: 'pruebadecaritas',
