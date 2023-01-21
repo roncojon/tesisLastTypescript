@@ -16,7 +16,7 @@ import "./loginStyles.css";
 import { logoItau, logoMicrosoft } from "./logoItauSvg";
 import { useLogin } from "../../../hooks/useLogin";
 import { endpoint, urlBase } from "../../../httpRequests";
-import { useAppDispatch } from "stores";
+import { useAppDispatch, useAppState } from "stores";
 import { setAuthenticationInfo } from "stores/authenticationState.store";
 // import { loginRequest } from '../../../authConfigItau';
 import logoUne from "assets/imgs/une.svg";
@@ -57,14 +57,18 @@ const contRight = {
 };
 
 const Login = () => {
+	
 	const dispatch = useAppDispatch();
+	const {userRol} = useAppState((state) => state.authenticationInfo);
+	const navigate = useNavigate();
+
 	/* 
   const handleClick = (index) => {
-    dispatch(
-      setIsAuthenticated({
-        value: index,
-      }),
-    )
+	dispatch(
+	  setIsAuthenticated({
+		value: index,
+	  }),
+	)
   }; */
 	// Credenciales de usuario
 	const [userCredentials, setUserCredentials] = useState({
@@ -96,11 +100,13 @@ const Login = () => {
 				setAuthenticationInfo({
 					isAuthenticated: true,
 					accessToken: loginResponse.access_token,
+					userRol: loginResponse.roles_name,
 					userId: loginResponse.usuario_id,
 					// userRoles
 				})
 			);
-			sessionStorage.setItem("modalIsOpen", "true");
+			
+			// sessionStorage.setItem("modalIsOpen", "true");
 			/* // SETTING ITEM
 sessionStorage.setItem('authInfo', JSON.stringify({
   isAuthenticated: true,
@@ -112,15 +118,45 @@ sessionStorage.setItem('authInfo', JSON.stringify({
 
 // GETTING ITEM
 console.log('JSON.parse(sessionStorage.authInfo)')
-    console.log(JSON.parse(sessionStorage.authInfo))
-    // // // // // */
+	console.log(JSON.parse(sessionStorage.authInfo))
+	// // // // // */
 
 			// (loginResponse.access_token)
+
+			/* if(loginResponse.roles_name.includes('ADMINISTRADOR'))
 			navigate("/userslist");
+			if(loginResponse.roles_name.includes("EXAMINADOR"))
+			navigate("/crearExamen");
+			else
+			navigate("/realizarExamen"); */
+
 		} else if (loginResponse) {
 			setOpenModal2(true);
 		}
 	}, [loginResponse]);
+
+	useEffect(() => {
+		if (userRol !== null) {
+			console.log('userRolPuted')
+			console.log(userRol)
+			// navigate("/responderpruebas");
+			if (userRol.includes("ADMINISTRADOR"))
+				navigate("/userslist");
+			else {
+				if (userRol.includes("EXAMINADOR"))
+					navigate("/allexams");
+				else if (userRol.includes("EXAMINADO"))
+					navigate("/responderpruebas");
+			}
+
+			/* if (userRol.includes('ADMINISTRADOR'))
+				navigate("/userslist");
+			if (userRol.includes("EXAMINADOR"))
+				navigate("/crearExamen");
+			else
+				navigate("/realizarExamen"); */
+		}
+	}, [userRol])
 
 	// Modal 1, para autenticacion
 	const [open, setOpen] = React.useState(false);
@@ -132,7 +168,6 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 	const handleOpenModal2 = () => setOpenModal2(true);
 	const handleCloseModal2 = () => setOpenModal2(false);
 
-	const navigate = useNavigate();
 	// const location: any = useLocation();
 	// const from = location.state && location.state.from?.pathname || "/";
 
@@ -142,8 +177,8 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 		if (!userCiToSend) setCiError(true);
 		if (!userPassToSend) setPassError(true);
 		else {
-      setUserCredentials({ ci: userCiToSend, password: userPassToSend });
-      setOpen(false);
+			setUserCredentials({ ci: userCiToSend, password: userPassToSend });
+			setOpen(false);
 		}
 	};
 
@@ -172,7 +207,7 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 					<div
 						/* className="loginCarousel" */
 						id="loginImg"
-						// style={{ left: 0, position: 'absolute', width: '980px', float: 'left' }}
+					// style={{ left: 0, position: 'absolute', width: '980px', float: 'left' }}
 					>
 						<img style={{ height: "768px" }} alt="Éxito" src={fotoUne} />
 					</div>
@@ -244,9 +279,9 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 									}}
 									onFocus={() => setCiError(false)}
 									/* id="loginuser" */ label="Carnet de identidad"
-                  variant="standard"
-                  error={ciError}
-                  helperText="Inserte su número de Carnet de identidad"
+									variant="standard"
+									error={ciError}
+									helperText="Inserte su número de Carnet de identidad"
 									sx={{ width: "80%" }}
 								/>
 								<hr style={{ border: "1px solid transparent" }} />
@@ -257,9 +292,9 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 									onFocus={() => setPassError(false)}
 									/* value={} */ /* id="loginuser" */ type="password"
 									label="Contraseña"
-                  variant="standard"
-                  error={passError}
-                  helperText="Inserte su contraseña"
+									variant="standard"
+									error={passError}
+									helperText="Inserte su contraseña"
 									sx={{ width: "80%" }}
 								/>
 								<hr style={{ border: "1px solid transparent" }} />
@@ -287,7 +322,7 @@ console.log('JSON.parse(sessionStorage.authInfo)')
 								<br />
 								<Button
 									onClick={handleCloseModal2}
-									/* onClick={()=>{} */ style={{
+									 style={{
 										border: "none",
 										backgroundColor: "transparent",
 									}}

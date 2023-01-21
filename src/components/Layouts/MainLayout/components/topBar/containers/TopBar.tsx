@@ -19,18 +19,20 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import TopBarModal from '../components/TopBarModal';
 import accountUserCircle from '../components/accountUserCircle.png';
 import { appbarStyles, searchBarAndButtonsBoxStyle, buttonsBoxStyle, buttonStyle } from './TobBarStyles';
-import { useAppDispatch } from 'stores';
- import { setAuthenticationInfo } from 'stores/authenticationState.store';
+import { useAppDispatch, useAppState } from 'stores';
+import { setAuthenticationInfo } from 'stores/authenticationState.store';
 
 
 const settings = ['Logout'];
 
 const TopBar = () => {
   const dispatch = useAppDispatch();
+  const { userRol } = useAppState((state) => state.authenticationInfo);
+  console.log('userRol')
+  console.log(userRol)
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  // const { instance } = useMsal();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -40,7 +42,10 @@ const TopBar = () => {
     if (action === 'Logout') {
       dispatch(
         setAuthenticationInfo({
-          isAuthenticated: false
+          isAuthenticated: false,
+					accessToken: null,
+					userRol: null,
+					userId: null,
         }),
       );
       navigate('/login')
@@ -48,67 +53,47 @@ const TopBar = () => {
     setAnchorElUser(null);
   };
 
-  ///////////////////////////////
-  
   return (
     <AppBar
-      /* position="static" */
       sx={appbarStyles}>
       <Box sx={searchBarAndButtonsBoxStyle}>
         <Toolbar disableGutters sx={{ height: 72 }}>
-          {/* <SearchBar /> */}
-
           <Box
             sx={buttonsBoxStyle}>
             <Button
-              // onClick={() =>subElementsHandler(doTestMenuElements,0)}
               disabled={false}
-              // variant='contained' // quitar cuando se habilite 
               component={Link}
               to="/responderpruebas" startIcon={<BorderColorIcon />}
               sx={buttonStyle}
             >
               Realizar prueba
             </Button>
-
-            <Button
-              // onClick={() => subElementsHandler(createExamMenuElements,1)}
-              disabled={false}
-              // variant='contained' // quitar cuando se habilite 
-              component={Link}
-              to='/crearexamen'
-              startIcon={<PlaylistAddIcon />}
-              sx={buttonStyle}
-            >
-              Gestionar exámenes
-            </Button>
-
-            {/* <Button
-              component={Link}
-              to='/listado'
-              startIcon={<ReceiptLongIcon />}
-              sx={buttonStyle}
-              disableElevation={false}
-              disableRipple={false}
-              disableFocusRipple={false}
-            >
-              Resultados de exámenes
-            </Button> */}
-
-            <Button
-              // onClick={() => subElementsHandler(adminSiteMenuElements,1)}
-              component={Link}
-              to="/userslist"
-              startIcon={<BusinessIcon />}
-              sx={buttonStyle}
-              disableElevation={false}
-              disableRipple={false}
-              disableFocusRipple={false}
-            >
-              Administrar sitio
-            </Button>
-
-            
+            {userRol &&
+              (userRol.includes('EXAMINADOR') || userRol.includes('ADMINISTRADOR')) &&
+              <Button
+                disabled={false}
+                component={Link}
+                to='/allexams'
+                startIcon={<PlaylistAddIcon />}
+                sx={buttonStyle}
+              >
+                Gestionar exámenes
+              </Button>
+            }
+            {userRol &&            
+              userRol.includes('ADMINISTRADOR') &&
+                <Button
+                  component={Link}
+                  to="/userslist"
+                  startIcon={<BusinessIcon />}
+                  sx={buttonStyle}
+                  disableElevation={false}
+                  disableRipple={false}
+                  disableFocusRipple={false}
+                >
+                  Administrar sitio
+                </Button>
+            }
           </Box>
 
           <Box sx={{ flexGrow: 0, /* mr:10 */ }}>
@@ -141,7 +126,7 @@ const TopBar = () => {
             </Menu>
           </Box>
         </Toolbar>
-        <TopBarModal />
+        {/* <TopBarModal /> */}
       </Box>
     </AppBar>
   );

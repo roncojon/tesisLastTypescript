@@ -7,6 +7,7 @@ import { endpoint } from 'httpRequests';
 import { useGetAllGeneric } from 'hooks/useGetAllGeneric';
 import { usePost } from 'hooks/usePost';
 import { usePut } from 'hooks/usePut';
+import { useAppState } from 'stores';
 
 const style = {
   position: 'absolute',
@@ -54,6 +55,7 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading
 
   // const {response,loading:loadingRegisterResponse} = usePost(userData ? endpoint.usuarios.usuarioModify : endpoint.usuarios.usuarioRegister,userDataToSend,send)
   // const {response,loading:loadingRegisterResponse} = usePost(endpoint.usuarios.usuarioRegister,userDataToSend,send)
+  const { accessToken } = useAppState((state) => state.authenticationInfo);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { response, loading: loadingRegisterResponse } = userData ? usePut(userData.ci, endpoint.usuarios.usuarioModify, userDataToSend, send) : usePost(endpoint.usuarios.usuarioRegister, userDataToSend, send);
@@ -224,7 +226,7 @@ const UserCreateOrModifyModal = ({ isOpen, onCloseModal, userData, data, loading
                 list={data.roles}
                 values={userData ? userData.roles : []}
                 onSelected={rolesSelectedHandler}
-                helperText={userData ? '' : (userObj.rolesUIds.length ? '' : 'Este campo es requerido')}
+                helperText={userData ? '' : (userObj.rolesUIds.length > 0 ? '' : 'Este campo es requerido')}
               />
               <hr style={{ border: '1px solid transparent' }} />
               <br />

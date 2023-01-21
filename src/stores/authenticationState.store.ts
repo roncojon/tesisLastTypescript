@@ -6,7 +6,7 @@ import { AuthenticationStateObject } from 'commons/storeTypes/authenticationStat
   currentCompany: null,
 }; */
 
-const initialState:AuthenticationStateObject = {isAuthenticated: false, accessToken: null , userId:null};
+const initialState:AuthenticationStateObject = {isAuthenticated: false, accessToken: null ,userRol:null , userId:null};
 
 const authenticationSlice = createSlice({
   name: 'selectedComponent',

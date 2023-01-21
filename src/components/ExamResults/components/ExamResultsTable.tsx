@@ -1,6 +1,8 @@
 import Close from "@mui/icons-material/Close";
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Box, IconButton, Button, Tooltip, Snackbar, Alert, Dialog } from "@mui/material";
+import html2canvas from "html2canvas";
 import * as html2pdf from 'html2pdf.js';
+import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
 import Chart from "./Chart";
 
@@ -106,7 +108,7 @@ export default function ExamsResultsTable({ data, onClose })/* ({ data }: UserEx
     console.log(data.results)
 
     const handleDownloadPdf = () => {
-        const el = document.getElementById('examTableToPdf');
+       /*  const el = document.getElementById('examTableToPdf');
         const opt = {
             margin: [10, 20, 10, 10],
             pagebreak: { mode: 'avoid-all' },
@@ -115,7 +117,28 @@ export default function ExamsResultsTable({ data, onClose })/* ({ data }: UserEx
         };
         const endDate = unixToDate(data.fechaFin);
         const testName = data.nombre;
-        html2pdf().set(opt).from(el).save(`${testName}-${endDate}.pdf`);
+        html2pdf().set(opt).from(el).save(`${testName}-${endDate}.pdf`); */
+
+        const el = document.getElementById('examTableToPdf');
+        const endDate = unixToDate(data.fechaFin);
+        const testName = data.nombre;
+        const doc = new jsPDF({
+            orientation: 'l',
+            unit: 'pt',
+            format: 'a4',
+          });
+        doc.html(el, {
+            callback(d) {
+              d.save(`${testName}-${endDate}.pdf`);
+            },
+            width:980,
+            windowWidth: 1280,
+             autoPaging: 'text',
+            margin: [28, 30, 30, 50],
+          }); 
+        
+        // pdf.save(`${testName}-${endDate}.pdf`);
+      
     }
 
     // Snackbar
@@ -153,7 +176,7 @@ export default function ExamsResultsTable({ data, onClose })/* ({ data }: UserEx
                     <Close />
                 </IconButton>
             </Box>
-            {data.results.length ?
+            {data.results.length>0 ?
                 <div id="examTableToPdf" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '90%',  /* minWidth: '940px', */ maxWidth: '980px', background: 'white', }}>
                     <h3 style={{ marginBottom: '20px' }}>{`${data.nombre}. Fin: ${unixToDate(data.fechaFin)}`}</h3>
 
@@ -223,6 +246,8 @@ export default function ExamsResultsTable({ data, onClose })/* ({ data }: UserEx
                     <h3>No se encuentran usuarios asignados a este examen</h3>
                 </Box>
             }
+            {data.results.length>0 &&
+            <>
             <Snackbar
                 open={open}
                 autoHideDuration={10000}
@@ -247,6 +272,8 @@ export default function ExamsResultsTable({ data, onClose })/* ({ data }: UserEx
                 <Chart data={chartData}/>
             }
             </Dialog>
+            </>
+            }
         </Box>
     )
 }

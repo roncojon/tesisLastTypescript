@@ -2,7 +2,7 @@
 import LoginContext from "../context/LoginContext";
  */
 
-export const urlBase = 'http://192.168.188.202:5001/api/'// 'http://192.168.188.201:5000/api/';
+export const urlBase = process.env.SERVERBASEURL// 'http://192.168.188.201:5000/api/';
 export const endpoint = {
     pruebas: {
         caritas: 'pruebadecaritas',
@@ -31,20 +31,20 @@ export const endpoint = {
     }
 };
 
-export const Get = async (endP) => {
+export const Get = async (endP,accessToken) => {
     //const {accessToken} = useContext(LoginContext);
     /*  fetch(urlBase+endP
      ).then(response => { return response.json() })
        .then(resp => {return resp}) */
-    const pruebasResponse = await fetch(urlBase + endP/* ,
+    const pruebasResponse = await fetch(urlBase + endP,
         {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                //'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             }
 
-        } */).then((resp)=>resp.json()).catch(()=>null);
+        }).then((resp)=>resp.json()).catch(()=>null);
     // const pruebas = await pruebasResponse.json();
 
     //console.log(pruebas);
@@ -100,7 +100,7 @@ export const GetSingleWithComposedKey = (key1, id1, key2, id2, endP) => {
         .then(resp => { return resp })
 };
 
-export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
+export const Post = async (/* key1, value1, key2, value2, */ endP, data, accessToken) => {
     //const {accessToken} = useContext(LoginContext);
     //let f2 = {};
     const response = await fetch(urlBase + endP /* + "?" + key1 + "=" + value1 + "&" + key2 + "=" + value2 */,
@@ -109,7 +109,7 @@ export const Post = async (/* key1, value1, key2, value2, */ endP, data) => {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                //'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             }
         }).catch(()=>null)/* .then((resp)=>resp.json()) *//* .catch(()=>null) */;
 /* console.log('response')
@@ -214,7 +214,7 @@ export const LoginPost = async (endP, data) => {
     //return await f2
 };
 
-export const Put = async (id, endP, data/* , accessToken */) => {
+export const Put = async (id, endP, data, accessToken) => {
     /* const response = await fetch(urlBase + endP + '/' + id,
         {
             method: "PUT",
@@ -232,7 +232,7 @@ export const Put = async (id, endP, data/* , accessToken */) => {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': "Bearer " + accessToken
+                'Authorization': "Bearer " + accessToken
             }
         }).catch(()=>null)/* .then((resp)=>resp.json()).catch(()=>"Err") */;
     // const result = await response.json().catch();
@@ -246,13 +246,13 @@ if (!response.ok) {
     return response;
 };
 
-export const Delete = async (id, endP) => {
+export const Delete = async (id, endP, accessToken) => {
     const response = await fetch(urlBase + endP + '/' + id,
     {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer ' + accessToken
+            'Authorization': 'Bearer ' + accessToken
         },
         // body: JSON.stringify(idsList)
     }).catch(()=>null);
@@ -274,7 +274,7 @@ export const DeleteProtected = async (id, endP, accessToken) => {
     return result */
 };
 
-export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
+export const DeleteSeveral = async (idsList, endP, accessToken) => {
     console.log('idsList')
     console.log(idsList)
     const response = await fetch(urlBase + endP,
@@ -282,7 +282,7 @@ export const DeleteSeveral = async (idsList, endP/* , accessToken */) => {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer ' + accessToken
+            'Authorization': 'Bearer ' + accessToken
         },
         body: JSON.stringify(idsList)
     }).catch(()=>null)

@@ -9,7 +9,7 @@ export const useGetAllGeneric = (endP, boolGetAllAgain) => {
   // console.log('aaaaaaaaaabbbb '+accessToken)
 
   async function httpResp() {
-    const temp = await Get(endP/*, accessToken */)
+    const temp = await Get(endP, accessToken)
     //if (temp !== null)
     setData(temp)
     setLoading(false)

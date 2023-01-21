@@ -21,9 +21,9 @@ import { usePut } from 'hooks/usePut'
 
 interface ExamValues {
   examValues?: {
-    id:string,
+    id: string,
     nombre: string,
-    uId:string,
+    uId: string,
     fechaInicio: number,
     fechaFin: number,
     estaActivo: boolean,
@@ -64,46 +64,46 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
     }
   )
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { response:postResponse, loading: loadingPostResponse } = examValues ? usePut(examValues.id,endpoint.examenes.general, examObject, send) : usePost(endpoint.examenes.general, examObject, send);
+  const { response: postResponse, loading: loadingPostResponse } = examValues ? usePut(examValues.id, endpoint.examenes.general, examObject, send) : usePost(endpoint.examenes.general, examObject, send);
 
- 
 
- /*  const [postResponse, setPostResponse] = useState("")
-  const [loadingPostResponse, setLoadingPostResponse] = useState(false); */
 
-/*   async function httpResp() {
-    const temp = await Post(endpoint.examenes.general, examObject)
-    // if (temp !== null)
-    setPostResponse(temp)
-    setLoadingPostResponse(false)
-  }
+  /*  const [postResponse, setPostResponse] = useState("")
+   const [loadingPostResponse, setLoadingPostResponse] = useState(false); */
 
-  const postExam = () => {
-    setLoadingPostResponse(true)
-    httpResp();
-    // Ahora Toca reiniciar los estados de la data etc
-  }
-
-  useEffect(() => {
-    const fechaActual = (new Date()).getTime();
-
-    if (counter) {
-      if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)
-        setOpenDateError(true)
-      else {
-        if (examObject.testUId === null)
-          setOpenTestError(true)
+  /*   async function httpResp() {
+      const temp = await Post(endpoint.examenes.general, examObject)
+      // if (temp !== null)
+      setPostResponse(temp)
+      setLoadingPostResponse(false)
+    }
+  
+    const postExam = () => {
+      setLoadingPostResponse(true)
+      httpResp();
+      // Ahora Toca reiniciar los estados de la data etc
+    }
+  
+    useEffect(() => {
+      const fechaActual = (new Date()).getTime();
+  
+      if (counter) {
+        if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)
+          setOpenDateError(true)
         else {
-          if (examObject.usuariosCiList === null)
-            setOpenUsersCiError(true)
-          else
-            postExam()
+          if (examObject.testUId === null)
+            setOpenTestError(true)
+          else {
+            if (examObject.usuariosCiList === null)
+              setOpenUsersCiError(true)
+            else
+              postExam()
+          }
         }
       }
-    }
-    setCounter(counter + 1);
-
-  }, [send]) */
+      setCounter(counter + 1);
+  
+    }, [send]) */
   // POSTING THE NEW EXAM --- END 
 
   const testSelectedHandler = (testUId) => {
@@ -165,8 +165,8 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
     if (!openResponseModal) {
       // setCounter(0);
       setSend(false)
-/*       setPostResponse("");
-      setLoadingPostResponse(false) */
+      /*       setPostResponse("");
+            setLoadingPostResponse(false) */
     }
   }, [openResponseModal])
 
@@ -174,7 +174,7 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
     const fechaActual = (new Date()).getTime();
 
     if (counter && !open) {
-      if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual || examObject.fechaInicio < fechaActual - 5000000)
+      if (examObject.fechaFin <= examObject.fechaInicio || examObject.fechaFin <= fechaActual /* || examObject.fechaInicio < fechaActual - 5000000 */)
         setOpenDateError(true)
       else {
         if (examObject.testUId === null)
@@ -194,15 +194,15 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
   // Put new exam
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#f5f5f5', p: '20px',pb:examValues&&'40px' }}>
-      {examValues && 
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
-        <IconButton
-        onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', backgroundColor: '#f5f5f5', p: '20px', pb: examValues && '40px' }}>
+      {examValues &&
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
+          <IconButton
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
       }
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Asignar usuarios: </h3>
       <>{loadingUsers
@@ -210,7 +210,7 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
         "Cargando..." :
         users ?
           /* Seleccionar usuarios */
-          <UsersTransferList users={users} loadingUsers={loadingUsers} onUsuariosAsignados={usuariosAsignadosHandler} defaultValue={examValues && examValues.usersRaw}/>
+          <UsersTransferList users={users} loadingUsers={loadingUsers} onUsuariosAsignados={usuariosAsignadosHandler} defaultValue={examValues && examValues.usersRaw} />
           :
           "No se encuentran datos"
       }
@@ -219,21 +219,24 @@ const CreateExam = ({ examValues, onClose }: ExamValues) => {
 
       {/* SELECCIONAR DE PRUEBA */}
       <h3 style={{ marginBottom: '10px' }}>Tipo de Prueba: </h3>
-      <SelectTest data={tests} onTestSelected={testSelectedHandler} defaultValue={examValues && examValues}/>
+      <SelectTest data={tests} onTestSelected={testSelectedHandler} defaultValue={examValues && examValues} />
 
-      <Separator />
-      {/* Seleccionar patron aleatorio o no */}
-      <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} defaultValue={examValues && examValues.isOriginalPattern}/>
-
+      {!examValues &&
+        <>
+          <Separator />
+          {/*  Seleccionar patron aleatorio o no  */}
+          <RadioGroupForTestPattern onPatternSelected={patternSelectedHandler} defaultValue={examValues && examValues.isOriginalPattern} />
+        </>
+      }
       <Separator />
       {/* Seleccionar fecha inicio */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de inicio: </h3>
-      <ExamDateTimePicker onDateSelected={startDateSelectedHandler} defaultValue={examValues && examValues.fechaInicio}/>
+      <ExamDateTimePicker onDateSelected={startDateSelectedHandler} defaultValue={examValues && examValues.fechaInicio} />
 
       <Separator />
       {/* Seleccionar fecha fin */}
       <h3 style={{ marginBottom: '10px', position: 'relative' }}>Fecha de fin: </h3>
-      <ExamDateTimePicker onDateSelected={endDateSelectedHandler} defaultValue={examValues && examValues.fechaFin}/>
+      <ExamDateTimePicker onDateSelected={endDateSelectedHandler} defaultValue={examValues && examValues.fechaFin} />
       <br />
       <Button
         variant='contained'

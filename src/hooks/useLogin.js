@@ -16,7 +16,7 @@ async function httpResp(){
 
 useEffect(() => {
    setLoading(true)
-  if (credentials.ci && credentials.ci.length>2 && credentials.password && credentials.password.length>2)
+  if (credentials.ci && credentials.ci.length>0 && credentials.password && credentials.password.length>0)
     httpResp()
     /* else{
        setLoginResponse(Math.random())

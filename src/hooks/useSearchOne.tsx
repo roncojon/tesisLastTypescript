@@ -4,7 +4,7 @@ import { useAppState } from "stores";
 
 export const useSearchOne = (key, name, endP, boolGetByNameAgain) => {
   const [usuariosByName, setUsuarios] = useState(null)
-  const [loadingUsuariosByName, setLoading] = useState(false)
+  const [loadingUsuariosByName, setLoading] = useState(true)
   // const [getByNameAgain,setGetByNameAgain] = useState(true);
   const { accessToken } = useAppState((state) => state.authenticationInfo);
   // console.log('aaaaaaaaaabbbb '+accessToken)
@@ -21,12 +21,12 @@ export const useSearchOne = (key, name, endP, boolGetByNameAgain) => {
 
   useEffect(() => {
 
-    if (name.length > 3) {
+    /* if (name.length > 3) { */
       setLoading(true)
       setUsuarios(null)
       // setGetByNameAgain(boolGetByNameAgain);
       httpResp()
-    }
+    /* } */
     /* return () => {
       second
     } */

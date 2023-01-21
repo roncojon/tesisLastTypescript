@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './SubTopBarStyles.css';
 import { Box, Container, Tab, Tabs } from '@mui/material';
-import {  useAppDispatch } from 'stores';
+import { useAppDispatch, useAppState } from 'stores';
 import { MenuElement } from 'commons/storeTypes/subTopMenuElements';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -24,14 +24,15 @@ const adminSiteMenuElements: MenuInfo = {
     { elementString: "Usuarios", elementUrl: "/userslist" },
     /* { elementString: "Grupo etario", elementUrl: "/grupoetario" },
     { elementString: "Nivel escolar", elementUrl: "/nivelescolar" } */
+    /* { elementString: "Nivel escolar", elementUrl: "/nivelescolar" } */
   ]
 };
 const createExamMenuElements: MenuInfo = {
   title: "Gestionar exámenes",
   elements: [
+    { elementString: "Historial de exámenes", elementUrl: "/allexams" },
     { elementString: "Crear examen", elementUrl: "/crearexamen" },
     // { elementString: "Exámenes activos", elementUrl: "/activeexams" },
-    { elementString: "Historial de exámenes", elementUrl: "/allexams" },
   ]
 };
 const doTestMenuElements: MenuInfo = {
@@ -45,6 +46,7 @@ const doTestMenuElements: MenuInfo = {
 const barLinksData: MenuInfo[] = [adminSiteMenuElements, createExamMenuElements, doTestMenuElements];
 
 const SubTopBar = () => {
+  const { userRol, isAuthenticated } = useAppState((state) => state.authenticationInfo);
   const [title, setTitle] = useState<string>("");
   const [elements, setelements] = useState<MenuElement[] | null>(null);
 
@@ -54,21 +56,26 @@ const SubTopBar = () => {
   console.log(location)
 
   useEffect(() => {
-    barLinksData.forEach(el => {
+    if (isAuthenticated) {
+      barLinksData.forEach(el => {
 
-      if (location.pathname === '/responderpruebas') {
-        setTitle(el.title);
-        setelements(el.elements);
-      }
-      else if (el.elements) {
-        el.elements.forEach(el2 => {
-          if (el2.elementUrl === location.pathname) {
-            setTitle(el.title);
-            setelements(el.elements);
-          }
-        });
-      }
-    });
+
+        if (location.pathname === '/responderpruebas') {
+          setTitle(el.title);
+          setelements(el.elements);
+        }
+        else if (el.elements) {
+          el.elements.forEach(el2 => {
+            console.log(`el2.elementUrl | location.pathname`)
+            console.log(`${el2.elementUrl} | ${location.pathname}`);
+            if (el2.elementUrl === location.pathname) {
+              setTitle(el.title);
+              setelements(el.elements);
+            }
+          });
+        }
+      });
+    }
   }, [location])
 
   return (
@@ -81,7 +88,7 @@ const SubTopBar = () => {
 
             <Tabs
               value={
-                location.pathname !== "/"
+                location.pathname !== "/" && location.pathname !== "/login"
                   ? location.pathname
                   : false
               }
