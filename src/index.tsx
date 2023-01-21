@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from 'styles/theme';
+// require('dotenv').config();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
