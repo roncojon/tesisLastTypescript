@@ -1,79 +1,16 @@
 /* // @ts-nocheck */
-import React, { useCallback, useEffect, useState, useContext } from 'react'
-
-// import {imgs} from '../../imgs';
-// import { patternAsObjArray as imgs} from 'functions/decodePatternFromBackend';
-
-// import './PruebaCaritas.css'
+import React, { useEffect, useState, } from 'react'
 import FilaDe4Imagenes from './FilaDe4Imagenes'
-import { functionCaritas } from '../../functions/functionCaritas'
-import { Get, Post, PostProtected, endpoint, GetProtected } from '../../httpRequests';
-import LoginContext from '../../context/LoginContext'
-import { Box, Container, useMediaQuery } from '@mui/material';
+import { Box,  useMediaQuery } from '@mui/material';
 import { pCaritasContainer } from './PruebaCaritasStyle';
 import { PruebaCaritasProvider } from 'context/PruebaCaritasContext';
 import CaritasEndExamInfoModal from './CaritasEndExamInfoModal';
 
-let sendTestDataCounter = 0;
-/* const pcObj = {
-  "pruebaCaritas": {
-    "id": 0,
-    "usuarioId": 1,
-    "fecha": "2022-07-22T18:40:57.500Z",
-    "filas": [
-      {
-        "id": 0,
-        "pruebaBaseId": 0,
-        "attempts": 0,
-        "annotations": 0,
-        "errors": 0,
-        "omissions": 0
-      }
-    ],
-    "intentosTotales": 5,
-    "anotacionesTotales": 3,
-    "erroresTotales": 1,
-    "omisionesTotales": 1,
-    "igap": 0,
-    "ici": 0,
-    "porCientoDeAciertos": 0,
-    "eficaciaAtencional": 0,
-    "eficienciaAtencional": 0,
-    "rendimientoAtencional": 0,
-    "calidadDeLaAtencion": 0,
-    "datosAtencion": 0
-  },
-  "filas": [
-    {
-      "id": 0,
-      "pruebaBaseId": 0,
-      "attempts": 4,
-      "annotations": 2,
-      "errors": 1,
-      "omissions": 1
-    },
-    {
-      "id": 0,
-      "pruebaBaseId": 0,
-      "attempts": 1,
-      "annotations": 1,
-      "errors": 0,
-      "omissions": 0
-    }
-  ]
-} */
-
 function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
-  /* console.log('imgs')
-  console.log(imgs) */
-  console.log('examId')
-  console.log(examId)
-
   let filaTemp = [];
   let matriz = [];
   let counter = 1;
   let counter2 = 0;
-  const contextValue = useContext(LoginContext);
 
   const createFilas = () => {
     imgs.forEach(img => {
@@ -90,26 +27,17 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
   createFilas();
 
   const [tiempoAgotado, setTiempoAgotado] = useState(false);
-  // console.log(tiempoAgotado)
   const [resultadoDePrueba, setResultadoDePrueba] = useState([]);
   const [done, setDone] = useState(false)
-  console.log('resultadoDePrueba')
-  console.log(resultadoDePrueba)
 
   const resultadosHandler = (fila, index) => {
-    console.log('fila')
-    console.log(fila)
     const resultTemp = resultadoDePrueba;
 
     fila.forEach((img)=>{
-      console.log('img')
-      console.log(img)
       const imgIndexString = 'i'+img.imagenIndex+' ';
       const imgAnswer = img.respuestaMarcada;
 
-      // const imgAnswer = img.anotacion ? '1' : img.error ? '2' : '0';
-    resultTemp[img.imagenIndex] = imgIndexString + imgAnswer /* + ',' */;
-    // resultTemp =resultTemp + imgIndexString + imgAnswer + ',';
+    resultTemp[img.imagenIndex] = imgIndexString + imgAnswer;
 
     })
     setResultadoDePrueba(resultTemp);
@@ -120,19 +48,17 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
 // Cuando termina la funcion resultadosHandler() se activa el done, y al hacerlo se convierten los resultadosDePrueba q
 // actualmente estan en forma de array, en string listos para el backend y se pasan al componente endExamModal
 // el cual indica q se termino la prueba e indica q se subieron correctamente los resultados
-  useEffect(() => { setTimeout(() => setTiempoAgotado(true), /* tiempoLimiteMs */6000 /* 180000 */); }, [])
+  useEffect(() => { setTimeout(() => setTiempoAgotado(true), tiempoLimiteMs); }, [])
 
   const [finalString, setFinalString] = useState('');
 
   console.log()
   useEffect(() => {
     if (done === true) {
-      console.log('DONEEEEEEEEEE');
       const resultadoFinal = resultadoDePrueba;
       resultadoFinal.shift();
       console.log(resultadoFinal.join() + ',')
       setFinalString(resultadoFinal.join() + ',')
-      // console.log(functionCaritas(resultadoDePrueba))
     }
   }, [done])
   const isSmallerThan850px = useMediaQuery('(max-width:850px)');
@@ -146,7 +72,7 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
       {/* OTRA OPCION, en el Context solo guardar un numero, el index de la ultima imagen marcada, CUANDO MARCA MANDA AL CONTEXT y
        compara, si es menor pues no deja marcar. O sea cada Imagen.js comprobar si su index es menor q el index del Context, y si es asi cambia estilo y no deja marcarse  */}
       <PruebaCaritasProvider>
-        <Box sx={{ ...pCaritasContainer, overflow: isSmallerThan850px && 'auto', }}/* className='pCaritas' */>
+        <Box sx={{ ...pCaritasContainer, overflow: isSmallerThan850px && 'auto', }}>
           {matriz.map((fila) => {
             counter2++;
             return <FilaDe4Imagenes key={`${fila[0].counter}`} imagenes={fila} numeroDeFila={counter2} onTiempoAgotado={resultadosHandler} timeAgotado={tiempoAgotado} />
