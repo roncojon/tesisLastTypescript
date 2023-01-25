@@ -49,10 +49,8 @@ function PruebaCaritas({ pattern: imgs, examId ,cantColumnas, tiempoLimiteMs}) {
 // actualmente estan en forma de array, en string listos para el backend y se pasan al componente endExamModal
 // el cual indica q se termino la prueba e indica q se subieron correctamente los resultados
   useEffect(() => { setTimeout(() => setTiempoAgotado(true), tiempoLimiteMs); }, [])
-console.log('')
   const [finalString, setFinalString] = useState('');
 
-  console.log()
   useEffect(() => {
     if (done === true) {
       const resultadoFinal = resultadoDePrueba;
